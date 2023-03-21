@@ -12,6 +12,16 @@
 
 <body>
 
-  <script src="scripts.js"></script>
+  <script src="scripts.js">
+    class WTV {
+      let x,y = 1;
+      constructor(index){
+          this.y = index
+      }
+    }
+    var wtv =  new WTV(3);
+    console.log(x);
+    console.log(y);
+  </script>
 </body>
 </html>
