@@ -14,9 +14,10 @@
 
   <script src="scripts.js">
     class WTV {
-      let x,y = 1;
+      
       constructor(index){
           this.y = index
+          this.x = 1;
       }
     }
     var wtv =  new WTV(3);
