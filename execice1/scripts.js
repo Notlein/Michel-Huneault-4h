@@ -36,7 +36,7 @@ function ajouteNombre(){
             nbaleatoire = Math.floor(Math.random() * nombre.length);
             compteur_chiffres[index].innerHTML = nombre[nbaleatoire];
             // console.log(nbaleatoire);
-            nbcompter[index] = nombre.splice(nbaleatoire, 1);
+            nbcompter[index] = nombre.splice(nbaleatoire, 1)[0];
             console.log(nbcompter[index]);
         }
 
