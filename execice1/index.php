@@ -33,6 +33,6 @@
         <p></p>
     </div>
     <button onclick="ajouteNombre()">Commance</button>
-    <script src="scripts.js"></script>
+    <!-- <script src="scripts.js"></script> -->
 </body>
 </html>
