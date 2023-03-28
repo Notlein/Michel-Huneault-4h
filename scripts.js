@@ -1,9 +1,10 @@
 const nombreImages = new Array();
 
 var jsonContenu;
+var nbit = 1;
 // fetch('4h.json').then(response => response.json()).then(data => console.log(JSON.parse(data['squadName'])));
-
-
+var nomsTableau = ['chien','chat','ours','tigre','toro','falcon','lion'];
+var liensTableau = ['adkjfb','chat','ours','tigre','toro','falcon','lion'];
 
 $.ajax({
     url: "4h.json",
@@ -23,23 +24,34 @@ $.ajax({
 //     console.log(index);
 
 // }
+function pushObject(el, link) {
+    let c = 1;
+    let obj = {
+        "id": c++,
+        "nom": el,
+        "lien": link
+    } 
+    jsonContenu.push(obj);
+    
+}
+
+
 
 
 function ajouteImages() {
+    let idIteration = 1;
     
-    let nbAleatoire = Math.floor(Math.random() * jsonContenu.length);
+    // let nbit++
+    // let nbAleatoire = Math.floor(Math.random() * jsonContenu.length);
+    // jsonContenu[1]['id'] += idIteration;
     const image = document.createElement("div");
-    if ((nombreImages.length <= 0) && (jsonContenu[nbAleatoire]['nom'] != NaN)){
+    if ((nombreImages.length <= 0)){
         image.classList.add("div_images");
         // document.querySelector('div').a;
+        idIteration = jsonContenu.length;
         document.querySelector('.div_contenu').appendChild(image);
-        image.innerHTML = jsonContenu[nbAleatoire]['nom'];
-        let obj = {
-            "id": 4,
-            "nom": "bird",
-            "lien": "asdasdasd"
-        } 
-        jsonContenu.push(obj);
+        pushObject('bird','ldsaffdsf');
+        image.innerHTML = jsonContenu[0]['nom'];
         console.log(jsonContenu);
         //jsonContenu.splice(nbAleatoire, 1);
 
