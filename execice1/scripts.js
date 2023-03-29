@@ -1,6 +1,7 @@
 const nombre = new Array();
 var nbcontenu;
 
+
 // const compteurs = document.querySelector(".section_compteurs");
 //     const compteur = compteurs.querySelectorAll(".div_compteur")
 //     const compteur_chiffres = compteurs.querySelectorAll(".div_compteur p");

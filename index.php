@@ -20,7 +20,11 @@
     <div class="fini">
         <p></p>
     </div>
-    <!-- <button onclick="ajouteImages()">Images</button> -->
+    <!-- <input type="file"> -->
+    <button onclick="ajouteImages()">Images</button>
+    <!-- <button onclick="makearray()">make array</button> -->
+
     <script src="scripts.js"></script>
+
 </body>
 </html>
