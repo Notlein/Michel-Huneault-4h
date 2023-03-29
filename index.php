@@ -20,7 +20,7 @@
     <div class="fini">
         <p></p>
     </div>
-    <button onclick="ajouteImages()">Images</button>
+    <!-- <button onclick="ajouteImages()">Images</button> -->
     <script src="scripts.js"></script>
 </body>
 </html>
