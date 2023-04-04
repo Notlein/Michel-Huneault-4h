@@ -13,16 +13,17 @@
 
 <body>
     <div class="div_contenu">
-        <!-- <div class="div_images">
-            <p>lolsdd</p>
-        </div> -->
+            
+    </div>
+    <div class="grille_video">
+        <!-- <p>lolsdd</p>
+        <video muted autoplay><source src="videos/5_15high.mov"></video> -->
     </div>
     <div class="fini">
         <p></p>
     </div>
-    <!-- <input type="file"> -->
     <button onclick="ajouteImages()">Images</button>
-    <!-- <button onclick="makearray()">make array</button> -->
+    <button onclick="ajouteGrille()">Griile</button>
 
     <script src="scripts.js"></script>
 
