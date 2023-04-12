@@ -87,9 +87,8 @@ button{
     height: 100%;
     width: 100%;
     font-size: 60pt;
-    background-color: beige;
+    background-color: rgb(124, 174, 228);
     position: absolute;
-    z-index: 1;
 }
 
 .div_images{
@@ -139,3 +138,4 @@ iframe{
     height: 98%;
     width: 100vw;
 }
+
