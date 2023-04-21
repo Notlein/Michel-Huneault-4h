@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -13,14 +13,19 @@
 
 <body>
     <div class="div_contenu">
-        <!-- <div class="div_images">
-            <p>lolsdd</p>
-        </div> -->
+            
     </div>
-    <div class="fini">
+    <div class="grille_video">
+        <!-- <p>lolsdd</p>
+        <video muted autoplay><source src="videos/5_15high.mov"></video> -->
+
+    </div>
+    <!-- <div class="fini">
         <p></p>
-    </div>
+    </div> -->
     <!-- <button onclick="ajouteImages()">Images</button> -->
+    <!-- <button onclick="getNbAleatoire()">test</button> -->
     <script src="scripts.js"></script>
+
 </body>
 </html>
