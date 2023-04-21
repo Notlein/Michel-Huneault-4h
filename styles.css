@@ -108,13 +108,12 @@ button{
 
 .grille_video{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr ;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+    grid-template-rows: 1fr;
     gap: 10px 10px;
     grid-auto-flow: row;
     grid-template-areas:
-        ". . ."
-        ". . .";
+        ". . . . . .";;
     height: 70vh;
     justify-items: center;
     align-items: center;
@@ -122,7 +121,7 @@ button{
 
 .div_video{
     position: relative;
-    height: 50vh;
+    height: 20vh;
     width: 100%;
     /* border-radius: 20px; */
     background-color: rgba(0, 71, 92, 0.583);
@@ -132,10 +131,25 @@ button{
     justify-content: center;
     align-items: center;
     border: 1px white;
+    transition: .5s;
+    overflow: hidden;
+    
 }
 
-iframe{
+.div_video:hover{
+    scale: 1.05;
+    z-index: 1;
+}
+
+video{
+    object-fit: contain;
+    height: 100%;
+    margin: 0;
+}
+/* iframe{
     height: 98%;
     width: 100vw;
-}
+} */
+
+
 

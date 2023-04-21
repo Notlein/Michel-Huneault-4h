@@ -13,7 +13,7 @@ var idGlobal = 0;
 var nomsTableau = ['chien','chat','ours','tigre','toro','falcon','lion'];
 var liensTableau = ['adkjfb','chasadt','asd','asd','adf','asd','asfdsf'];
 
-const csvUrl = 'csv/listenoms.csv';
+const csvUrl = '/csv/listenoms.csv';
 const result = [];
 
 const contenu = document.querySelector('.div_contenu');
@@ -29,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log(jsonContenuAViderTest);
         }
     });
-    
-    
     
     
     fetch(csvUrl)
@@ -100,38 +98,6 @@ function addEl(el, link){
     console.log(jsonContenuARemplir);
 }
 
-// function retourneEl(el, link){
-//     var obj = {
-//         "id": idGlobal,
-//         "nom": el+"",
-//         "lien": link+""
-//     }
-    
-//     var x = jsonContenuAViderTest;
-//     x.push(obj);
-//     idGlobal++;
-//     console.log(jsonContenuAViderTest);
-// }
-
-// function get(index){
-//     console.log(jsonContenu[index]);
-// }
-//addEl("bird", "sbnfdia3024975wbesrgv");
- 
-// function makearray() {
-//     fill4h();
-// }
-
-
-
-function ajouteGrille() {
-    
-    for (let index = 1; index < 6 + 1; index++) {
-        // addEl(jsonContenuAVider[index]['nom'], jsonContenuAVider[index]['lien'])
-        ajouteGrilleDiv(jsonContenuAVider);
-    }
-    
-}
 
 
 
@@ -145,9 +111,9 @@ for (index = 0; index < 6; index++) {
 
 var nameBool = true;
 var compteur = 0;
+
+
 function getNbAleatoire(){
-
-
     console.log("bool " + nameBool);
     if(temp.length == 0){
         console.log('fini');
@@ -155,36 +121,72 @@ function getNbAleatoire(){
         return;
     }
 
-
-    
     nbVariable = Math.floor(Math.random() * temp.length);
     tempSplice = temp.splice(nbVariable,1);
 
     console.log("alsd " + tempSplice);
-    if (nameBool == true){
-        ajouteGrilleDiv(tempSplice, true);
+    if (nameBool){
+        ajouteGrilleDiv(tempSplice);
     }
-
-
 }
 
 
 
-function ajouteGrilleDiv(value, bool) {
+function joueVid(v){
+    v.play();
+    v.loop = true;
+}
+
+function arretVid(v){
+    v.pause()
+}
+
+var compteur2 = 1;
+
+function ajouteGrilleDiv(value) {
     var image = document.createElement("div");
     let contenu = document.querySelector('.grille_video');
-    let nbtemp = temp[0];
+    let video = document.createElement("video");
+    let contenuGrille = document.querySelectorAll('.div_video'); 
+    let videoSelectionne;
+    video.src = jsonContenuAVider[value]['thumb'];
+    
     image.classList.add("div_video"); 
     contenu.appendChild(image);
-    if (nameBool == true) {
+    if (nameBool) {
         getNbAleatoire();
     }
+    image.setAttribute("src",jsonContenuAVider[value]['thumb']);
+
+    image.appendChild(video);
+
+
+    /**
+     * function: Joue un petit video quand la souri survol le thumbnail
+     * input: 
+     * output:
+     * 
+     */
     
-    image.setAttribute("src",jsonContenuAVider[value]['lien']);
-    image.innerHTML = jsonContenuAVider[value]['nom'];
-    var contenuGrille = document.querySelectorAll('.div_video');   
-    getName (contenuGrille);
+    contenuGrille.forEach(e => {
+        let c = 1;
+        e.addEventListener('mouseenter', function (event) { 
+            videoSelectionne = event.target.querySelector('video');
+            console.log(contenuGrille.length);
+            joueVid(videoSelectionne);
+        });
+        e.addEventListener('mouseleave', function (event) { 
+            videoSelectionne = event.target.querySelector('video');
+            arretVid(videoSelectionne);
+        });
+    })  
+
+    getName(contenuGrille);
 }
+
+
+
+
 
 function getName(name) {
     name.forEach(e => {
@@ -192,8 +194,8 @@ function getName(name) {
             compteur++
             console.log("compteur " + compteur);
             if (compteur == 1) {
-                console.log(nameBool);
-                ajouteVideoSelectionne(e.innerHTML, e.getAttribute("src"));
+                console.log(e.getAttribute("src").replace("/thumvideos", ""));
+                ajouteVideoSelectionne(e.getAttribute("src").replace("/thumvideos", ""));
             }
             else if(compteur == 6) {
                 compteur = 0;
@@ -203,41 +205,26 @@ function getName(name) {
     })
 }
 
-function ajouteVideoSelectionne(nom, lien) {
+function ajouteVideoSelectionne(lien) {
     
-    //let idIteration = 1;
-    // let nbit++
-    // ajouteGrille(); 
     bool = true;
     contenu.style.zIndex = 1;
-    //let nbaleatoire;
-    // jsonContenu += idIteration;
+
     let intDiv = document.querySelectorAll('.div_images').length;
     let div_video = document.createElement("div");
     let video = document.createElement("video");
-    
     video.controls = true;
-    // video.width = 320;
-    // video.height = 240;
-
+    console.log('PING');
     
     
     if ((jsonContenuAVider.length >= 0) && (jsonContenuAVider.length != 0)){
 
 
         
-        nbaleatoire = Math.floor(Math.random() * jsonContenuAVider.length);
-
-        addEl(jsonContenuAVider[nbaleatoire][nom], jsonContenuAVider[nbaleatoire][lien]);
 
         div_video.classList.add("div_images"); 
 
-        console.log("tav " + intDiv);
-
         document.querySelector('.div_contenu').appendChild(div_video);
-       
-
-        div_video.innerHTML = nom;
         
         //Ajoute video
         
@@ -254,8 +241,6 @@ function ajouteVideoSelectionne(nom, lien) {
 
 
         retireInfoArray(nbaleatoire);
-        console.log("rng " + nbaleatoire);
-        console.log("rng " + nbaleatoire);
     }
     else{
 
@@ -280,31 +265,25 @@ function ajouteVideoSelectionne(nom, lien) {
             
             
         }
-        
-        // document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[1]);
+
     }
 
-    
-    // console.log(nombreImages.length);
+
 
 }
 
 function ajouteImages() {
     
-    //let idIteration = 1;
-    // let nbit++
-    // ajouteGrille(); 
+
     bool = true;
     contenu.style.zIndex = 1;
-    //let nbaleatoire;
-    // jsonContenu += idIteration;
+
     let intDiv = document.querySelectorAll('.div_images').length;
     let div_video = document.createElement("div");
     let video = document.createElement("video");
     
     video.controls = true;
-    // video.width = 320;
-    // video.height = 240;
+
 
     
     
@@ -318,11 +297,8 @@ function ajouteImages() {
 
         div_video.classList.add("div_images"); 
 
-        console.log("tav " + intDiv);
-
         document.querySelector('.div_contenu').appendChild(div_video);
        
-
         div_video.innerHTML = jsonContenuAVider[nbaleatoire]['nom'];
         
         //Ajoute video
@@ -333,9 +309,9 @@ function ajouteImages() {
 
         video.play();
 
-        if(intDiv > 1){
+        if(intDiv > 1){ 
             console.log("Div " + document.querySelectorAll('.div_images')[0]);
-            document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
+            // document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
         }
 
 
@@ -348,7 +324,7 @@ function ajouteImages() {
         
         if(intDiv > 1){
             console.log("Div " + document.querySelectorAll('.div_images')[0]);
-            document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
+            //document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
         }
 
         for (let index = 0; index < 6; index++) {
@@ -367,11 +343,11 @@ function ajouteImages() {
             
         }
         
-        // document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[1]);
+
     }
 
     
-    // console.log(nombreImages.length);
+
 
 }
 
@@ -397,32 +373,16 @@ function nbRandomizer(RandomInt) {
 }
 
 
-//  function autoplay(){
-//     let playVid = document.querySelectorAll("myvid"); 
-//     playVid.play();     
-//     console.log('sadfdggggrw');                                                                        
-//  }
 
-
-
-
-
-
-
-// var grille = document.querySelector('.grille_video');
-// grille.addEventListener('click', (event) => { 
-//     if(event.target.classList.contains('.div_video')) {
-//         console.log("dsafdfa");
-//     }
-// });
 
 
 
 window.addEventListener('scroll', () => {
     
+    
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    if ((bool == true) && (Math.ceil(scrolled) >= (scrollMax - 5))){
+    if ((bool == true) && (Math.ceil(scrolled) >= (scrollMax - 10))){
         ajouteImages();
     }
 
