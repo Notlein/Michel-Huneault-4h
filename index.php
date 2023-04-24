@@ -24,7 +24,8 @@
         <p></p>
     </div> -->
     <!-- <button onclick="ajouteImages()">Images</button> -->
-    <!-- <button onclick="getNbAleatoire()">test</button> -->
+    <!-- <button onclick="getNbAleatoire()"> test </button> -->
+
     <script src="scripts.js"></script>
 
 </body>
