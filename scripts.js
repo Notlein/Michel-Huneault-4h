@@ -20,6 +20,7 @@ const prefix = vids + prefix_thumb;
  */
 
 // AJAX call on content load -> JSON Contenu à vider - initialisation (vide)
+// AJAX call on content load -> JSON Contenu à vider - initialisation (vide)
 document.addEventListener("DOMContentLoaded", function(){
     $.ajax({
         url: "4h.json",
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 
                 const obj = {};
                 const currentLine = lines[i].split(',');
+
 
                 for (let j = 0; j < headers.length; j++) {
                   obj[headers[j]] = currentLine[j];
@@ -82,6 +84,11 @@ function ajouteGrilleDiv(id) {
         video.pause();
     });
 }
+
+
+
+// TO DO Clean here
+
 
 // Dette technique - > nouveau system de player prev play next
 
