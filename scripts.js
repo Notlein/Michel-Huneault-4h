@@ -1,52 +1,68 @@
 const nombreImages = new Array();
 
-var jsonContenuAViderTest;
+
 var jsonContenuARemplir;
 var jsonContenuAVider;
 var arraytofill;
-var nbit = 1;
-var bool;
-var nbVariable;
 
-// fetch('4h.json').then(response => response.json()).then(data => console.log(JSON.parse(data['squadName'])));
+
+//var nbVariable;
 var idGlobal = 0;
-var nomsTableau = ['chien','chat','ours','tigre','toro','falcon','lion'];
-var liensTableau = ['adkjfb','chasadt','asd','asd','adf','asd','asfdsf'];
 
-const csvUrl = '/csv/listenoms.csv';
+
 const result = [];
-
 const contenu = document.querySelector('.div_contenu');
-contenu.style.zindex = 0;
 
+contenu.style.zIndex = 1;
+
+
+
+
+/**
+ * @todo
+ * - finish clearing code
+ * - update for fixes
+ * - Add backend requests for videos (CDN)
+ * - clear JSONs so that there is only one
+ * - Backend-Frontend diagram (Figma ?)
+ */
+
+
+
+// AJAX call on content load -> JSON Contenu à vider - initialisation (vide)
 document.addEventListener("DOMContentLoaded", function(){
     $.ajax({
         url: "test_csv_Json.json",
         data: "data",
         dataType: "json",
         success: function (response) {
-            jsonContenuAViderTest = response;
-            console.log(jsonContenuAViderTest);
+            jsonContenuAVider = response;
         }
     });
     
-    
+
+const csvUrl = '/csv/listenoms.csv';
+
+// AJAX call (fetch) -> csv(id,nom,lien,meta\r) to 
     fetch(csvUrl)
         .then(response => response.text())
         .then(data => {
+
             const csvData = data;
             const lines = csvData.split('\r');
             const headers = lines[0].split(',');
-            console.log(csvData);
-            for (let i = 1; i < lines.length - 1; i++) {
+
+            for (let i = 1; i < lines.length; i++) {
+
                 const obj = {};
                 const currentLine = lines[i].split(',');
+
                 for (let j = 0; j < headers.length; j++) {
                   obj[headers[j]] = currentLine[j];
                 }
-                jsonContenuAViderTest.push(obj);
+
+                jsonContenuAVider.push(obj);
             }
-            console.log(JSON.stringify(jsonContenuAViderTest, null, 2));
         });
     
     
@@ -57,130 +73,122 @@ document.addEventListener("DOMContentLoaded", function(){
         dataType: "json",
         success: function (response) {
             jsonContenuARemplir = response;
-            console.log(jsonContenuARemplir);
         }
     });
+      
     
-    
-    $.ajax({
-        url: "4h_contenu.json",
-        data: "data",
-        dataType: "json",
-        success: function (response) {
-            jsonContenuAVider = response;
-            jsonContenuAVider = jsonContenuAViderTest;
-            console.log(jsonContenuAVider);
-        }
-    });
-    
-})
 
-window.onload = function () { 
-    getNbAleatoire();
-    
-}
-
+});
 
 
 
 
 
 function addEl(el, link){
+    var x = jsonContenuARemplir['data'];
     var obj = {
         "id": idGlobal,
         "nom": el+"",
         "lien": link+""
     }
-    
-    var x = jsonContenuARemplir['data'];
     x.push(obj);
     idGlobal++;
-    console.log(jsonContenuARemplir);
 }
 
 
 
 
-var temp = new Array();
-var tempSplice;
 
-for (index = 0; index < 6; index++) {
-    temp.push(index);
-    
-}
-
-var nameBool = true;
-var compteur = 0;
+/**
+ * 
+ * 
+ * 
+ */
 
 
-function getNbAleatoire(){
-    console.log("bool " + nameBool);
-    if(temp.length == 0){
-        console.log('fini');
-        nameBool = false;
-        return;
-    }
+// var temp = new Array();
+// var tempSplice;
 
-    nbVariable = Math.floor(Math.random() * temp.length);
-    tempSplice = temp.splice(nbVariable,1);
+// for (index = 0; index < 6; index++) {
+//     temp.push(index);
+// }
 
-    console.log("alsd " + tempSplice);
-    if (nameBool){
-        ajouteGrilleDiv(tempSplice);
-    }
-}
+// var nameBool = true;
 
 
 
+// // fonction pour obtenir un nombre aleatoire
+// function getNbAleatoire(){
+
+//     if(temp.length == 0){
+//         nameBool = false;
+//         return;
+//     }
+
+//     nbVariable = Math.floor(Math.random() * temp.length);
+//     tempSplice = temp.splice(nbVariable,1);
+
+//     if (nameBool){
+//         ajouteGrilleDiv(tempSplice);
+//     }
+// }
+
+
+
+
+
+
+
+
+// video play
 function joueVid(v){
     v.play();
     v.loop = true;
 }
 
+//video pause
 function arretVid(v){
     v.pause()
 }
 
-var compteur2 = 1;
 
 function ajouteGrilleDiv(value) {
-    var image = document.createElement("div");
+
+    let image = document.createElement("div");
     let contenu = document.querySelector('.grille_video');
     let video = document.createElement("video");
-    let contenuGrille = document.querySelectorAll('.div_video'); 
+    const contenuGrille = document.querySelectorAll('.div_video'); 
     let videoSelectionne;
     video.src = jsonContenuAVider[value]['thumb'];
     
     image.classList.add("div_video"); 
     contenu.appendChild(image);
-    if (nameBool) {
-        getNbAleatoire();
-    }
-    image.setAttribute("src",jsonContenuAVider[value]['thumb']);
 
+    // Le probleme est ici ! voir la fonction plus haut avec if(temp.length == 0){nameBool = false;return;}
+
+    // if (nameBool) { 
+    //     getNbAleatoire();
+    // }
+    // la partie du code suivante n'executait pas puisqu'il y avait un ''return 
+    image.setAttribute("src",jsonContenuAVider[value]['thumb']);
     image.appendChild(video);
 
-
-    /**
-     * function: Joue un petit video quand la souri survol le thumbnail
-     * input: 
-     * output:
-     * 
-     */
-    
+    // pour chaque classe div_video
     contenuGrille.forEach(e => {
-        let c = 1;
+        // ajoute listener mouse enter -> joue video
         e.addEventListener('mouseenter', function (event) { 
             videoSelectionne = event.target.querySelector('video');
-            console.log(contenuGrille.length);
             joueVid(videoSelectionne);
         });
+        // ajoute listener mouse leave -> pause video
         e.addEventListener('mouseleave', function (event) { 
             videoSelectionne = event.target.querySelector('video');
             arretVid(videoSelectionne);
         });
     })  
 
+
+    // ajout des event listener
     getName(contenuGrille);
 }
 
@@ -188,94 +196,83 @@ function ajouteGrilleDiv(value) {
 
 
 
+
+
+
+
+/**
+ * pour chaque classe div_video, ajoute un event listener click 
+ * 
+ */
+
 function getName(name) {
+
+    //let compteur = 0;
+
+
     name.forEach(e => {
         e.addEventListener('click', function () { 
-            compteur++
-            console.log("compteur " + compteur);
-            if (compteur == 1) {
-                console.log(e.getAttribute("src").replace("/thumvideos", ""));
-                ajouteVideoSelectionne(e.getAttribute("src").replace("/thumvideos", ""));
-            }
-            else if(compteur == 6) {
-                compteur = 0;
-            }
 
+            //iterateur compteur dans iterateur foreach -> mauvaise pratique
+            // compteur++
+            // if (compteur == 1) {
+
+
+
+                // retire prefix
+                ajouteVideoSelectionne(e.getAttribute("src").replace("/thumvideos", ""));
+            
+            
+            
+                // } else if (compteur == 6) {
+            //     compteur = 0;
+            // }
         });
     })
 }
 
+
+
+// TO DO Clean here
+
+
 function ajouteVideoSelectionne(lien) {
-    
-    bool = true;
-    contenu.style.zIndex = 1;
 
     let intDiv = document.querySelectorAll('.div_images').length;
     let div_video = document.createElement("div");
     let video = document.createElement("video");
     video.controls = true;
-    console.log('PING');
-    
-    
+
     if ((jsonContenuAVider.length >= 0) && (jsonContenuAVider.length != 0)){
-
-
-        
-
         div_video.classList.add("div_images"); 
-
         document.querySelector('.div_contenu').appendChild(div_video);
-        
+
         //Ajoute video
-        
         video.src = lien;
-
         div_video.appendChild(video);
-
         video.play();
 
-        if(intDiv > 1){
-            console.log("Div " + document.querySelectorAll('.div_images')[0]);
-            document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
-        }
+        if(intDiv > 1){ document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]) }
 
+    } else{
 
-        retireInfoArray(nbaleatoire);
-    }
-    else{
-
-        
-        if(intDiv > 1){
-            console.log("Div " + document.querySelectorAll('.div_images')[0]);
-            document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
-        }
+        if(intDiv > 1){ document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]) }
 
         for (let index = 0; index < 6; index++) {
-
-           
             if (jsonContenuARemplir['data'].length <= index){
-                console.log("index " + index);
                 retourneEl(jsonContenuARemplir['data'][index]['nom'], jsonContenuARemplir['data'][index]['lien']);
-
-            }
-            else{
-                console.log('DONE');
+            }else{
                 retireInfoArraytofill(0);
             }
-            
-            
         }
-
     }
-
-
-
 }
+
+
+// TO DO Clean here
 
 function ajouteImages() {
     
-
-    bool = true;
     contenu.style.zIndex = 1;
 
     let intDiv = document.querySelectorAll('.div_images').length;
@@ -284,105 +281,54 @@ function ajouteImages() {
     
     video.controls = true;
 
-
-    
-    
     if ((jsonContenuAVider.length >= 0) && (jsonContenuAVider.length != 0)){
-
-
         
         nbaleatoire = Math.floor(Math.random() * jsonContenuAVider.length);
-
         addEl(jsonContenuAVider[nbaleatoire]['nom'], jsonContenuAVider[nbaleatoire]['lien']);
-
         div_video.classList.add("div_images"); 
-
         document.querySelector('.div_contenu').appendChild(div_video);
-       
         div_video.innerHTML = jsonContenuAVider[nbaleatoire]['nom'];
         
         //Ajoute video
         
         video.src = jsonContenuAVider[nbaleatoire]['lien'];
-
         div_video.appendChild(video);
-
         video.play();
 
-        if(intDiv > 1){ 
-            console.log("Div " + document.querySelectorAll('.div_images')[0]);
-            // document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
-        }
-
-
-        retireInfoArray(nbaleatoire);
-        console.log("rng " + nbaleatoire);
-        console.log("rng " + nbaleatoire);
-    }
-    else{
-
-        
-        if(intDiv > 1){
-            console.log("Div " + document.querySelectorAll('.div_images')[0]);
-            //document.querySelector('.div_contenu').removeChild(document.querySelectorAll('.div_images')[0]);
-        }
+    } else {
 
         for (let index = 0; index < 6; index++) {
-
-           
             if (jsonContenuARemplir['data'].length <= index){
-                console.log("index " + index);
                 retourneEl(jsonContenuARemplir['data'][index]['nom'], jsonContenuARemplir['data'][index]['lien']);
-
-            }
-            else{
-                console.log('DONE');
+            } else {
                 retireInfoArraytofill(0);
             }
-            
-            
         }
-        
-
     }
-
-    
-
-
-}
-
-
-function retireInfoArray(NbEnvlever) {  
-    console.log("removed");
-    jsonContenuAViderTest.splice(NbEnvlever, 1);    
 }
 
 function retireInfoArraytofill(NbEnvlever) {  
-    console.log("removed");
     jsonContenuARemplir.splice(NbEnvlever, 6);
 }
 
-function retireInfoNbArray(NbEnvlever) {  
-    console.log("removed");
-    jsonContenuARemplir.splice(NbEnvlever, 6);
+
+
+
+
+
+
+// intialisation du nombre aleatoire
+window.onload = function () { 
+    getNbAleatoire();
 }
 
-function nbRandomizer(RandomInt) { 
-    var nbaleatoire = Math.floor(Math.random() * RandomInt);
-    return nbaleatoire;
-}
-
-
-
-
-
-
+// ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
-    
-    
+
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    if ((bool == true) && (Math.ceil(scrolled) >= (scrollMax - 10))){
+
+    if ((Math.ceil(scrolled) >= (scrollMax - 10))){
         ajouteImages();
     }
 
