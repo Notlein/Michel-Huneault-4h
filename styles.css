@@ -1,0 +1,91 @@
+/*
+theme name: 4h - Moïse Kaseka
+Author: Moïse Kaseka
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: michelhoneault4h
+
+*/
+
+
+
+
+
+button{
+    height: 80px;
+    width: 250px;
+    position: relative;
+    left: 42%;
+}
+
+.div_contenu{
+    height: 100%;
+    width: 100%;
+    font-size: 60pt;
+    background-color: rgb(124, 174, 228);
+    position: absolute;
+}
+
+.div_images{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 10%;
+    /* border-radius: 20px; */
+    background-color: rgba(0, 20, 92, 0.583);
+    color: aliceblue;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    border: 1px white;
+}
+
+.grille_video{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+    grid-template-rows: 1fr;
+    gap: 10px 10px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        ". . . . . .";;
+    height: 70vh;
+    justify-items: center;
+    align-items: center;
+}
+
+.div_video{
+    position: relative;
+    height: 20vh;
+    width: 100%;
+    /* border-radius: 20px; */
+    background-color: rgba(0, 71, 92, 0.583);
+    color: aliceblue;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    border: 1px white;
+    transition: .5s;
+    overflow: hidden;
+    
+}
+
+.div_video:hover{
+    scale: 1.05;
+    z-index: 1;
+}
+
+video{
+    object-fit: contain;
+    height: 100%;
+    margin: 0;
+}
+/* iframe{
+    height: 98%;
+    width: 100vw;
+} */
+
+
+
