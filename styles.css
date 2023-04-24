@@ -83,15 +83,17 @@ button{
     left: 42%;
 }
 
+
 .div_contenu{
     height: 100%;
     width: 100%;
     font-size: 60pt;
-    background-color: rgb(124, 174, 228);
+    /*background-color: rgb(124, 174, 228);*/
     position: absolute;
+    z-index: 0;
 }
 
-.div_images{
+.video_target{
     position: relative;
     height: 100%;
     width: 100%;
