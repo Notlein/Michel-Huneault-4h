@@ -123,15 +123,12 @@ function getNbAleatoire(){
 
     nbVariable = Math.floor(Math.random() * temp.length);
     tempSplice = temp.splice(nbVariable,1);
-    
-    ajouteGrilleDiv(tempSplice);
-    
-    
+
+    console.log("alsd " + tempSplice);
     if (nameBool){
-        
+        ajouteGrilleDiv(tempSplice);
     }
 }
-
 
 
 
@@ -147,14 +144,10 @@ function arretVid(v){
 var compteur2 = 1;
 
 function ajouteGrilleDiv(value) {
-    console.log(value);
     var image = document.createElement("div");
     let contenu = document.querySelector('.grille_video');
-    
     let video = document.createElement("video");
-    
     let contenuGrille = document.querySelectorAll('.div_video'); 
-    console.log(contenuGrille);
     let videoSelectionne;
     video.src = jsonContenuAVider[value]['thumb'];
     
@@ -166,7 +159,7 @@ function ajouteGrilleDiv(value) {
     image.setAttribute("src",jsonContenuAVider[value]['thumb']);
 
     image.appendChild(video);
-    
+
 
     /**
      * function: Joue un petit video quand la souri survol le thumbnail
@@ -176,6 +169,7 @@ function ajouteGrilleDiv(value) {
      */
     
     contenuGrille.forEach(e => {
+        let c = 1;
         e.addEventListener('mouseenter', function (event) { 
             videoSelectionne = event.target.querySelector('video');
             console.log(contenuGrille.length);
