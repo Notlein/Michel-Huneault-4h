@@ -109,7 +109,7 @@ window.addEventListener('scroll', () => {
     if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
         let x = json.length -1;
         for(let i = 0; i < x; i++)
-            ajouteGrilleDiv(i);
+            ajouteGrilleDiv(i)
 
         
         // pour ajouter les cases individuellement
