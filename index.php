@@ -16,11 +16,7 @@
     <div class="div_contenu">
             
     </div>
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 8412f8d17003888f7b717603808597f6c66a3e66
 
     <div class="grille_video">
 

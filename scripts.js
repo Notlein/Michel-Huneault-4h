@@ -3,11 +3,6 @@ var json;
 var arraytofill;
 
 // CONSTANTS
-const nombreImages = new Array();
-const result = [];
-const contenu = document.querySelector('.div_contenu');
-const contenuGrille = document.querySelectorAll('.div_video'); 
-
 const prefix_thumb = "thumbnail/"; // prefixe pour la video thumb -> std
 const vids = "/videos/"
 const csvUrl = './csv/listenoms.csv';
@@ -19,8 +14,8 @@ const prefix = vids + prefix_thumb;
  * - Backend-Frontend diagram (Figma ?)
  */
 
-// AJAX call on content load -> JSON Contenu à vider - initialisation (vide)
-// AJAX call on content load -> JSON Contenu à vider - initialisation (vide)
+
+// AJAX call on content load -> JSON - initialisation (vide)
 document.addEventListener("DOMContentLoaded", function(){
     $.ajax({
         url: "4h.json",
@@ -28,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function(){
         dataType: "json",
         success: function (response) {
             json = response;
-            
         }
     });
     
@@ -38,15 +32,10 @@ document.addEventListener("DOMContentLoaded", function(){
         .then(data => {
             var csvData = data;
             var lines = csvData.split('\n');
-            
             const headers = lines[0].split(',');
-            
             for (let i = 1; i < lines.length; i++) {
-                
                 const obj = {};
                 const currentLine = lines[i].split(',');
-
-
                 for (let j = 0; j < headers.length; j++) {
                   obj[headers[j]] = currentLine[j];
                 }
@@ -55,18 +44,23 @@ document.addEventListener("DOMContentLoaded", function(){
         });
 });
 
+/**
+ * Ajoute un élément div>video au contenu ".grille-video"
+ * @param {int} id - L'index à ajouter
+ */
 function ajouteGrilleDiv(id) {
     const contenu = document.querySelector('.grille_video');
     let wrapper = document.createElement("div");
+    let video = document.createElement("video");
+    let link = json[id]['link'];
+    let id_vid = json[id]['id'];
+
     contenu.appendChild(wrapper);
+    wrapper.appendChild(video);
 
     wrapper.name = json[id]['name'];
     wrapper.id = "vid-" +(id + 1);
     wrapper.classList.add("div_video");
-
-    let video = document.createElement("video");
-    let link = json[id]['link'];
-    let id_vid = json[id]['id'];
 
     video.src = prefix + json[id]['thumb'];
     video.id = "thumb_v" + id_vid;
@@ -74,33 +68,22 @@ function ajouteGrilleDiv(id) {
     video.muted = true;
     //video.src = link;
     
-    wrapper.appendChild(video);
-    wrapper.addEventListener('mouseenter', function () {
-                video.play();
-    });
+    wrapper.addEventListener('mouseenter', function () {video.play()});
+    wrapper.addEventListener('mouseleave', function () {video.pause()});
 
-    // ajoute listener mouse leave -> pause video
-    wrapper.addEventListener('mouseleave', function () { 
-        video.pause();
-    });
+    // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
 }
 
 
 
-// TO DO Clean here
 
-
-// Dette technique - > nouveau system de player prev play next
 
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
-
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-
     if ((Math.ceil(scrolled) >= (scrollMax - 10))){
-        
             // ajouteGrilleDiv(i);
             // pour ajouter les cases individuellement
     }
