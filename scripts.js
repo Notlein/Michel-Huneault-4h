@@ -25,7 +25,7 @@ function brasseListe(json){
 }
 
 // AJAX call on content load -> JSON - initialisation (vide)
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     $.ajax({
         url: "4h.json",
         data: "data",
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // AJAX call (fetch) -> csv(id,name,link,thumb)
-    fetch(csvUrl)
+    await fetch(csvUrl)
         .then(response => response.text())
         .then(data => {
             var csvData = data;
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             brasseListe(json);
-            // i>1 puisque la ligne 0 ne doit pas être prise en compte
+            
             
 
         });
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * Ajoute un élément div>video au contenu ".grille-video"
  * @param {int} id - L'index à ajouter
  */
-function ajouteGrilleDiv(id) {
+async function ajouteGrilleDiv(id) {
 
     
 
@@ -93,7 +93,7 @@ function ajouteGrilleDiv(id) {
         video.pause()
     });
 
-
+    
     // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
 }
 
@@ -108,10 +108,11 @@ window.addEventListener('scroll', () => {
 
     if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
         let x = json.length -1;
-        for(let i = 0; i < x; i++)
+        //let x = 24;
+        for(let i = 0; i < x; i++){
             ajouteGrilleDiv(i)
-
+            //json.shift() ou json.pop() // si 'let x = 24' est utilisé
+        }
         
-        // pour ajouter les cases individuellement
     }
 });
