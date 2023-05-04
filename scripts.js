@@ -78,7 +78,12 @@ async function ajouteGrilleDiv(id) {
     const VIDEO_ID = json[id]['link'];
 
     source.src = "https://"
-        +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8";
+        +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8"
+        /**
+         * @todo
+         * 
+         */
+        +"?clientBandwidthHint='10.0'";
     source.type = "application/x-mpegURL"
     video.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
     video.id = "vid-"+(json[id]['id']);
@@ -112,7 +117,7 @@ async function ajouteGrilleDiv(id) {
         let fullScreenDiv = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
-        let btnVideo = document.createElement("button");
+        let btnNext = document.createElement("button");
         
         
         
@@ -153,6 +158,14 @@ async function ajouteGrilleDiv(id) {
         btnExit.style.zIndex = 4;
         btnExit.style.position = 'relative';
         btnExit.addEventListener("click", function() {
+            fs_contenu.removeChild(fullScreenDiv);
+            fs_contenu.style.zIndex = 0;
+        });
+
+        btnNext.innerHTML = "exit";
+        btnNext.style.zIndex = 4;
+        btnNext.style.position = 'relative';
+        btnNext.addEventListener("click", function() {
             fs_contenu.removeChild(fullScreenDiv);
             fs_contenu.style.zIndex = 0;
         });
