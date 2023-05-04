@@ -78,7 +78,6 @@ async function ajouteGrilleDiv(id) {
     let wrapper = document.createElement("div");
     let video = document.createElement("video-js");
     let source = document.createElement('source');
-    let fs_contenu = document.querySelector('.div_contenu');
     const VIDEO_ID = json[id]['link'];
 
     source.src = "https://"
@@ -110,37 +109,64 @@ async function ajouteGrilleDiv(id) {
     
     // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
     wrapper.addEventListener("click", function() {
+        let fs_contenu = document.querySelector('.div_contenu');
+        fs_contenu.style.zIndex = 3;
+
         let fullScreenDiv = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
+        let btnVideo = document.createElement("button");
+        
+        
+        
+        
+    
+        console.log(fullScreenDiv);
+    
+        fsvideo.id = "vid-"+(json[id]['id']);
+        fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
+        console.log("id " + json[id]['id']);
+        
+        
+
+        fullScreenDiv.name = json[id]['name'];
+        fullScreenDiv.id = "wrap-" + (id + 1);
+        fullScreenDiv.classList.add("div_fsvideo");
+    
+        
+    
+        fullScreenDiv.appendChild(fsvideo);
+        fullScreenDiv.appendChild(btnExit);
+        fullScreenDiv.appendChild(btnVideo);
+        fs_contenu.appendChild(fullScreenDiv);
+        fsvideo.appendChild(source);
+
+        let fs_player = videojs(document.getElementById(fsvideo.id));
+
+        fs_player.play();
+    
+        // btnVideo.innerHTML = "play";
+        // btnVideo.style.zIndex = 4;
+        // btnVideo.style.position = 'relative';
+        // btnVideo.addEventListener("click", function() {
+        //     fs_player.play()       
+        // });
+    
         btnExit.innerHTML = "exit";
+        btnExit.style.zIndex = 4;
+        btnExit.style.position = 'relative';
         btnExit.addEventListener("click", function() {
             fs_contenu.removeChild(fullScreenDiv);
             fs_contenu.style.zIndex = 0;
         });
-        let fsSource = source;
-        let fsplayer = player;
-        fs_contenu.style.zIndex = 3;
-        fsvideo.controls = true;
-
-        console.log(fullScreenDiv);
-
-        fsvideo.id = "vid-"+(json[id]['id']);
-        console.log("id " + json[id]['id']);
-    
-        fullScreenDiv.name = json[id]['name'];
-        fullScreenDiv.id = "wrap-" + (id + 1);
-        fullScreenDiv.classList.add("div_fsvideo");
-
-        fsvideo.appendChild(fsSource);
-        fullScreenDiv.appendChild(fsvideo);
-        fullScreenDiv.appendChild(btnExit);
-        fs_contenu.appendChild(fullScreenDiv);
-        
 
     });
 
 
+}
+
+function fullscreen(param) { 
+    
 }
 
 
