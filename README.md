@@ -11,6 +11,6 @@ Michel Huneault - 4 heures
 - metadonnées et OG meta (incluant thumbnail)
 - ~~Google analytics~~
 - formattage du grid
-- initialisation des premieres 24 cases
+- ~~initialisation des premieres 24 cases~~
 - fonction ajoutGrilleDiv(id) à modifier lorsque nous aurons toutes les vidéos dans la DB (csv)
 - Player windows - avec transition smooth et/ou possibilité de definir les criteres de transitions (pas de titre)(installation) 
