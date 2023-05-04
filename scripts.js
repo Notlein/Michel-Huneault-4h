@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         .then(response => response.text())
         .then(data => {
 
-            const regex = /\r\n/g; // splitter 
+            const regex = /\r*\n/gi; // splitter 
             var csvData = data;
             var lines = csvData.split(regex);
             const headers = lines[0].split(',');
@@ -59,11 +59,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 });
 
-window.onload = function (param) { 
-    for (let index = 0; index < json.length; index++) {
-        ajouteGrilleDiv(index);
-    }
-}
+// window.onload = function (param) { 
+//     for (let index = 0; index < json.length; index++) {
+//         ajouteGrilleDiv(index);
+//     }
+// }
 
 
 /**
@@ -72,9 +72,6 @@ window.onload = function (param) {
  */
 async function ajouteGrilleDiv(id) {
 
-    
-
-    
     let wrapper = document.createElement("div");
     let video = document.createElement("video-js");
     let source = document.createElement('source');
@@ -125,6 +122,7 @@ async function ajouteGrilleDiv(id) {
     
         fsvideo.id = "vid-"+(json[id]['id']);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
+        // fsvideo.controls = true;
         console.log("id " + json[id]['id']);
         
         
@@ -142,7 +140,6 @@ async function ajouteGrilleDiv(id) {
         fsvideo.appendChild(source);
 
         let fs_player = videojs(document.getElementById(fsvideo.id));
-
         fs_player.play();
     
         // btnVideo.innerHTML = "play";
