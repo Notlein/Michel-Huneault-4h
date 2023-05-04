@@ -140,7 +140,7 @@ async function ajouteGrilleDiv(id) {
     
         fullScreenDiv.appendChild(fsvideo);
         fullScreenDiv.appendChild(btnExit);
-        fullScreenDiv.appendChild(btnVideo);
+        fullScreenDiv.appendChild(btnNext);
         fs_contenu.appendChild(fullScreenDiv);
         fsvideo.appendChild(source);
 
@@ -162,7 +162,7 @@ async function ajouteGrilleDiv(id) {
             fs_contenu.style.zIndex = 0;
         });
 
-        btnNext.innerHTML = "exit";
+        btnNext.innerHTML = "next";
         btnNext.style.zIndex = 4;
         btnNext.style.position = 'relative';
         btnNext.addEventListener("click", function() {
