@@ -1,5 +1,0 @@
-{
-    "email":"tech@topo.art",
-    "token":"w2wSQZiBL-Gv3wZJk9aHD_rAM984Di_fSjPBaO4z",
-    "account":"a575da11ca5fe557c2af9b2ab5a2ee2c"
-}
