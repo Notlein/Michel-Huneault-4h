@@ -1,9 +1,9 @@
-
+var videos = [];
 
 // CONSTANTS
 const contenu = document.querySelector('.grille_video');
 const CLIENT_ID = "customer-k63l0cdanueosauc";
-const VIDEO_ID = [];
+
 
 /**
  * Brasse la liste
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         .then(response => {
             const res = response['result'];
             for (let i = 0; i < res.length; i++) {
-                VIDEO_ID.push(res[i]['uid'])
+                videos.push(res[i]['uid'])
             }
             _token = "";
             _email = "";
@@ -73,7 +73,7 @@ async function ajouteGrilleDiv(id) {
     let source = document.createElement('source');
 
     source.src = "https://" +
-        CLIENT_ID + ".cloudflarestream.com/" + VIDEO_ID[id] + "/manifest/video.m3u8"
+        CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8"
         /**
          * @todo
          * Ideally remove for variable bandwidth
@@ -151,6 +151,8 @@ var y = 1; // multiplicateur pour section de l'array
 // ==> ... -> [24(n-1),24(n)-1]
 // let x=k -> [k(n-1),k(n)-1]
 // Donc -> [k(n-1),k(n)[ -> for(i=x*(y-1);i<x*y;i++)
+
+videos = brasseListe(videos);
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
