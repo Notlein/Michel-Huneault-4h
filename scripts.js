@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
 
-    // APPEL Cloudflare api
+    // APPEL API Cloudflare
     const options = {
         method: 'GET',
         headers: {
@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             _token = "";
             _email = "";
+            _accountID = "";
         })
         .catch(err => console.error(err))
 });
