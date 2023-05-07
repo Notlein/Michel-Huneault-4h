@@ -12,13 +12,15 @@ const CLIENT_ID = "customer-k63l0cdanueosauc";
  * @returns - La liste brassée
  */
 function brasseListe(vids) {
-    for (i = vids.length - 1; i > 0; i--) {
+    newVids=vids;
+    let x = newVids.length;
+    for (i = x - 1; i > 0; i--) {
         j = Math.floor(Math.random() * i);
-        k = vids[i]
-        vids[i] = vids[j]
-        vids[j] = k
+        k = newVids[i];
+        newVids[i] = newVids[j];
+        newVids[j] = k;
     }
-    return vids;
+    return newVids;
 }
 
 // AJAX call on content load
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let _accountID;
     //fetch infos
     await $.ajax({
-        url: "cf.txt",
+        url: "_/cf.txt",
         data: "data",
         dataType:"json",
         success: function (response) {
@@ -52,14 +54,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         .then(response => response.json())
         .then(response => {
             const res = response['result'];
+            // console.log(response);
             for (let i = 0; i < res.length; i++) {
-                videos.push(res[i]['uid'])
+                if(res[i]['readyToStream'])
+                    videos.push(res[i]['uid'])
             }
+            videos = brasseListe(videos);
             _token = "";
             _email = "";
             _accountID = "";
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
+
+        
 });
 
 
@@ -153,10 +160,13 @@ var y = 1; // multiplicateur pour section de l'array
 // let x=k -> [k(n-1),k(n)-1]
 // Donc -> [k(n-1),k(n)[ -> for(i=x*(y-1);i<x*y;i++)
 
-videos = brasseListe(videos);
+//videos = brasseListe(videos);
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
+    
+
+
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
     if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
