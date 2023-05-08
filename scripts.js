@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         .then(response => response.json())
         .then(response => {
             const res = response['result'];
-            // console.log(response);
+            console.log(response);
             for (let i = 0; i < res.length; i++) {
                 if(res[i]['readyToStream'])
                     videos.push(res[i]['uid'])
