@@ -59,11 +59,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 });
 
-// window.onload = function (param) { 
-//     for (let index = 0; index < json.length; index++) {
-//         ajouteGrilleDiv(index);
-//     }
-// }
+
 
 
 /**
@@ -107,29 +103,41 @@ async function ajouteGrilleDiv(id) {
     wrapper.addEventListener('mouseleave', function () {
         player.pause()
     });
-
+    let counter = 1;
     
     // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
-    wrapper.addEventListener("click", function() {
+    wrapper.addEventListener("click", function addFs() {
         let fs_contenu = document.querySelector('.div_contenu');
-        fs_contenu.style.zIndex = 3;
+        fs_contenu.style.zIndex = 10;
 
         let fullScreenDiv = document.createElement("div");
+        let fullScreenDiv2 = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
         let btnNext = document.createElement("button");
-        
-        
+        let icon = document.createElement('i');
+
+        console.log("id " + id);
+        const VIDEO_ID = json[id]['link'];
+
+        source.src = "https://"
+            +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8"
+            /**
+             * @todo
+             * 
+             */
+            +"?clientBandwidthHint='10.0'";
+        source.type = "application/x-mpegURL"
         
         
     
         console.log(fullScreenDiv);
     
+        
         fsvideo.id = "vid-"+(json[id]['id']);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
         // fsvideo.controls = true;
-        console.log("id " + json[id]['id']);
-        
+
         
 
         fullScreenDiv.name = json[id]['name'];
@@ -156,32 +164,63 @@ async function ajouteGrilleDiv(id) {
     
         btnExit.innerHTML = "exit";
         btnExit.style.zIndex = 4;
-        btnExit.style.position = 'relative';
+        btnExit.style.position = 'absolute';
         btnExit.addEventListener("click", function() {
-            fs_contenu.removeChild(fullScreenDiv);
+            $(fs_contenu).empty();
             fs_contenu.style.zIndex = 0;
+            counter = 0; 
         });
+
+        
 
         btnNext.innerHTML = "next";
         btnNext.style.zIndex = 4;
         btnNext.style.position = 'relative';
+        btnNext.classList.add('next')
         btnNext.addEventListener("click", function() {
-            fs_contenu.removeChild(fullScreenDiv);
-            fs_contenu.style.zIndex = 0;
+            nextVideo();
         });
+
+        fs_player.on('ended', function() { 
+            nextVideo();
+        });
+
+        async function nextVideo() {
+            fsvideo.id = "vid-"+(json[id]['id'] + 1);
+            counter = id;
+            counter++;
+            id = counter;
+
+            addFs();
+            fs_player.pause();
+            fs_contenu.style.transition = '1s';
+            fs_contenu.style.translate = '-50%';
+            await sleep(1000);
+            fs_contenu.removeChild(document.querySelector('.div_contenu :nth-child(1)'));
+            fs_contenu.style.transition = '0s';
+            fs_contenu.style.translate = '0%';
+            
+        }
+
+
 
     });
 
 
 }
 
-function fullscreen(param) { 
-    
-}
+
 
 
 var x = 24; // iterateur
 var y = 1; // multiplicateur
+
+window.onload = function () { 
+    
+    for (let index = 0; index < json.length; index++) {
+        ajouteGrilleDiv(index);
+    }
+}
 
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
@@ -198,3 +237,7 @@ window.addEventListener('scroll', () => {
         
     }
 });
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

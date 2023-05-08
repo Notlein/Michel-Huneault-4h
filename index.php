@@ -14,12 +14,19 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video-js.min.css"
 			rel="stylesheet"
 		/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video.min.js"></script>
+  <!-- Google tag (gtag.js) --> 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script> 
+  
 </head>
 
 <body>
-
+  <header>
+    <h1>4h</h1>
+  </header>
+  
   <div class="div_contenu">
 
   </div>
