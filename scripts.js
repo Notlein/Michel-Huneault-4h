@@ -107,18 +107,36 @@ async function ajouteGrilleDiv(id) {
     wrapper.addEventListener('mouseleave', function () {
         player.pause()
     });
-
-    wrapper.addEventListener("click", function () {
+    let counter = 1;
+    
+    // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
+    wrapper.addEventListener("click", function addFs() {
         let fs_contenu = document.querySelector('.div_contenu');
-        fs_contenu.style.zIndex = 3;
+        fs_contenu.style.zIndex = 10;
+
         let fullScreenDiv = document.createElement("div");
+        let fullScreenDiv2 = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
         let btnNext = document.createElement("button");
+        let icon = document.createElement('i');
 
-        fsvideo.id = "fsvid-"+(id+1);
+   
+        let VIDEO_ID = videos[id];
+
+        source.src = "https://"
+            +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8"
+            +"?clientBandwidthHint='10.0'";
+        source.type = "application/x-mpegURL"
+        
+        
+
+        
+        fsvideo.id = "vid-"+(id+1);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
         // fsvideo.controls = true;
+
+        
 
         fullScreenDiv.name = (id+1);
         fullScreenDiv.id = "fsdiv-"+(id+1);
@@ -135,24 +153,51 @@ async function ajouteGrilleDiv(id) {
 
         btnExit.innerHTML = "exit";
         btnExit.style.zIndex = 4;
-        btnExit.style.position = 'relative';
-        btnExit.addEventListener("click", function () {
-            fs_contenu.removeChild(fullScreenDiv);
+        btnExit.style.position = 'absolute';
+        btnExit.addEventListener("click", function() {
+            $(fs_contenu).empty();
             fs_contenu.style.zIndex = 0;
+            counter = 0; 
         });
+
+        
 
         btnNext.innerHTML = "next";
         btnNext.style.zIndex = 4;
         btnNext.style.position = 'relative';
-        btnNext.addEventListener("click", function () {
-            fs_contenu.removeChild(fullScreenDiv);
-            fs_contenu.style.zIndex = 0;
+        btnNext.classList.add('next')
+        btnNext.addEventListener("click", function() {
+            nextVideo();
         });
+
+        fs_player.on('ended', function() { 
+            nextVideo();
+        });
+
+        async function nextVideo() {
+            fsvideo.id = "vid-"+(id + 1);
+            counter = id;
+            counter++;
+            id = counter;
+
+            addFs();
+            fs_player.pause();
+            fs_contenu.style.transition = '1s';
+            fs_contenu.style.translate = '-50%';
+            await sleep(1000);
+            fs_contenu.removeChild(document.querySelector('.div_contenu :nth-child(1)'));
+            fs_contenu.style.transition = '0s';
+            fs_contenu.style.translate = '0%';
+            
+        }
+
+
+
     });
 }
 
-var x = 24; // iterateur - nombre de cases à afficher
-var y = 1; // multiplicateur pour section de l'array
+
+
 // let y = n
 // ==> n=1 -> [0,23]
 // ==> n=2 -> [24,47]
@@ -160,13 +205,19 @@ var y = 1; // multiplicateur pour section de l'array
 // let x=k -> [k(n-1),k(n)-1]
 // Donc -> [k(n-1),k(n)[ -> for(i=x*(y-1);i<x*y;i++)
 
-//videos = brasseListe(videos);
+var x = 24; // iterateur
+var y = 1; // multiplicateur
+
+/*window.onload = function () { 
+    for (let index = 0; index < json.length; index++) {
+        ajouteGrilleDiv(index);
+    }
+}*/
+
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
     
-
-
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
     if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
@@ -177,3 +228,9 @@ window.addEventListener('scroll', () => {
         //y++;
     }
 });
+
+// àa modifier pour jquery
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

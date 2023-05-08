@@ -2,10 +2,10 @@
 Michel Huneault - 4 heures
 
 ### TODO
-- bouton next
+- ~~bouton next~~
 - partie ombragée à droite (bouton next)
-- ajout d'un 2e player sur completion (avec appel dynamique)
-- suppression du 1er player sur completion du next
+- ~~ajout d'un 2e player sur completion (avec appel dynamique)~~
+- ~~suppression du 1er player sur completion du next~~
 - ajout de la barre horizontale en haut
 - ajout du texte et formattage
 - metadonnées et OG meta (incluant thumbnail)
