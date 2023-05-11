@@ -3,8 +3,10 @@ var videos = [];
 // CONSTANTS
 const contenu = document.querySelector('.grille_video');
 const CLIENT_ID = "customer-k63l0cdanueosauc";
-
-
+const CFdata = null;
+const btn_langues = document.querySelector('.btn_langues');
+const list_langues = document.querySelector('.list_langues');
+const btn_Apropos = document.querySelector('.apropos');
 /**
  * Brasse la liste
  * 
@@ -50,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             'Authorization': "Bearer " + _token
         }
     };
-    fetch('https://api.cloudflare.com/client/v4/accounts/' + _accountID + '/stream', options)
+    await fetch('https://api.cloudflare.com/client/v4/accounts/' + _accountID + '/stream', options)
         .then(response => response.json())
         .then(response => {
             const res = response['result'];
@@ -63,9 +65,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             _token = "";
             _email = "";
             _accountID = "";
+            iterateurGrille(24);
         })
         .catch(err => console.error(err));
-
+    
         
 });
 
@@ -173,7 +176,8 @@ async function ajouteGrilleDiv(id) {
         fs_player.on('ended', function() { 
             nextVideo();
         });
-
+        
+        // fs_contenu.addEventListener("transitionend", removePreviousVideo);
         async function nextVideo() {
             fsvideo.id = "vid-"+(id + 1);
             counter = id;
@@ -185,18 +189,62 @@ async function ajouteGrilleDiv(id) {
             fs_contenu.style.transition = '1s';
             fs_contenu.style.translate = '-50%';
             await sleep(1000);
-            fs_contenu.removeChild(document.querySelector('.div_contenu :nth-child(1)'));
-            fs_contenu.style.transition = '0s';
-            fs_contenu.style.translate = '0%';
+            removePreviousVideo();
+
             
         }
+        let counter2 = 0;
+        function removePreviousVideo(){
+            counter2++;
+            console.log(counter2);
+            fs_contenu.removeChild(fs_contenu.children[0]);
+            // fs_contenu.children.splice(0, 1);
+            fs_contenu.style.transition = '0s';
+            fs_contenu.style.translate = '0%';
+        }
+
 
 
 
     });
 }
 
+btn_langues.addEventListener('mouseover', function () { 
+    list_langues.style.top = '48px';
 
+})
+
+list_langues.addEventListener('mouseover', function () { 
+    list_langues.style.top = '48px';
+
+})
+
+list_langues.addEventListener('mouseleave', function () { 
+    list_langues.style.top = '-246px';
+
+})
+
+btn_langues.addEventListener('mouseleave', function () { 
+    list_langues.style.top = '-246px';
+})
+
+btn_Apropos.addEventListener('click', function () {
+    let btnExit = document.createElement("button");
+    let fs_contenu = document.querySelector('.div_contenu');
+    let contenu_ap = document.createElement('div');
+    contenu_ap.classList.add('contenu_ap')
+    fs_contenu.appendChild(contenu_ap);
+    fs_contenu.style.zIndex = 10;
+
+    btnExit.innerHTML = "exit";
+    btnExit.style.zIndex = 4;
+    btnExit.style.position = 'absolute';
+    btnExit.addEventListener("click", function() {
+        $(fs_contenu).empty();
+        fs_contenu.style.zIndex = 0;
+        counter = 0; 
+    });
+})
 
 // let y = n
 // ==> n=1 -> [0,23]
@@ -208,11 +256,11 @@ async function ajouteGrilleDiv(id) {
 var x = 24; // iterateur
 var y = 1; // multiplicateur
 
-/*window.onload = function () { 
-    for (let index = 0; index < json.length; index++) {
+function iterateurGrille(num) { 
+    for (let index = 0; index < num; index++) {
         ajouteGrilleDiv(index);
     }
-}*/
+}
 
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
@@ -221,6 +269,7 @@ window.addEventListener('scroll', () => {
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
     if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
+        console.log("scroll");
         for (let i = x * (y - 1); i < x * y; i++) {
             ajouteGrilleDiv(i)
         }
