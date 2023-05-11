@@ -232,8 +232,32 @@ btn_Apropos.addEventListener('click', function () {
     let btnExit = document.createElement("button");
     let fs_contenu = document.querySelector('.div_contenu');
     let contenu_ap = document.createElement('div');
+    let contenu_ap_wrapper = document.createElement('div');
+    let titre = document.createElement('h1')
+    for (let index = 0; index < 4; index++) {
+        let div_detail = document.createElement('div');
+        let paragrahe = document.createElement('p');
+        let sous_titre = document.createElement('h4');
+        sous_titre.style.margin = 0;
+        div_detail.appendChild(sous_titre);
+        div_detail.appendChild(paragrahe);
+        
+        sous_titre.innerHTML = "Lorem ipsum";
+        paragrahe.innerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, "+
+        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, "+
+        "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "+
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+        contenu_ap_wrapper.appendChild(div_detail);
+        
+    }
     contenu_ap.classList.add('contenu_ap')
     fs_contenu.appendChild(contenu_ap);
+    contenu_ap_wrapper.classList.add('contenu_ap_wrapper');
+    titre.innerHTML = "À propos";
+    contenu_ap.appendChild(titre);
+    contenu_ap.appendChild(contenu_ap_wrapper);
+    fs_contenu.appendChild(btnExit);
     fs_contenu.style.zIndex = 10;
 
     btnExit.innerHTML = "exit";

@@ -89,7 +89,7 @@ header h1 {
 .list_langues{
     position: absolute;
     top: -246px;
-    z-index: 2;
+    z-index: 3;
     color: aliceblue;
     left: 87.2%;
     transition: .5s;
@@ -126,7 +126,24 @@ header h1 {
 .contenu_ap{
     height: 100%;
     width: 100%;
-    background-color: aqua;
+    background-color: rgb(19, 61, 61);
+    display: flex;
+}
+
+
+
+.contenu_ap_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 86%;
+    position: relative;
+    left: 0%;
+}
+
+.contenu_ap_wrapper p{
+    font-size: 1.2rem;
+    margin: 20px;
 }
 
 .div_contenu{
