@@ -1,6 +1,7 @@
 var videos = [];
 var loaded = false;
 // CONSTANTS
+const LIMITE = 30;
 const contenu = document.querySelector('.grille_video');
 const CLIENT_ID = "customer-k63l0cdanueosauc";
 const CFdata = null;
@@ -28,7 +29,6 @@ function brasseListe(vids) {
 
 
 function iterateurGrille() { 
-    const LIMITE = 24;
     for (let index = 0; index < LIMITE; index++) {
         ajouteGrilleDiv(index);
     }
@@ -274,7 +274,6 @@ btn_Apropos.addEventListener('click', function () {
     });
 })
 
-const NB_VIDS_A_AFFICHER = 30;
 // let y = n
 // ==> n=1 -> [0,23]
 // ==> n=2 -> [LIMITE,47]
@@ -285,7 +284,7 @@ const NB_VIDS_A_AFFICHER = 30;
 
 
 
-var x = NB_VIDS_A_AFFICHER; // iterateur
+var x = LIMITE; // iterateur
 var y =1; // multiplicateur
 
 loadInit();
