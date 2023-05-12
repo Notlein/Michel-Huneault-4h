@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             'Authorization': "Bearer " + _token
         }
     };
-    fetch('https://api.cloudflare.com/client/v4/accounts/' + _accountID + '/stream', options)
+    await fetch('https://api.cloudflare.com/client/v4/accounts/' + _accountID + '/stream', options)
         .then(response => response.json())
         .then(response => {
             const res = response['result'];
@@ -66,7 +66,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         })
         .catch(err => console.error(err));
 
-        
+        const NB_VIDEOS_LOADED = 24;
+        //initialisation des 24 premieres videos
+        for (let index = 0; index < NB_VIDEOS_LOADED; index++) {
+            ajouteGrilleDiv(index);
+    }
 });
 
 
@@ -115,8 +119,20 @@ async function ajouteGrilleDiv(id) {
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
         let btnNext = document.createElement("button");
+        let icon = document.createElement('i');
 
-        fsvideo.id = "fsvid-"+(id+1);
+   
+        let VIDEO_ID = videos[id];
+
+        source.src = "https://"
+            +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8"
+            +"?clientBandwidthHint='10.0'";
+        source.type = "application/x-mpegURL"
+        
+        
+
+        
+        fsvideo.id = "vid-"+(id+1);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
         // fsvideo.controls = true;
 
@@ -160,7 +176,15 @@ var y = 1; // multiplicateur pour section de l'array
 // let x=k -> [k(n-1),k(n)-1]
 // Donc -> [k(n-1),k(n)[ -> for(i=x*(y-1);i<x*y;i++)
 
-//videos = brasseListe(videos);
+var x = 24; // iterateur
+var y = 2; // multiplicateur
+
+/*window.onload = function () { 
+    for (let index = 0; index < json.length; index++) {
+        ajouteGrilleDiv(index);
+    }
+}*/
+
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
@@ -170,10 +194,17 @@ window.addEventListener('scroll', () => {
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
     if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
+        let z = videos.length;
         for (let i = x * (y - 1); i < x * y; i++) {
-            ajouteGrilleDiv(i)
+            if(i < z){
+                ajouteGrilleDiv(i)
+            } else {
+                break;
+            }
+               
         }
         //uncomment to progress beyond x
-        //y++;
+        if(i < z){y++}
+        
     }
 });
