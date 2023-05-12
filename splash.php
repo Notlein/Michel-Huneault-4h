@@ -23,7 +23,7 @@
 
 <body>
     <section class="splash_section">
-        <h1 class="splash_titre">4h</h1>
+        <h1 class="splash_titre"></h1>
         <p class="splash_message">Bientôt disponible</p>
         <a class="topo_logo"href="https://www.agencetopo.qc.ca/wp/"></a>
     </section>

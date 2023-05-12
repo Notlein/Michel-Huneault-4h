@@ -126,8 +126,18 @@ header h1 {
 .contenu_ap{
     height: 100%;
     width: 100%;
-    background-color: rgb(19, 61, 61);
+    background-color: rgb(0 0 0 / 90%);
+    backdrop-filter: blur(10px);
     display: flex;
+    color: aliceblue;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contenu_ap h1{
+    font-size: 5rem;
+    align-self: baseline;
+    margin: 0.5em 1em;
 }
 
 
@@ -139,6 +149,11 @@ header h1 {
     width: 86%;
     position: relative;
     left: 0%;
+}
+
+.contenu_ap_wrapper h4{
+    text-align: center;
+    font-size: 3rem;
 }
 
 .contenu_ap_wrapper p{
@@ -281,20 +296,26 @@ video{
 
 .splash_titre{
     color: aliceblue;
-    font-size: 137pt;
+    height: 465px;
+    width: 829px;
+    scale: 0.6;
     margin: 0;
+    background-image: url(4h-titre.png);
+    position: relative;
+    top: 9%;
 }
 
 .splash_message{
     color: aliceblue;
-    font-size: 20pt;
+    font-size: 30pt;
 }
 
 .topo_logo{
-    background-image: url(agencetopo-300x169-1.png);
+    background-image: url(LOGO_TOPO_CENTRECREATION_blanc_Small.png);
     /* animation: none; */
-    height: 160px;
-    width: 300px;
+    height: 366px;
+    width: 854px;
+    scale: .5;
 }
 
 .topo_logo:hover{

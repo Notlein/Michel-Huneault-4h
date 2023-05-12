@@ -1,5 +1,5 @@
 var videos = [];
-
+var loaded = false;
 // CONSTANTS
 const contenu = document.querySelector('.grille_video');
 const CLIENT_ID = "customer-k63l0cdanueosauc";
@@ -25,8 +25,18 @@ function brasseListe(vids) {
     return newVids;
 }
 
+
+
+function iterateurGrille() { 
+    const LIMITE = 24;
+    for (let index = 0; index < LIMITE; index++) {
+        ajouteGrilleDiv(index);
+    }
+
+}
+
 // AJAX call on content load
-document.addEventListener("DOMContentLoaded", async function () {
+async function loadInit () {
     let _token;
     let _email;
     let _accountID;
@@ -56,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         .then(response => response.json())
         .then(response => {
             const res = response['result'];
-            console.log(response);
             for (let i = 0; i < res.length; i++) {
                 if(res[i]['readyToStream'])
                     videos.push(res[i]['uid'])
@@ -65,32 +74,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             _token = "";
             _email = "";
             _accountID = "";
-            iterateurGrille(24);
+            
         })
         .catch(err => console.error(err));
-    
+        loaded = true;
+        iterateurGrille();
         
-});
+    }
 
 
 /**
  * Ajoute un élément div>video au contenu ".grille-video"
  * @param {int} id - L'index à ajouter
  */
-async function ajouteGrilleDiv(id) {
+function ajouteGrilleDiv(id) {
 
     let wrapper = document.createElement("div");
     let video = document.createElement("video-js");
     let source = document.createElement('source');
-
+    console.log(videos[id]);
     source.src = "https://" +
         CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8"
-        /**
-         * @todo
-         * Ideally remove for variable bandwidth
-         */
-        +
-        "?clientBandwidthHint='10.0'";
+        +"?clientBandwidthHint='10.0'";
     source.type = "application/x-mpegURL"
     video.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
     video.id = "vid-"+(id+1);
@@ -160,7 +165,7 @@ async function ajouteGrilleDiv(id) {
         btnExit.addEventListener("click", function() {
             $(fs_contenu).empty();
             fs_contenu.style.zIndex = 0;
-            counter = 0; 
+            //counter = 0; 
         });
 
         
@@ -180,9 +185,9 @@ async function ajouteGrilleDiv(id) {
         // fs_contenu.addEventListener("transitionend", removePreviousVideo);
         async function nextVideo() {
             fsvideo.id = "vid-"+(id + 1);
-            counter = id;
-            counter++;
-            id = counter;
+            //counter = id;
+            //counter++;
+            //id = counter;
 
             addFs();
             fs_player.pause();
@@ -193,10 +198,9 @@ async function ajouteGrilleDiv(id) {
 
             
         }
-        let counter2 = 0;
+    
         function removePreviousVideo(){
-            counter2++;
-            console.log(counter2);
+            
             fs_contenu.removeChild(fs_contenu.children[0]);
             // fs_contenu.children.splice(0, 1);
             fs_contenu.style.transition = '0s';
@@ -220,12 +224,12 @@ list_langues.addEventListener('mouseover', function () {
 })
 
 list_langues.addEventListener('mouseleave', function () { 
-    list_langues.style.top = '-246px';
+    list_langues.style.top = '-LIMITE6px';
 
 })
 
 btn_langues.addEventListener('mouseleave', function () { 
-    list_langues.style.top = '-246px';
+    list_langues.style.top = '-LIMITE6px';
 })
 
 btn_Apropos.addEventListener('click', function () {
@@ -266,39 +270,40 @@ btn_Apropos.addEventListener('click', function () {
     btnExit.addEventListener("click", function() {
         $(fs_contenu).empty();
         fs_contenu.style.zIndex = 0;
-        counter = 0; 
+        //counter = 0; 
     });
 })
 
 // let y = n
 // ==> n=1 -> [0,23]
-// ==> n=2 -> [24,47]
-// ==> ... -> [24(n-1),24(n)-1]
+// ==> n=2 -> [LIMITE,47]
+// ==> ... -> [LIMITE(n-1),LIMITE(n)-1]
 // let x=k -> [k(n-1),k(n)-1]
 // Donc -> [k(n-1),k(n)[ -> for(i=x*(y-1);i<x*y;i++)
 
-var x = 24; // iterateur
-var y = 1; // multiplicateur
 
-function iterateurGrille(num) { 
-    for (let index = 0; index < num; index++) {
-        ajouteGrilleDiv(index);
-    }
-}
+
+
+var x = 24; // iterateur
+var y =1; // multiplicateur
+
+loadInit();
+
 
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint
 window.addEventListener('scroll', () => {
-    
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    if ((Math.ceil(scrolled) >= (scrollMax - 10))) {
-        console.log("scroll");
+    if (loaded && (Math.ceil(scrolled) >= (scrollMax - 10))) {
+        y++;
         for (let i = x * (y - 1); i < x * y; i++) {
-            ajouteGrilleDiv(i)
+            
+            if(i < videos.length)
+                ajouteGrilleDiv(i);
         }
         //uncomment to progress beyond x
-        //y++;
+         
     }
 });
 

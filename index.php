@@ -1,3 +1,8 @@
+<?php
+    include('ecrit_apropos/langues.txt.php');
+
+    $lg = 'fr';
+?>
 <!DOCTYPE html>
 
 <html lang="fr">
@@ -27,16 +32,16 @@
     <h1>4h</h1>
     <nav class="nav_menu">
       <ul>
-        <li class="btn_langues">langues</li>
-        <li class="apropos">à propos</li>
+        <li class="btn_langues"><?= $langues['fr']['btn_langues'] ?></li>
+        <li class="apropos"><?= $langues['fr']['apropos'] ?></li>
       </ul>
     </nav>
     <nav class="list_langues">
       <ul>
-        <li class="fr">français</li>
-        <li class="en">anglais</li>
-        <li class="bs">basque</li>
-        <li class="es">espagnol</li>
+        <li class="fr" onClick="<?php $lg = 'fr' ?>"><?= $langues[$lg]['btn_fr'] ?></li>
+        <li class="en"><?= $langues['fr']['btn_en'] ?></li>
+        <li class="bs"><?= $langues['fr']['btn_bs'] ?></li>
+        <li class="es"><?= $langues['fr']['btn_es'] ?></li>
       </ul>
     </nav>
   </header>
@@ -44,12 +49,16 @@
 
   
   <div class="div_contenu">
+    
+  </div>
 
+  <div>
+     <i class="fa-regular fa-circle-xmark" style="font-size:100px;color:white;"></i>
   </div>
   
 
   <div class="grille_video">
-
+    
   </div>
 
   <script src="scripts.js"></script>
