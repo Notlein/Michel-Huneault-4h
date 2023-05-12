@@ -92,7 +92,7 @@ function ajouteGrilleDiv(id) {
     let wrapper = document.createElement("div");
     let video = document.createElement("video-js");
     let source = document.createElement('source');
-    console.log(videos[id]);
+
     source.src = "https://" +
         CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8"
         +"?clientBandwidthHint='10.0'";
@@ -274,6 +274,7 @@ btn_Apropos.addEventListener('click', function () {
     });
 })
 
+const NB_VIDS_A_AFFICHER = 30;
 // let y = n
 // ==> n=1 -> [0,23]
 // ==> n=2 -> [LIMITE,47]
@@ -284,7 +285,7 @@ btn_Apropos.addEventListener('click', function () {
 
 
 
-var x = 24; // iterateur
+var x = NB_VIDS_A_AFFICHER; // iterateur
 var y =1; // multiplicateur
 
 loadInit();
