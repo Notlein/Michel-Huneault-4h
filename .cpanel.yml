@@ -1,0 +1,9 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/topo/public_html/4-heures/
+    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp splash.php $DEPLOYPATH
+    - /bin/cp scripts.js $DEPLOYPATH
+    - /bin/cp -R _ $DEPLOYPATH
+    - /bin/cp styles.css $DEPLOYPATH
