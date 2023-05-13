@@ -134,7 +134,7 @@ function ajouteGrilleDiv(id) {
 
         source.src = "https://"
             +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8"
-            +"?clientBandwidthHint='10.0'";
+            //+"?clientBandwidthHint='10.0'";
         source.type = "application/x-mpegURL"
         
         
