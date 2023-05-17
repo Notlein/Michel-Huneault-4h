@@ -157,14 +157,11 @@ function ajouteGrilleDiv(id) {
     wrapper.addEventListener("click", function addFs() {
         let fs_contenu = document.querySelector('.div_contenu');
         fs_contenu.style.zIndex = 10;
-
+        document.querySelector('section').style.overflow = "hidden";
         let fullScreenDiv = document.createElement("div");
-        let fullScreenDiv2 = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
         let btnNext = document.createElement("button");
-        let icon = document.createElement('i');
-
    
         let VIDEO_ID = videos[id];
 
@@ -177,8 +174,6 @@ function ajouteGrilleDiv(id) {
         
         fsvideo.id = "vid-"+(id+1);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
-
-        
 
         fullScreenDiv.name = (id+1);
         fullScreenDiv.id = "fsdiv-"+(id+1);
@@ -193,13 +188,23 @@ function ajouteGrilleDiv(id) {
         let fs_player = videojs(document.getElementById(fsvideo.id));
         fs_player.play();
 
-        btnExit.innerHTML = "exit";
-        btnExit.style.zIndex = 4;
+        btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
+        btnExit.style.zIndex = 6;
+        btnExit.style.opacity = 0;
         btnExit.style.position = 'absolute';
-        btnExit.classList.add('exit');
+        btnExit.classList.add('exitfs');
         btnExit.addEventListener("click", function() {
             location.reload();
         });
+
+        btnExit.addEventListener('mouseenter', function () {
+            btnExit.style.opacity = 1;
+            btnNext.style.opacity = 1;
+        })
+
+        btnExit.addEventListener('mouseleave', function () {
+            btnExit.style.opacity = 0;
+        })
 
         
 
@@ -207,9 +212,20 @@ function ajouteGrilleDiv(id) {
         btnNext.style.zIndex = 4;
         btnNext.style.position = 'relative';
         btnNext.classList.add('next')
+        btnNext.style.opacity = 0;
         btnNext.addEventListener("click", function() {
             nextVideo();
         });
+
+        btnNext.addEventListener("mouseenter", function() {
+            btnExit.style.opacity = 1;
+            btnNext.style.opacity = 1;
+        });
+
+        btnNext.addEventListener('mouseleave', function () {
+            btnExit.style.opacity = 0;
+            btnNext.style.opacity = 0;
+        })
 
         fs_player.on('ended', function() { 
             nextVideo();
@@ -267,9 +283,14 @@ btn_Apropos.addEventListener('click', function () {
     let btnExit = document.createElement("button");
     let fs_contenu = document.querySelector('.div_contenu');
     document.querySelector('section').style.overflow = "hidden";
+
     let contenu_ap = document.createElement('div');
     let contenu_ap_wrapper = document.createElement('div');
+
     let titre = document.createElement('h1')
+    /**
+     * Pour crée les quatre paragraphe
+     */
     for (let index = 0; index < 4; index++) {
         let div_detail = document.createElement('div');
         let paragrahe = document.createElement('p');
@@ -277,26 +298,26 @@ btn_Apropos.addEventListener('click', function () {
         sous_titre.style.margin = 0;
         div_detail.appendChild(sous_titre);
         div_detail.appendChild(paragrahe);
-        
-        sous_titre.innerHTML = languages[lg]['st'+(index + 1)];;
+        sous_titre.innerHTML = languages[lg]['st'+(index + 1)];
         paragrahe.innerHTML = languages[lg]['p'+(index + 1)];
         contenu_ap_wrapper.appendChild(div_detail);
         
     }
+
     contenu_ap.classList.add('contenu_ap');
     fs_contenu.appendChild(contenu_ap);
     contenu_ap_wrapper.classList.add('contenu_ap_wrapper');
     titre.innerHTML = languages[lg]['apropos'];
     contenu_ap.appendChild(titre);
     contenu_ap.appendChild(contenu_ap_wrapper);
-    fs_contenu.appendChild(btnExit);
+    fs_contenu.appendChild(btnExit);    
     fs_contenu.style.animation = 'anim_ap 1s';
     fs_contenu.style.zIndex = 10;
 
-    btnExit.innerHTML = "exit";
+    btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
     btnExit.style.zIndex = 4;
     btnExit.style.position = 'absolute';
-    btnExit.classList.add = "exit";
+    btnExit.classList.add('exit');
     btnExit.addEventListener("click", function() {
         fs_contenu.style.animation = 'anim_ap_reverse 1s';
         fs_contenu.addEventListener("animationend", function () { 
@@ -312,7 +333,10 @@ btn_Apropos.addEventListener('click', function () {
     });
 })
 
-//Ajoute un listener au bouton de langues
+/**
+ * Ajoute un listener au bouton de langues
+ */
+
 document.querySelector('.fr').addEventListener('click', function () { 
     console.log('fr');
     lg = 'fr';
@@ -336,7 +360,10 @@ document.querySelector('.es').addEventListener('click', function () {
     lg = 'es';
     changeLanguage(lg);
 })
-// Change la langue du site
+
+/**
+ * Change la langue du site
+ */ 
 function changeLanguage(lg){
     titre4h.innerHTML = languages[lg]['titre'];
     btnFr.innerHTML = languages[lg]['btn_fr'];
@@ -347,7 +374,6 @@ function changeLanguage(lg){
     btnApropos.innerHTML = languages[lg]['apropos'];
     document.querySelectorAll('.contenu_ap p').innerHTML = languages[lg]['p'];
     document.querySelectorAll('.contenu_ap h1').innerHTML = languages[lg]['titre'];
-    // document.querySelectorAll('h4').innerHTML = '';
 }
 // let y = n
 // ==> n=1 -> [0,23]
