@@ -47,18 +47,6 @@ function iterateurGrille() {
 
 }
 
-document.addEventListener("DOMContentLoaded", function(){
-    $.ajax({
-        url: "ecrit_apropos/languages.json",
-        data: "data",
-        dataType: "json",
-        success: function (response) {
-            languages = response;
-            console.log(languages);
-        }
-    });
-});
-
 onload = (event) => {
     btnFr.innerHTML = languages[lg]['btn_fr'];
     btnEn.innerHTML = languages[lg]['btn_en'];
@@ -83,6 +71,16 @@ async function loadInit () {
             _email = response["email"];
             _token = response["token"];
             _accountID = response["account"];
+        }
+    });
+
+    $.ajax({
+        url: "ecrit_apropos/languages.json",
+        data: "data",
+        dataType: "json",
+        success: function (response) {
+            languages = response;
+            console.log(languages);
         }
     });
 
