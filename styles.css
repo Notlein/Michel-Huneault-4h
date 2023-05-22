@@ -335,12 +335,12 @@ video{
 
 .xlogo{
     height: 80%;
-    /* fill: aliceblue; */
+    fill: aliceblue;
 }
 
 .lg_logo{
     height: 50%;
-    /* fill: aliceblue; */
+    fill: aliceblue;
     font-size: larger;
 }
 

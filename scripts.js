@@ -76,16 +76,7 @@ async function loadInit () {
         }
     });
 
-    await $.ajax({
-        url: "ecrit_apropos/languages.json",
-        data: "data",
-        dataType: "json",
-        success: function (response) {
-            languages = response;
-            console.log(languages);
-            changeLanguage('fr');
-        }
-    });
+    
 
     // APPEL API Cloudflare
     const options = {
@@ -111,6 +102,18 @@ async function loadInit () {
             
         })
         .catch(err => console.error(err));
+        
+        await $.ajax({
+            url: "ecrit_apropos/languages.json",
+            data: "data",
+            dataType: "json",
+            success: function (response) {
+                languages = response;
+                console.log(languages);
+                changeLanguage('fr');
+            }
+        });
+
         loaded = true;
         iterateurGrille();
 
@@ -226,13 +229,14 @@ function ajouteGrilleDiv(id) {
         })
 
         
-// verifier le bouton ici
+
         btnNext.innerHTML = "next";
         btnNext.style.zIndex = 4;
         btnNext.style.position = 'relative';
         btnNext.classList.add('next')
         btnNext.style.opacity = 0;
         btnNext.addEventListener("click", nextVideo);
+
         document.addEventListener("keydown", function (event) { 
             if(event.key === 'ArrowRight'){
                 console.log('next');
