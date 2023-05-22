@@ -8,13 +8,15 @@ Text Domain: michelhoneault4h
 
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); */
 
 body{
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
     background-color: black;
     margin: 0;
-    padding-bottom: 200px;
-    font-family: 'Raleway', sans-serif;
+    height: 100vh;
+    /*font-family: 'Raleway', sans-serif;*/
 
 }
 
@@ -179,9 +181,7 @@ header h1 {
     height: 100%;
     width: auto;
     margin-bottom: 10%;
-    /* border-radius: 20px; */
-    /*background-color: rgba(0, 20, 92, 0.583);*/
-    color: aliceblue;
+    /* color: aliceblue; */
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
@@ -201,6 +201,21 @@ header h1 {
     justify-items: center;
     align-items: center;
     padding-top: 10vh;
+    /*
+    @media (max-width: 1445px) {
+
+        grid-template-columns: 1fr 1fr 1fr 1fr ;
+        grid-template-areas:
+        ". . . .";
+    };
+    @media (max-width: 645px) {
+
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+        ". .";
+        gap: 10px 10px;
+    };
+*/
 }
 
 .div_video{
@@ -208,12 +223,20 @@ header h1 {
     position: relative;
     height: 20vh;
     width: 100%;
-    
-    
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
     /* border: 1px white; */
     transition: .5s;
     overflow: hidden;
+    /*
+    @media (max-width: 1445px) {
+     
+        height: 15vw;
+    }
+    @media (max-width: 645px) {
+      
+        height: 28vw;
+    };
+    */
 }
 
 
@@ -230,7 +253,7 @@ header h1 {
     width: 100%;
     
     
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
     /* border: 1px white; */
     transition: .5s;
     overflow: hidden;
@@ -269,6 +292,53 @@ video{
 .move{
     animation: next_animation .5s;
 }
+
+.exit{
+    z-index: 4;
+    position: absolute;
+    top: 4%;
+    right: 51%;
+    height: 6%;
+    width: 2%;
+    position: absolute;
+    background-color: rgba(0, 139, 139, 0);
+    border-style: none;
+    font-size: 20pt;
+    transition: .5s;
+}
+
+
+.xlogo{
+    height: 80%;
+    /* fill: aliceblue; */
+}
+
+.lg_logo{
+    height: 50%;
+    /* fill: aliceblue; */
+    font-size: larger;
+}
+
+.exit:hover{
+    cursor: pointer;
+}
+
+.exitfs{
+    position: absolute;
+    top: 4%;
+    right: 2%;
+    height: 6%;
+    width: 2%;
+    background-color: rgba(0, 139, 139, 0);
+    border-style: none;
+    font-size: 20pt;
+    transition: .5s;
+}
+
+.exitfs:hover{
+    cursor: pointer;
+}
+
 
 @keyframes next_animation {
     from {
