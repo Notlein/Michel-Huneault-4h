@@ -8,6 +8,19 @@ const CFdata = null;
 const btn_langues = document.querySelector('.btn_langues');
 const list_langues = document.querySelector('.list_langues');
 const btn_Apropos = document.querySelector('.apropos');
+
+//Langues
+var btnFr = document.querySelector('.fr p');
+var btnEn = document.querySelector('.en p');
+var btnEu = document.querySelector('.eu p');
+var btnEs = document.querySelector('.es p');
+var btnLangues = document.querySelector('.btn_langues div');
+var btnApropos = document.querySelector('.apropos p');
+var titre4h = document.querySelector('.titre_4h');
+var titre4hHEAD = document.querySelector('title');
+var lg = 'fr';
+var languages;
+
 /**
  * Brasse la liste
  * 
@@ -116,6 +129,8 @@ async function loadInit () {
     
     };
 
+ 
+
 /**
  * Ajoute un élément div>video au contenu ".grille-video"
  * @param {int} id - L'index à ajouter
@@ -127,57 +142,52 @@ function ajouteGrilleDiv(id) {
     let source = document.createElement('source');
 
     source.src = "https://" +
-        CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8"
-        +"?clientBandwidthHint='10.0'";
+        CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
     source.type = "application/x-mpegURL"
     video.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
     video.id = "vid-"+(id+1);
     wrapper.name = "name-"+(id+1);
     wrapper.id = "wrap-"+(id+1);
     wrapper.classList.add("div_video");
-
+    
     contenu.appendChild(wrapper);
     wrapper.appendChild(video);
     video.appendChild(source);
 
     let player = videojs(document.getElementById(video.id));
-
+    player.muted(true);
     wrapper.addEventListener('mouseenter', function () {
         player.play()
     });
     wrapper.addEventListener('mouseleave', function () {
         player.pause()
     });
-    let counter = 1;
+   
     
     // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
     wrapper.addEventListener("click", function addFs() {
+        document.querySelector(".grille_video").style.display = "none";
         let fs_contenu = document.querySelector('.div_contenu');
         fs_contenu.style.zIndex = 10;
-
+        document.querySelector('section').style.overflow = "hidden";
         let fullScreenDiv = document.createElement("div");
-        let fullScreenDiv2 = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
         let btnNext = document.createElement("button");
-        let icon = document.createElement('i');
-
    
         let VIDEO_ID = videos[id];
 
         source.src = "https://"
-            +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8"
-            //+"?clientBandwidthHint='10.0'";
-        source.type = "application/x-mpegURL"
+            +CLIENT_ID+".cloudflarestream.com/"+VIDEO_ID+"/manifest/video.m3u8";
+        source.type = "application/x-mpegURL";
         
-        
+
+
+     
 
         
         fsvideo.id = "vid-"+(id+1);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
-        // fsvideo.controls = true;
-
-        
 
         fullScreenDiv.name = (id+1);
         fullScreenDiv.id = "fsdiv-"+(id+1);
@@ -191,14 +201,13 @@ function ajouteGrilleDiv(id) {
 
         let fs_player = videojs(document.getElementById(fsvideo.id));
         fs_player.play();
-
-        btnExit.innerHTML = "exit";
-        btnExit.style.zIndex = 4;
+        btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
+        btnExit.style.zIndex = 6;
+        btnExit.style.opacity = 0;
         btnExit.style.position = 'absolute';
+        btnExit.classList.add('exitfs');
         btnExit.addEventListener("click", function() {
-            $(fs_contenu).empty();
-            fs_contenu.style.zIndex = 0;
-            //counter = 0; 
+            location.reload();
         });
 
         btnExit.addEventListener('mouseenter', function () {
@@ -237,33 +246,38 @@ function ajouteGrilleDiv(id) {
             btnNext.style.opacity = 1;
         });
 
+        btnNext.addEventListener('mouseleave', function () {
+            btnExit.style.opacity = 0;
+            btnNext.style.opacity = 0;
+        })
+
         fs_player.on('ended', function() { 
             nextVideo();
         });
         
-        // fs_contenu.addEventListener("transitionend", removePreviousVideo);
+
         async function nextVideo() {
             fsvideo.id = "vid-"+(id + 1);
-            //counter = id;
-            //counter++;
-            //id = counter;
-
+            id++;
             addFs();
-            fs_player.pause();
+            fs_player.muted(true);
             fs_contenu.style.transition = '1s';
             fs_contenu.style.translate = '-50%';
             await sleep(1000);
             removePreviousVideo();
-
+            
             
         }
+
+
     
         function removePreviousVideo(){
-            
             fs_contenu.removeChild(fs_contenu.children[0]);
-            // fs_contenu.children.splice(0, 1);
             fs_contenu.style.transition = '0s';
             fs_contenu.style.translate = '0%';
+            fsvideo.id = "vid-"+(id+1);
+            console.log(fsvideo.id);
+            fs_player.play();
         }
 
 
@@ -273,30 +287,39 @@ function ajouteGrilleDiv(id) {
 }
 
 btn_langues.addEventListener('mouseover', function () { 
-    list_langues.style.top = '48px';
+    list_langues.style.top = '100%';
 
 })
 
 list_langues.addEventListener('mouseover', function () { 
-    list_langues.style.top = '48px';
+    list_langues.style.top = '100%';
 
 })
 
 list_langues.addEventListener('mouseleave', function () { 
-    list_langues.style.top = '-LIMITE6px';
+    list_langues.style.top = '-400%';
 
 })
 
 btn_langues.addEventListener('mouseleave', function () { 
-    list_langues.style.top = '-LIMITE6px';
+    list_langues.style.top = '-400%';
 })
+
+
+
 
 btn_Apropos.addEventListener('click', function () {
     let btnExit = document.createElement("button");
     let fs_contenu = document.querySelector('.div_contenu');
+    document.querySelector('section').style.overflow = "hidden";
+
     let contenu_ap = document.createElement('div');
     let contenu_ap_wrapper = document.createElement('div');
+
     let titre = document.createElement('h1')
+    /**
+     * Pour crée les quatre paragraphe
+     */
     for (let index = 0; index < 4; index++) {
         let div_detail = document.createElement('div');
         let paragrahe = document.createElement('p');
@@ -304,32 +327,38 @@ btn_Apropos.addEventListener('click', function () {
         sous_titre.style.margin = 0;
         div_detail.appendChild(sous_titre);
         div_detail.appendChild(paragrahe);
-        
-        sous_titre.innerHTML = "Lorem ipsum";
-        paragrahe.innerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, "+
-        "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, "+
-        "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "+
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+        sous_titre.innerHTML = languages[lg]['st'+(index + 1)];
+        paragrahe.innerHTML = languages[lg]['p'+(index + 1)];
         contenu_ap_wrapper.appendChild(div_detail);
         
     }
-    contenu_ap.classList.add('contenu_ap')
+
+    contenu_ap.classList.add('contenu_ap');
     fs_contenu.appendChild(contenu_ap);
     contenu_ap_wrapper.classList.add('contenu_ap_wrapper');
-    titre.innerHTML = "À propos";
+    titre.innerHTML = languages[lg]['apropos'];
     contenu_ap.appendChild(titre);
     contenu_ap.appendChild(contenu_ap_wrapper);
-    fs_contenu.appendChild(btnExit);
+    fs_contenu.appendChild(btnExit);    
+    fs_contenu.style.animation = 'anim_ap 1s';
     fs_contenu.style.zIndex = 10;
 
-    btnExit.innerHTML = "exit";
+    btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
     btnExit.style.zIndex = 4;
     btnExit.style.position = 'absolute';
+    btnExit.classList.add('exit');
     btnExit.addEventListener("click", function() {
-        $(fs_contenu).empty();
-        fs_contenu.style.zIndex = 0;
-        //counter = 0; 
+        fs_contenu.style.animation = 'anim_ap_reverse 1s';
+        fs_contenu.addEventListener("animationend", function () { 
+            if (event.animationName === 'anim_ap_reverse'){
+                console.log("safe");
+                $(fs_contenu).empty();
+                fs_contenu.style.zIndex = 0;
+                document.querySelector('section').style.overflow = "";
+            }
+
+        });
+
     });
 })
 
