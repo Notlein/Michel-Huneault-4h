@@ -208,11 +208,11 @@ function ajouteGrilleDiv(id) {
             btnExit.style.opacity = 0;
         })
 
-        document.addEventListener("keyup", function (event) { 
-            if(event.key === 'Escape'){
-                location.reload();
-            }
-        })
+        // document.addEventListener("keyup", function (event) { 
+        //     if(event.key === 'Escape'){
+        //         location.reload();
+        //     }
+        // })
 
         
 
@@ -222,12 +222,7 @@ function ajouteGrilleDiv(id) {
         btnNext.classList.add('next')
         btnNext.style.opacity = 0;
         btnNext.addEventListener("click", nextVideo);
-        document.addEventListener("keyup", function (event) { 
-            if(event.key === 'ArrowRight'){
-                console.log('next');
-                nextVideo();
-            }
-        })
+
 
 
         btnNext.addEventListener("mouseenter", function() {
@@ -243,6 +238,13 @@ function ajouteGrilleDiv(id) {
         fs_player.on('ended', function() { 
             nextVideo();
         });
+
+        document.addEventListener("keyup", function (event) { 
+            if(event.key === 'ArrowRight'){
+                console.log('next');
+                nextVideo();
+            }
+        })
         
 
         async function nextVideo() {
