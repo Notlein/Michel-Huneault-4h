@@ -1,7 +1,7 @@
 {
     "fr":{
         "titre_head": "4 heures",
-        "titre": "4heures",
+        "titre": "4 heures",
         "btn_langues": "langues",
         "apropos":  "à propos",
         "btn_fr":  "français",
@@ -20,7 +20,7 @@
 
     "en":{
         "titre_head": "4 hours",
-        "titre": "4hours",
+        "titre": "4 hours",
         "btn_langues": "languages",
         "apropos":  "about",
         "btn_fr":  "français",
@@ -38,7 +38,7 @@
     },
     "eu":{
         "titre_head": "4 ordu",
-        "titre": "4ordu",
+        "titre": "4 ordu",
         "btn_langues": "hizkuntzak",
         "apropos": "buruz",
         "btn_fr":  "français",
@@ -56,7 +56,7 @@
     },
     "es":{
         "titre_head": "4 horas",
-        "titre": "4horas",
+        "titre": "4 horas",
         "btn_langues": "idiomas",
         "apropos": "sobre",
         "btn_fr":  "français",

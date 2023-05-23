@@ -8,13 +8,15 @@ Text Domain: michelhoneault4h
 
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); */
 
 body{
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
     background-color: black;
     margin: 0;
     height: 100vh;
-    font-family: 'Raleway', sans-serif;
+    /*font-family: 'Raleway', sans-serif;*/
 
 }
 
@@ -206,7 +208,7 @@ section{
     height: 100%;
     width: auto;
     margin-bottom: 10%;
-    color: aliceblue;
+    /* color: aliceblue; */
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
@@ -226,19 +228,6 @@ section{
     justify-items: center;
     align-items: center;
     padding-top: 10vh;
-    @media (max-width: 1445px) {
-        /* … */
-        grid-template-columns: 1fr 1fr 1fr 1fr ;
-        grid-template-areas:
-        ". . . .";
-    };
-    @media (max-width: 645px) {
-        /* … */
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-        ". .";
-        gap: 10px 10px;
-    };
 
 }
 
@@ -247,20 +236,11 @@ section{
     position: relative;
     height: 10vw;
     width: 100%;
-    
-    
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
     /* border: 1px white; */
     transition: .5s;
     overflow: hidden;
-    @media (max-width: 1445px) {
-        /* … */
-        height: 15vw;
-    }
-    @media (max-width: 645px) {
-        /* … */
-        height: 28vw;
-    };
+
 }
 
 
@@ -277,7 +257,7 @@ section{
     width: 100%;
     
     
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
     /* border: 1px white; */
     transition: .5s;
     overflow: hidden;
@@ -410,4 +390,29 @@ video{
 
 .topo_logo:hover{
     cursor: pointer;
+}
+
+@media (max-width: 1445px) {
+    .div_video{
+        height: 15vw;
+    }
+
+    .grille_video{
+        grid-template-columns: 1fr 1fr 1fr 1fr ;
+        grid-template-areas:
+        ". . . .";
+    }
+}
+ 
+@media (max-width: 645px) {
+    .div_video{
+        height: 28vw;
+    }
+
+    .grille_video{
+        grid-template-columns: 1fr 1fr ;
+        grid-template-areas:
+        ". .";
+        gap: 10px 10px;
+    }
 }
