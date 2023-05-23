@@ -1,5 +1,7 @@
 var videos = [];
 var loaded = false;
+var fullScr = false;
+var is_iOS;
 // CONSTANTS
 const LIMITE = 30;
 const contenu = document.querySelector('.grille_video');
@@ -253,6 +255,17 @@ function ajouteGrilleDiv(id) {
         btnNext.addEventListener("click", nextVideo);
 
 
+        // CANNOT ADD A LISTENER HERE BECAUSE IT WILL BE MULTIPLIED EACH TIME - TO CHANGE
+
+
+        // document.addEventListener("keydown", function (event) { 
+        //     if(event.key === 'ArrowRight'){
+        //         console.log('next');
+        //         nextVideo();
+        //     }
+        // })
+
+
         btnNext.addEventListener("mouseenter", function() {
             btnExit.style.opacity = 1;
             btnNext.style.opacity = 1;
@@ -268,9 +281,7 @@ function ajouteGrilleDiv(id) {
         });
 
 
-        
-
-        async function nextVideo() {
+        function nextVideo() {
             fsvideo.id = "vid-"+(id + 1);
             id++;
             addFs();
@@ -423,6 +434,19 @@ document.querySelector('.es').addEventListener('click', function () {
 var x = LIMITE; // iterateur
 var y =1; // multiplicateur
 
+
+$("#fs-btn").attr("src", "./fullscreen.png");
+$("#fs-btn").addClass("fs");
+$("#fs-btn").bind("click", function(){
+    if(fullScr){
+        $("#fs-btn").attr("src", "./fullscreen.png");
+        
+    }else{
+        $("#fs-btn").attr("src", "./fullscreen-exit.png");
+    }
+    fullScr = !fullScr;
+      
+})
 loadInit();
 
 
