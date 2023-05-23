@@ -266,7 +266,7 @@ function ajouteGrilleDiv(id) {
         });
         
 
-        async function nextVideo() {
+        function nextVideo() {
             fsvideo.id = "vid-"+(id + 1);
             id++;
             addFs();
@@ -275,8 +275,8 @@ function ajouteGrilleDiv(id) {
             fs_contenu.style.translate = '-50%';
             // NEEDS TO BE REMOVED
             //await sleep(1000);
-            setTimeout(1500,removePreviousVideo()).then(fs_player.play());
-            
+            removePreviousVideo();
+            fs_player.play();
             
         }
 
