@@ -1,5 +1,7 @@
 var videos = [];
 var loaded = false;
+var fullScr = false;
+var is_iOS;
 // CONSTANTS
 const LIMITE = 30;
 const contenu = document.querySelector('.grille_video');
@@ -419,11 +421,15 @@ var y =1; // multiplicateur
 
 $("#fs-btn").attr("src", "./fullscreen.png");
 $("#fs-btn").addClass("fs");
-$("#fs-btn").addEventListener("click", function(){
-    if(fullScr)
+$("#fs-btn").bind("click", function(){
+    if(fullScr){
         $("#fs-btn").attr("src", "./fullscreen.png");
-        else
+        
+    }else{
         $("#fs-btn").attr("src", "./fullscreen-exit.png");
+    }
+    fullScr = !fullScr;
+      
 })
 loadInit();
 

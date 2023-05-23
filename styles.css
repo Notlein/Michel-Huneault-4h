@@ -15,9 +15,10 @@ Text Domain: michelhoneault4h
     width:auto
 }
 
-.fs{
-    width:auto;
-    height:80%;
+#fs-btn{
+   /* width:auto;*/
+    height:1.5em;
+    color:aliceblue;
 }
 
 body{
@@ -55,7 +56,7 @@ header h1 {
 }
 .nav_menu{
     position: relative;
-    left: 18%;
+    right: 0;
     z-index: 4;
     font-size: 1.2em;
 }
@@ -91,7 +92,6 @@ header h1 {
     top: -246px;
     z-index: -1;
     color: aliceblue;
-    left: 0;
     transition: .5s;
 }
 
