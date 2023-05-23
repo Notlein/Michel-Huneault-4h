@@ -418,7 +418,13 @@ var y =1; // multiplicateur
 
 
 $("#fs-btn").attr("src", "./fullscreen.png");
-$("#fs-btn").addClass("fs")
+$("#fs-btn").addClass("fs");
+$("#fs-btn").addEventListener("click", function(){
+    if(fullScr)
+        $("#fs-btn").attr("src", "./fullscreen.png");
+        else
+        $("#fs-btn").attr("src", "./fullscreen-exit.png");
+})
 loadInit();
 
 
