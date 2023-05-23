@@ -237,12 +237,16 @@ function ajouteGrilleDiv(id) {
         btnNext.style.opacity = 0;
         btnNext.addEventListener("click", nextVideo);
 
-        document.addEventListener("keydown", function (event) { 
-            if(event.key === 'ArrowRight'){
-                console.log('next');
-                nextVideo();
-            }
-        })
+
+        // CANNOT ADD A LISTENER HERE BECAUSE IT WILL BE MULTIPLIED EACH TIME - TO CHANGE
+
+
+        // document.addEventListener("keydown", function (event) { 
+        //     if(event.key === 'ArrowRight'){
+        //         console.log('next');
+        //         nextVideo();
+        //     }
+        // })
 
 
         btnNext.addEventListener("mouseenter", function() {
@@ -267,8 +271,9 @@ function ajouteGrilleDiv(id) {
             fs_player.muted(true);
             fs_contenu.style.transition = '1s';
             fs_contenu.style.translate = '-50%';
-            await sleep(1000);
-            removePreviousVideo();
+            // NEEDS TO BE REMOVED
+            //await sleep(1000);
+            setTimeout(1500,removePreviousVideo()).then(fs_player.play());
             
             
         }
@@ -281,7 +286,7 @@ function ajouteGrilleDiv(id) {
             fs_contenu.style.translate = '0%';
             fsvideo.id = "vid-"+(id+1);
             console.log(fsvideo.id);
-            fs_player.play();
+            //fs_player.play();
         }
 
 
@@ -411,6 +416,9 @@ document.querySelector('.es').addEventListener('click', function () {
 var x = LIMITE; // iterateur
 var y =1; // multiplicateur
 
+
+$("#fs-btn").attr("src", "./fullscreen.png");
+$("#fs-btn").addClass("fs")
 loadInit();
 
 

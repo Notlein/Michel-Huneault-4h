@@ -10,6 +10,16 @@ Text Domain: michelhoneault4h
 
 /* @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); */
 
+#globe{
+    height:80%;
+    width:auto
+}
+
+.fs{
+    width:auto;
+    height:80%;
+}
+
 body{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
