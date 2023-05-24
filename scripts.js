@@ -2,6 +2,7 @@ var videos = [];
 var loaded = false;
 var fullScr = false;
 var is_iOS;
+var menuOpen = false;
 // CONSTANTS
 const LIMITE = 30;
 const contenu = document.querySelector('.grille_video');
@@ -357,26 +358,29 @@ function ajouteGrilleDiv(id) {
     });
 }
 
-btn_langues.addEventListener('mouseover', function () { 
-    list_langues.style.top = '100%';
-
+btn_langues.addEventListener('click', function () { 
+    if(!menuOpen){
+        list_langues.style.top = '100%';
+        menuOpen = true;
+    } else {
+        list_langues.style.top = '-400%';
+        menuOpen = false;
+    }
 })
 
-list_langues.addEventListener('mouseover', function () { 
-    list_langues.style.top = '100%';
+// list_langues.addEventListener('mouseover', function () { 
+//     list_langues.style.top = '100%';
+// })
 
-})
+//list_langues.addEventListener('click', function () { 
+//    list_langues.style.top = '-400%';
+//    menuOpen = false;
+//})
 
-list_langues.addEventListener('mouseleave', function () { 
-    list_langues.style.top = '-400%';
-
-})
-
-btn_langues.addEventListener('mouseleave', function () { 
-    list_langues.style.top = '-400%';
-})
-
-
+// btn_langues.addEventListener('mouseleave', function () { 
+//     list_langues.style.top = '-400%';
+    
+// })
 
 
 btn_Apropos.addEventListener('click', function () {
@@ -437,26 +441,27 @@ btn_Apropos.addEventListener('click', function () {
  * Ajoute un listener au bouton de langues
  */
 
-document.querySelector('.fr').addEventListener('click', function () { 
-    console.log('fr');
+document.querySelector('.fr').addEventListener('click', function () {
+    list_langues.style.top = '-400%';
     lg = 'fr';
     changeLanguage(lg);
 })
 
 document.querySelector('.en').addEventListener('click', function () { 
-    console.log('en');
+    list_langues.style.top = '-400%';
     lg = 'en';
     changeLanguage(lg);
 })
 
 document.querySelector('.eu').addEventListener('click', function () { 
-    console.log('eu');
+    list_langues.style.top = '-400%';
     lg = 'eu';
+    
     changeLanguage(lg);
 })
 
 document.querySelector('.es').addEventListener('click', function () { 
-    console.log('es');
+    list_langues.style.top = '-400%';
     lg = 'es';
     changeLanguage(lg);
 })

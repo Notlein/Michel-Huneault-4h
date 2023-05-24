@@ -21,6 +21,13 @@ Text Domain: michelhoneault4h
     color:aliceblue;
 }
 
+.titre_4h{
+    
+    font-size: 3.5em;
+    font-weight: normal;
+
+}
+
 body{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
