@@ -41,6 +41,45 @@ function brasseListe(vids) {
     return newVids;
 }
 
+var isIOS = (function () {
+    var iosQuirkPresent = function () {
+        var audio = new Audio();
+
+        audio.volume = 0.5;
+        return audio.volume === 1;   // volume cannot be changed from "1" on iOS 12 and below
+    };
+
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    var isAppleDevice = navigator.userAgent.includes('Macintosh');
+    var isTouchScreen = navigator.maxTouchPoints >= 1;   // true for iOS 13 (and hopefully beyond)
+
+    return isIOS || (isAppleDevice && (isTouchScreen || iosQuirkPresent()));
+})();
+
+/* Get the documentElement (<html>) to display the page in fullscreen */
+var elem = document.documentElement;
+/* View in fullscreen */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
+
 
 function changeLanguage(lg){
     titre4h.innerHTML = languages[lg]['titre'];
@@ -117,8 +156,11 @@ async function loadInit () {
         });
 
         loaded = true;
-        iterateurGrille();
-
+        
+        
+        
+            iterateurGrille();
+        
         //probleme on call here
 
     }
@@ -161,6 +203,11 @@ function ajouteGrilleDiv(id) {
 
     let player = videojs(document.getElementById(video.id));
     player.muted(true);
+    if(isIOS){
+        player.play();
+        
+    }
+    
     wrapper.addEventListener('mouseenter', function () {
         player.play()
     });
@@ -289,9 +336,6 @@ function ajouteGrilleDiv(id) {
             fs_contenu.style.transition = '1s';
             fs_contenu.style.translate = '-50%';
             fs_contenu.addEventListener('transitionend', removePreviousVideo);
-            
-            
-            
             
         }
 
@@ -440,9 +484,10 @@ $("#fs-btn").addClass("fs");
 $("#fs-btn").bind("click", function(){
     if(fullScr){
         $("#fs-btn").attr("src", "./fullscreen.png");
-        
+        closeFullscreen();
     }else{
         $("#fs-btn").attr("src", "./fullscreen-exit.png");
+        openFullscreen();
     }
     fullScr = !fullScr;
       
@@ -455,18 +500,20 @@ loadInit();
 window.addEventListener('scroll', () => {
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    if (loaded && (Math.ceil(scrolled) >= (scrollMax - 10))) {
-        y++;
-        for (let i = x * (y - 1); i < x * y; i++) {
-            
-            if(i < videos.length)
-                ajouteGrilleDiv(i);
+    if(!isIOS){
+        if (loaded && (Math.ceil(scrolled) >= (scrollMax - 10))) {
+            y++;
+            for (let i = x * (y - 1); i < x * y; i++) {
+                if(i < videos.length)
+                    ajouteGrilleDiv(i);
+            }
+             
         }
-        //uncomment to progress beyond x
-         
     }
-});
+    
 
+});
+    
 // àa modifier pour jquery
 
 function sleep(ms) {
