@@ -165,13 +165,8 @@ section{
     
 }
 
-<<<<<<< HEAD
 .contenu_ap h2{
     font-size: 2.5rem;
-=======
-.contenu_ap h1{
-    font-size: calc(4vw + .3rem);
->>>>>>> moise
     align-self: baseline;
     margin: 2.5em 1.5em;
 }
