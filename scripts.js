@@ -387,14 +387,14 @@ btn_Apropos.addEventListener('click', function () {
     let contenu_ap = document.createElement('div');
     let contenu_ap_wrapper = document.createElement('div');
 
-    let titre = document.createElement('h1')
+    let titre = document.createElement('h2')
     /**
      * Pour crée les quatre paragraphe
      */
     for (let index = 0; index < 4; index++) {
         let div_detail = document.createElement('div');
         let paragrahe = document.createElement('p');
-        let sous_titre = document.createElement('h4');
+        let sous_titre = document.createElement('h3');
         sous_titre.style.margin = 0;
         div_detail.appendChild(sous_titre);
         div_detail.appendChild(paragrahe);

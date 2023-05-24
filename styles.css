@@ -157,10 +157,10 @@ section{
     
 }
 
-.contenu_ap h1{
-    font-size: 5rem;
+.contenu_ap h2{
+    font-size: 2.5rem;
     align-self: baseline;
-    margin: 0.5em 1em;
+    margin: 2.5em 1.5em;
 }
 
 @keyframes anim_ap {
@@ -184,21 +184,30 @@ section{
     grid-auto-columns: 1fr; 
     grid-template-columns: 1fr 1fr 1fr 1fr; 
     grid-template-rows: 1fr; 
-    gap: 0px 0px; 
+    gap: 0px 40px; 
     grid-template-areas: 
         ". . . ."; 
     
 
 }
 
+.contenu_ap_wrapper h3{
+    text-align: left;
+    font-size: 1.75rem;
+    margin-block-start: 0.5em;
+    margin-block-end: 1em;
+}
+
 .contenu_ap_wrapper h4{
-    text-align: center;
-    font-size: 3rem;
+    text-align: left;
+    font-size: 1.2rem;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
 }
 
 .contenu_ap_wrapper p{
-    font-size: 1.2rem;
-    margin: 20px;
+    font-size: 1rem;
+    /*margin: 8pt 20pt 8pt 0;*/
 }
 
 .div_contenu{
