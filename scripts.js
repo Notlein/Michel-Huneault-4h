@@ -168,7 +168,7 @@ function ajouteGrilleDiv(id) {
         player.pause()
     });
    
-
+    document.body.addEventListener('touchstart', function () { console.log("touch"); });
     
     
     // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
