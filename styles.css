@@ -23,7 +23,7 @@ Text Domain: michelhoneault4h
 
 .titre_4h{
     
-    font-size: 3.5em;
+    font-size: 1.85em;
     font-weight: normal;
 
 }
@@ -51,6 +51,7 @@ header {
     grid-template-areas: ". .";
     justify-items: left;
     align-items: center;
+    padding-top:0.75vh;
 }
 header h1 {
     color: rgb(255, 255, 255);
@@ -97,7 +98,7 @@ header h1 {
 
 .list_langues{
     position: absolute;
-    top: -246px;
+    top: -400%;
     z-index: -1;
     color: aliceblue;
     transition: .5s;
@@ -135,26 +136,26 @@ header h1 {
 
 }
 section{
-    height: 104vh;
+    height: 102vh;
 }
 .contenu_ap{
     height: 100%;
     width: 100%;
-    background-color: rgb(0 0 0 / 90%);
+    background-color: rgb(0 0 0 / 88%);
     backdrop-filter: blur(10px);
     display: flex;
     color: aliceblue;
     flex-direction: column;
     align-items: center;
     animation: anim_ap 1s;
-    
+    overflow: hidden;
     
 }
 
 .contenu_ap_reverse{
     height: 100%;
     width: 100%;
-    background-color: rgb(0 0 0 / 90%);
+    background-color: rgb(0 0 0 / 88%);
     backdrop-filter: blur(10px);
     display: flex;
     color: aliceblue;
@@ -166,9 +167,9 @@ section{
 }
 
 .contenu_ap h2{
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     align-self: baseline;
-    margin: 2.5em 1.5em;
+    margin: 1em 1em;
 }
 
 @keyframes anim_ap {
@@ -195,13 +196,13 @@ section{
     gap: 0px 40px; 
     grid-template-areas: 
         ". . . ."; 
-    
+    overflow-y: scroll;
 
 }
 
 .contenu_ap_wrapper h3{
     text-align: left;
-    font-size: 1.75rem;
+    font-size: 1.25rem;
     margin-block-start: 0.5em;
     margin-block-end: 1em;
 }
@@ -210,7 +211,13 @@ section{
     text-align: left;
     font-size: 1.2rem;
     margin-block-start: 0.5em;
-    margin-block-end: 0.5em;
+    margin-block-end: 0.15em;
+}
+a {
+    color: white;
+}
+a:visited {
+    color: white;
 }
 
 .contenu_ap_wrapper p{
@@ -253,7 +260,7 @@ section{
     height: auto;
     justify-items: center;
     align-items: center;
-    padding-top: 10vh;
+    padding-top: 6.5vh;
 
 }
 

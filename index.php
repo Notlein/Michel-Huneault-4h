@@ -8,6 +8,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>4 heures</title> 
+<!-- METADATA + OG -->
+<meta property="og:site_name" content="4 heures">
+<meta property="og:title" content="4 heures - Michel Huneault et Johann Mazé">
+<meta property="og:url" content="http://topo.art/4heures/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://topo.art/4heures/rivierekayak.png">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:description" content="4 heures est un film d'observation non-linéaire à la frontière basque. Michel Huneault et Johann Mazé offrent une réflexion nuancée sur les réalités transfrontalières menée par le fil conducteur d'un fleuve bucolique mais inquiétant.">
   <link rel="stylesheet" href="styles.css?v=3.0">
   <link	href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video-js.min.css"	rel="stylesheet"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -15,9 +23,7 @@
   <!-- Google tag (gtag.js) --> 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script>
   <script src="https://kit.fontawesome.com/83483ef559.js" crossorigin="anonymous"></script>
-
 </head>
-
 <body>
   <header>
     <h1 class="titre_4h"></h1>
