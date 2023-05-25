@@ -23,10 +23,13 @@ Text Domain: michelhoneault4h
 
 .titre_4h{
     
-    font-size: 1.85em;
+    /* font-size: 1.85em; */
     font-weight: normal;
 
 }
+
+
+
 
 body{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -61,7 +64,7 @@ header h1 {
     width: auto;
     text-align: center;
     height: auto;
-    font-size: calc(1.75vw + .3rem);
+    font-size: calc(1.25vw + .3rem);
 }
 .nav_menu{
     position: relative;
@@ -149,7 +152,7 @@ section{
     align-items: center;
     animation: anim_ap 1s;
     overflow: hidden;
-    
+    z-index: 1;
 }
 
 .contenu_ap_reverse{
@@ -197,8 +200,12 @@ section{
     grid-template-areas: 
         ". . . ."; 
     overflow-y: scroll;
-
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+.contenu_ap_wrapper::-webkit-scrollbar {
+    display: none;
+  }
 
 .contenu_ap_wrapper h3{
     text-align: left;
@@ -230,11 +237,12 @@ a:visited {
     width: 200%;
     font-size: 60pt;
     position: fixed;
-    z-index: 0;
+    z-index: -1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     gap: 0px 0px;
+    
 }
 
 .video_target{
@@ -265,21 +273,21 @@ a:visited {
 }
 
 .div_video{
-    
+    /* z-index:0; */
     position: relative;
     height: 10vw;
     width: 100%;
     /* background-color: cadetblue; */
     /* border: 1px white; */
     transition: .5s;
-    overflow: hidden;
+    /* overflow: hidden; */
 
 }
 
 
 .div_video:hover{
     scale: 1.05;
-    z-index: 1;
+    /* z-index: 2; */
     cursor: pointer;
 }
 

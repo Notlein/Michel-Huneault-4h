@@ -41,7 +41,7 @@ function brasseListe(vids) {
     }
     return newVids;
 }
-
+var isIPAD = false;
 var isIOS = (function () {
     var iosQuirkPresent = function () {
         var audio = new Audio();
@@ -51,6 +51,7 @@ var isIOS = (function () {
     };
 
     var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    isIPAD = /iPad/.test(navigator.userAgent);
     var isAppleDevice = navigator.userAgent.includes('Macintosh');
     var isTouchScreen = navigator.maxTouchPoints >= 1; // true for iOS 13 (and hopefully beyond)
 
@@ -211,18 +212,18 @@ function ajouteGrilleDiv(id) {
     
     if(isIOS){
         player.play();
-           
+        //    
             player.pause();
-        
-
-    } else {
+    } 
+    
         player.on('loadeddata', () => {
             player.play();
-            player.pause();
+            
             // Code to run when video has finished loading
+            player.pause();
         });
 
-    }
+    
 
     wrapper.addEventListener('mouseenter', function () {
         player.play()
@@ -244,9 +245,11 @@ function ajouteGrilleDiv(id) {
 
     // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
     wrapper.addEventListener("click", function addFs() {
+        $("header").fadeOut(1000);
+        $(".div_contenu").css("z-index",1);
         document.querySelector(".grille_video").style.display = "none";
         let fs_contenu = document.querySelector('.div_contenu');
-        fs_contenu.style.zIndex = 10;
+        //fs_contenu.style.zIndex = 10;
         document.querySelector('section').style.overflow = "hidden";
         let fullScreenDiv = document.createElement("div");
         let fsvideo = document.createElement("video-js");
@@ -258,11 +261,6 @@ function ajouteGrilleDiv(id) {
         source.src = "https://" +
             CLIENT_ID + ".cloudflarestream.com/" + VIDEO_ID + "/manifest/video.m3u8";
         source.type = "application/x-mpegURL";
-
-
-
-
-
 
         fsvideo.id = "vid-" + (id + 1);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
@@ -278,24 +276,9 @@ function ajouteGrilleDiv(id) {
         fsvideo.appendChild(source);
 
         let fs_player = videojs(document.getElementById(fsvideo.id));
-        if (isIOS) {
-            let touchstartX = 0
-            let touchendX = 0
 
-            function checkDirection() {
-                if (touchendX < touchstartX) nextVideo();
-                if (touchendX > touchstartX) alert('swiped right!')
-            }
 
-            fs_player.addEventListener('touchstart', e => {
-                touchstartX = e.changedTouches[0].screenX
-            })
-
-            fs_player.addEventListener('touchend', e => {
-                touchendX = e.changedTouches[0].screenX
-                checkDirection()
-            })
-        }
+        $("#"+fsvideo.id+"_html5_api").bind("click",function(){fs_player.play()})
 
         fs_player.on('loadeddata', () => {
             console.log('Video has finished loading');
@@ -321,6 +304,7 @@ function ajouteGrilleDiv(id) {
             btnExit.style.opacity = 0;
         })
 
+        
         // document.addEventListener("keydown", function (event) { 
         //     if(event.key === 'Escape'){
         //         location.reload();
@@ -396,7 +380,11 @@ function ajouteGrilleDiv(id) {
 
 
     });
+
+    
 }
+
+
 
 btn_langues.addEventListener('click', function () {
     if (!menuOpen) {
@@ -425,6 +413,8 @@ btn_langues.addEventListener('click', function () {
 
 
 btn_Apropos.addEventListener('click', function () {
+    $("header").fadeOut(1000);
+    $(".div_contenu").css("z-index",1);
     let btnExit = document.createElement("button");
     let fs_contenu = document.querySelector('.div_contenu');
     document.querySelector('section').style.overflow = "hidden";
@@ -457,19 +447,21 @@ btn_Apropos.addEventListener('click', function () {
     contenu_ap.appendChild(contenu_ap_wrapper);
     fs_contenu.appendChild(btnExit);
     fs_contenu.style.animation = 'anim_ap 1s';
-    fs_contenu.style.zIndex = 10;
+    //fs_contenu.style.zIndex = 10;
 
     btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
     btnExit.style.zIndex = 4;
     btnExit.style.position = 'absolute';
     btnExit.classList.add('exit');
     btnExit.addEventListener("click", function () {
+        $("header").fadeIn(1000);
+        $(".div_contenu").animate({"z-index":-1},1000);
         fs_contenu.style.animation = 'anim_ap_reverse 1s';
         fs_contenu.addEventListener("animationend", function () {
             if (event.animationName === 'anim_ap_reverse') {
                 console.log("safe");
                 $(fs_contenu).empty();
-                fs_contenu.style.zIndex = 0;
+                //fs_contenu.style.zIndex = 0;
                 document.querySelector('section').style.overflow = "";
             }
         });
