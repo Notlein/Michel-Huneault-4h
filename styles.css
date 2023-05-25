@@ -23,7 +23,7 @@ Text Domain: michelhoneault4h
 
 .titre_4h{
     
-    font-size: 3.5em;
+    font-size: calc(2vw + .3rem);
     font-weight: normal;
 
 }
@@ -51,6 +51,7 @@ header {
     grid-template-areas: ". .";
     justify-items: left;
     align-items: center;
+    color: aliceblue;
 }
 header h1 {
     color: rgb(255, 255, 255);
@@ -62,11 +63,20 @@ header h1 {
     height: auto;
     font-size: calc(1.75vw + .3rem);
 }
+
+.nav_button{
+    width: 40%;
+    height: 60%;
+    background-color: aliceblue;
+    display: none;
+}
+
 .nav_menu{
     position: relative;
     right: 0;
     z-index: 4;
     font-size: 1.2em;
+    transition: .5s;
 }
 
 .nav_menu ul {
@@ -97,7 +107,7 @@ header h1 {
 
 .list_langues{
     position: absolute;
-    top: -246px;
+    top: -400%;
     z-index: -1;
     color: aliceblue;
     transition: .5s;
@@ -166,7 +176,7 @@ section{
 }
 
 .contenu_ap h2{
-    font-size: 2.5rem;
+    font-size: calc(2.1vw + .3rem);
     align-self: baseline;
     margin: 2.5em 1.5em;
 }
@@ -188,6 +198,7 @@ section{
     width: 86%;
     position: relative;
     left: 0%;
+    top: -4%;
     display: grid; 
     grid-auto-columns: 1fr; 
     grid-template-columns: 1fr 1fr 1fr 1fr; 
@@ -201,21 +212,30 @@ section{
 
 .contenu_ap_wrapper h3{
     text-align: left;
-    font-size: 1.75rem;
+    font-size: calc(1.15vw + .3rem);
     margin-block-start: 0.5em;
     margin-block-end: 1em;
 }
 
 .contenu_ap_wrapper h4{
     text-align: left;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-size: calc(1vw + .3rem);
     margin-block-start: 0.5em;
     margin-block-end: 0.5em;
 }
 
 .contenu_ap_wrapper p{
-    font-size: 1rem;
+    font-size: calc(.67vw + .3rem);
     /*margin: 8pt 20pt 8pt 0;*/
+}
+
+a{
+    color: aliceblue;
+}
+
+a:visited{
+    color: rgb(108, 112, 115);
 }
 
 .div_contenu{
@@ -327,7 +347,7 @@ video{
     top: 4%;
     right: 51%;
     height: 6%;
-    width: 2%;
+    width: 6%;
     position: absolute;
     background-color: rgba(0, 139, 139, 0);
     border-style: none;
@@ -418,7 +438,7 @@ video{
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .div_video{
         height: 15vw;
     }
@@ -436,8 +456,42 @@ video{
         font-size: 1rem;
         justify-content: center;
     }
+} */
+
+@media (orientation: portrait) {
+    .div_video{
+        height: 15vw;
+    }
+
+    .grille_video{
+        grid-template-columns: 1fr 1fr 1fr 1fr ;
+        grid-template-areas:
+        ". . . .";
+    }
+
+    .nav_menu ul li {
+        width: 20vw;
+        height: 7vh;
+        font-size: calc(3vw + .3rem);
+        justify-content: center;
+    }
+
+    .list_langues ul li {
+        width: 50vw;
+        height: 7vh;
+        font-size: calc(3vw + .3rem);
+        justify-content: center;
+    }
+
+
+    .titre_4h{
+    
+        font-size: calc(3.5vw + .3rem);
+        font-weight: normal;
+    
+    }
 }
- 
+
 @media (max-width: 645px) {
     .div_video{
         height: 19vw;
@@ -450,26 +504,39 @@ video{
         gap: 10px 10px;
     }
 
-    
-    .nav_menu {
-        position: absolute;
-        top: 20%;
-        right: 0;
-        z-index: 4;
-        font-size: 1.2em;
+    .contenu_ap_wrapper {
+        width: 86%;
+        position: relative;
+        left: 0%;
+        top: -2%;
+        display: grid;
+        grid-auto-columns: 1fr;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        gap: 40px 40px;
+        grid-template-areas: ".";
+    }
+
+    .contenu_ap h2 {
+        font-size: calc(12.1vw + .3rem);
+        align-self: center;
+        margin: 2.5em 1.5em;
+    }
+
+    .contenu_ap_wrapper p {
+        font-size: calc(2.67vw + .3rem);
+        /* margin: 8pt 20pt 8pt 0; */
+    }
+
+    .contenu_ap_wrapper h3 {
+        text-align: left;
+        font-size: calc(1.15vw + 1.3rem);
+        margin-block-start: 0.5em;
+        margin-block-end: 1em;
     }
 
 
-    .nav_menu ul {
-        color: aliceblue;
-        display: flex;
-        flex-direction: column;
-    }
 
-    .nav_menu ul li {
-        width: 33vw;
-        font-size: 2vh;
-        height: 6vh;
-        justify-content: center;
-    }
+
+
 }

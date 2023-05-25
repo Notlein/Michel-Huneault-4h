@@ -466,6 +466,10 @@ document.querySelector('.es').addEventListener('click', function () {
     changeLanguage(lg);
 })
 
+
+
+
+
 /**
  * Change la langue du site
  */ 
