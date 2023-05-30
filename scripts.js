@@ -21,7 +21,12 @@ var btnLangues = document.querySelector('.btn_langues div');
 var btnApropos = document.querySelector('.apropos p');
 var titre4h = document.querySelector('.titre_4h');
 var titre4hHEAD = document.querySelector('title');
-var lg = 'fr';
+
+// fr par defaut, sinon sauvegarde la langue dans local storage
+// var lg;
+if(localStorage.getItem("lang") === null){localStorage.setItem("lang","fr")}
+// lg = localStorage.getItem("lang")
+
 var languages;
 
 /**
@@ -41,6 +46,8 @@ function brasseListe(vids) {
     }
     return newVids;
 }
+
+// Détection iOS et iPad
 var isIPAD = false;
 var isIOS = (function () {
     var iosQuirkPresent = function () {
@@ -86,7 +93,7 @@ function closeFullscreen() {
     }
 }
 
-
+//Change language francais-english-euskara-espanol
 function changeLanguage(lg) {
     titre4h.innerHTML = languages[lg]['titre'];
     btnFr.innerHTML = languages[lg]['btn_fr'];
@@ -98,7 +105,7 @@ function changeLanguage(lg) {
     document.querySelectorAll('.contenu_ap h1').innerHTML = languages[lg]['titre'];
 }
 
-
+// ajout d'une grille selon la limite
 function iterateurGrille() {
     for (let index = 0; index < LIMITE; index++) {
         ajouteGrilleDiv(index);
@@ -122,8 +129,6 @@ async function loadInit() {
             _accountID = response["account"];
         }
     });
-
-
 
     // APPEL API Cloudflare
     const options = {
@@ -149,28 +154,27 @@ async function loadInit() {
 
         })
         .catch(err => console.error(err));
-
+// appel des textes
     await $.ajax({
         url: "ecrit_apropos/languages.json",
         data: "data",
         dataType: "json",
         success: function (response) {
             languages = response;
-            console.log(languages);
-            changeLanguage('fr');
+            changeLanguage(localStorage.getItem("lang"));
         }
     });
 
     loaded = true;
-
-
-
+    //ajout de la grille initiale
     iterateurGrille();
 
-    //probleme on call here
 
 }
+
+// ajout de la langue initiale selon (lg)
 onload = (event) => {
+    let lg = localStorage.getItem("lang");
     btnFr.innerHTML = languages[lg]['btn_fr'];
     btnEn.innerHTML = languages[lg]['btn_en'];
     btnEu.innerHTML = languages[lg]['btn_eu'];
@@ -235,15 +239,7 @@ function ajouteGrilleDiv(id) {
         
 
     
- 
-
-/*
-    document.body.addEventListener('touchstart', function () {
-        console.log("touch");
-    });
-*/
-
-    // Dette technique - > nouveau system de player full screen prev play next + link a ajouter
+// MODIFIER ICI
     wrapper.addEventListener("click", function addFs() {
         $("header").fadeOut(1000);
         $(".div_contenu").css("z-index",1);
@@ -278,7 +274,7 @@ function ajouteGrilleDiv(id) {
         let fs_player = videojs(document.getElementById(fsvideo.id));
 
 
-        $("#"+fsvideo.id+"_html5_api").bind("click",function(){fs_player.play()})
+        // $("#"+fsvideo.id+"_html5_api").bind("click",function(){fs_player.play()})
 
         fs_player.on('loadeddata', () => {
             console.log('Video has finished loading');
@@ -384,7 +380,7 @@ function ajouteGrilleDiv(id) {
     
 }
 
-
+// FINI ICI
 
 btn_langues.addEventListener('click', function () {
     if (!menuOpen) {
@@ -411,10 +407,10 @@ btn_langues.addEventListener('click', function () {
 // })
 
 
-
+// fonction a propos
 btn_Apropos.addEventListener('click', function () {
     $("header").fadeOut(1000);
-    $(".div_contenu").css("z-index",1);
+    // $(".div_contenu").css("z-index",1);
     let btnExit = document.createElement("button");
     let fs_contenu = document.querySelector('.div_contenu');
     document.querySelector('section').style.overflow = "hidden";
@@ -433,8 +429,8 @@ btn_Apropos.addEventListener('click', function () {
         sous_titre.style.margin = 0;
         div_detail.appendChild(sous_titre);
         div_detail.appendChild(paragrahe);
-        sous_titre.innerHTML = languages[lg]['st' + (index + 1)];
-        paragrahe.innerHTML = languages[lg]['p' + (index + 1)];
+        sous_titre.innerHTML = languages[localStorage.getItem("lang")]['st' + (index + 1)];
+        paragrahe.innerHTML = languages[localStorage.getItem("lang")]['p' + (index + 1)];
         contenu_ap_wrapper.appendChild(div_detail);
 
     }
@@ -442,7 +438,7 @@ btn_Apropos.addEventListener('click', function () {
     contenu_ap.classList.add('contenu_ap');
     fs_contenu.appendChild(contenu_ap);
     contenu_ap_wrapper.classList.add('contenu_ap_wrapper');
-    titre.innerHTML = languages[lg]['apropos'];
+    titre.innerHTML = languages[localStorage.getItem("lang")]['apropos'];
     contenu_ap.appendChild(titre);
     contenu_ap.appendChild(contenu_ap_wrapper);
     fs_contenu.appendChild(btnExit);
@@ -455,11 +451,11 @@ btn_Apropos.addEventListener('click', function () {
     btnExit.classList.add('exit');
     btnExit.addEventListener("click", function () {
         $("header").fadeIn(1000);
-        $(".div_contenu").animate({"z-index":-1},1000);
+        // $(".div_contenu").animate({"z-index":-1},1000);
         fs_contenu.style.animation = 'anim_ap_reverse 1s';
         fs_contenu.addEventListener("animationend", function () {
             if (event.animationName === 'anim_ap_reverse') {
-                console.log("safe");
+                
                 $(fs_contenu).empty();
                 //fs_contenu.style.zIndex = 0;
                 document.querySelector('section').style.overflow = "";
@@ -475,27 +471,30 @@ btn_Apropos.addEventListener('click', function () {
 
 document.querySelector('.fr').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    lg = 'fr';
-    changeLanguage(lg);
+    // lg = 'fr';
+    localStorage.setItem("lang","fr");
+    changeLanguage(localStorage.getItem("lang"));
 })
 
 document.querySelector('.en').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    lg = 'en';
-    changeLanguage(lg);
+    // lg = 'en';
+    localStorage.setItem("lang","en");
+    changeLanguage(localStorage.getItem("lang"));
 })
 
 document.querySelector('.eu').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    lg = 'eu';
-
-    changeLanguage(lg);
+    // lg = 'eu';
+    localStorage.setItem("lang","eu");
+    changeLanguage(localStorage.getItem("lang"));
 })
 
 document.querySelector('.es').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    lg = 'es';
-    changeLanguage(lg);
+    // lg = 'es';
+    localStorage.setItem("lang","es");
+    changeLanguage(localStorage.getItem("lang"));
 })
 
 
