@@ -552,12 +552,3 @@ window.addEventListener('scroll', () => {
 
 
 });
-
-
-
-
-// À modifier pour jquery
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
