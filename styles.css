@@ -346,6 +346,8 @@ video{
     background-color: transparent;
     background-image: linear-gradient(-90deg, rgba(0, 0, 0, 1) 50%, transparent);
     transition: .5s;
+    position:relative;
+    opacity:0;
 }
 
 .next:hover{
@@ -396,6 +398,8 @@ video{
     border-style: none;
     font-size: 20pt;
     transition: .5s;
+    z-index: 1;
+    opacity:0;
 }
 
 .exitfs:hover{

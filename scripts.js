@@ -159,6 +159,21 @@ async function loadInit() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Ajoute un élément div>video au contenu ".grille-video"
  * @param {int} id - L'index à ajouter
@@ -174,8 +189,8 @@ function ajouteGrilleDiv(id) {
     source.type = "application/x-mpegURL"
     video.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
     video.id = "vid-" + (id + 1);
-    wrapper.name = "name-" + (id + 1);
-    wrapper.id = "wrap-" + (id + 1);
+    // wrapper.name = "name-" + (id + 1);
+    // wrapper.id = "wrap-" + (id + 1);
     wrapper.classList.add("div_video");
 
     contenu.appendChild(wrapper);
@@ -208,63 +223,43 @@ function ajouteGrilleDiv(id) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // MODIFIER ICI -> extraire FS player
     wrapper.addEventListener("click", function addFs() {
-
+        //animation okay
         $("header").fadeOut(1000);
         $(".div_contenu").css("z-index",1);
         $(".div_contenu").animate({"opacity":1});
-    
-        btn_langues.addEventListener('click', function () {
-            if (!menuOpen) {
-                list_langues.style.top = '100%';
-                menuOpen = true;
-            } else {
-                list_langues.style.top = '-400%';
-                menuOpen = false;
-            }
-        })
-        
+
+
+        // rendre ce contenu dynamique et const
         let fs_contenu = document.querySelector('.div_contenu');
         let fullScreenDiv = document.createElement("div");
         let fsvideo = document.createElement("video-js");
         let btnExit = document.createElement("button");
         let btnNext = document.createElement("button");
-        let VIDEO_ID = videos[id];
-
+        
+        // changement de source ici
         source.src = "https://" +
-            CLIENT_ID + ".cloudflarestream.com/" + VIDEO_ID + "/manifest/video.m3u8";
+            CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
         source.type = "application/x-mpegURL";
 
         fsvideo.id = "vid-" + (id + 1);
         fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
 
-        fullScreenDiv.name = (id + 1);
-        fullScreenDiv.id = "fsdiv-" + (id + 1);
+        // fullScreenDiv.name = (id + 1);
+        // fullScreenDiv.id = "fsdiv-" + (id + 1);
         fullScreenDiv.classList.add("div_fsvideo");
 
         fullScreenDiv.appendChild(fsvideo);
         fullScreenDiv.appendChild(btnExit);
         fullScreenDiv.appendChild(btnNext);
         fs_contenu.appendChild(fullScreenDiv);
+
+        //parametre ici (source)
         fsvideo.appendChild(source);
 
+
+        // player ici
         let fs_player = videojs(document.getElementById(fsvideo.id));
         fs_player.on('loadeddata', () => {
             console.log('Video has finished loading');
@@ -275,8 +270,9 @@ function ajouteGrilleDiv(id) {
         });
         btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
         
-        btnExit.style.zIndex = 1;
-        btnExit.style.opacity = 0;
+        // classe a integrer
+        // btnExit.style.zIndex = 1;
+        // btnExit.style.opacity = 0;
         btnExit.classList.add('exitfs');
 
 
@@ -284,22 +280,32 @@ function ajouteGrilleDiv(id) {
             location.reload();
         });
 
-        btnNext.style.position = 'relative';
-        btnNext.style.opacity = 0;
+        // classe a integrer
+        // btnNext.style.position = 'relative';
+        // btnNext.style.opacity = 0;
         btnNext.classList.add('next')
 
-
-        btnNext.addEventListener("click", nextVideo);
-        btnNext.addEventListener("mouseenter", function () {
+        $(".next,.exitfs").bind("mouseenter",function () {
             btnExit.style.opacity = 1;
             btnNext.style.opacity = 1;
-        });
-        btnNext.addEventListener('mouseleave', function () {
+        })
+        $(".next,.exitfs").bind("mouseleave",function () {
             btnExit.style.opacity = 0;
             btnNext.style.opacity = 0;
         })
+
+        btnNext.addEventListener("click", nextVideo);
+        btnNext.addEventListener("mouseenter", function () {
+            // btnExit.style.opacity = 1;
+            btnNext.style.opacity = 1;
+        });
+        btnNext.addEventListener('mouseleave', function () {
+            // btnExit.style.opacity = 0;
+            btnNext.style.opacity = 0;
+        })
  
-        //transition ici 
+
+        // sortir cette fonction
         function nextVideo() {
 
 
@@ -307,29 +313,41 @@ function ajouteGrilleDiv(id) {
             // !!!!!!!!!!!!!!!!!!!!!!!!
             //probleme ici
             id++;
+
             addFs();
 
 
-
-
-
-
-
+            //transition ici 
             fs_player.muted(true);
             fs_contenu.style.transition = '1s';
             fs_contenu.style.translate = '-50%';
             fs_contenu.addEventListener('transitionend', removePreviousVideo);
         }
+
+
+
+
+
+        //sortir cette fonction
         function removePreviousVideo() {
-            fs_contenu.removeEventListener('transitionend', removePreviousVideo);
+            
             fs_contenu.removeChild(fs_contenu.children[0]);
             fs_contenu.style.transition = '0s';
             fs_contenu.style.translate = '0%';
             btnNext.style.opacity = 0;
+            fs_contenu.removeEventListener('transitionend', removePreviousVideo);
         }
+
+
+
+
+
+
     }); 
+    //FIN add event listener sur wrapper
+
 }
-// FINI ICI
+// FIN fonction ajouteGrilleDiv
 
 
 
