@@ -346,8 +346,8 @@ function ajouteGrilleDiv(id) {
     }); 
     //FIN add event listener sur wrapper
 
+    
 }
-// FIN fonction ajouteGrilleDiv
 
 
 
