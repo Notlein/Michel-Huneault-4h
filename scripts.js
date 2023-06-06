@@ -101,7 +101,11 @@ function changeLanguage(lg) {
 }
 
 // ajout d'une grille selon la limite
-function iterateurGrille() {for (let index = 0; index < LIMITE; index++) {ajouteGrilleDiv(index)}}
+function iterateurGrille() {
+    for (let index = 0; index < LIMITE; index++) {
+        ajouteGrilleDiv(index)
+    }
+}
 
 // AJAX call on content load
 async function loadInit() {
@@ -148,7 +152,7 @@ async function loadInit() {
         dataType: "json",
         success: function (response) {
             textes = response;
-            
+
         }
     });
     //sequence de loading
@@ -168,7 +172,99 @@ async function loadInit() {
 
 
 
+function addFs(idx) {
+    let id = idx;
+    //animation okay
+    $("header").fadeOut(1000);
+    $(".grille_video").fadeOut(1000);
+    $(".div_contenu").css("z-index", 1);
+    $(".div_contenu").animate({"opacity": 1});
 
+
+    // rendre ce contenu dynamique et const
+    const fs_contenu = document.querySelector('.div_contenu');
+    let fullScreenDiv = document.createElement("div");
+    let fsvideo = document.createElement("video");
+    let btnExit = document.createElement("button");
+    let btnNext = document.createElement("button");
+    let source = document.createElement('source');
+
+    // changement de source ici
+    source.src = "https://" +
+        CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
+    source.type = "application/x-mpegURL";
+
+    fsvideo.id = "fsvid-" + (id + 1);
+    fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
+
+    fullScreenDiv.classList.add("div_fsvideo");
+
+    fullScreenDiv.appendChild(fsvideo);
+    fullScreenDiv.appendChild(btnExit);
+    fullScreenDiv.appendChild(btnNext);
+
+    fs_contenu.appendChild(fullScreenDiv);
+
+    //parametre ici (source)
+    fsvideo.appendChild(source);
+
+    // player ici
+    let fs_player = videojs(document.getElementById(fsvideo.id));
+
+    fs_player.on('loadeddata', () => {
+        console.log('Video has finished loading');
+        fs_player.play();
+    });
+    fs_player.on('ended', function () {
+        nextVideo();
+    });
+
+    // sortir cette fonction
+    function nextVideo() {
+        id++;
+        fs_player.muted(true);
+        $(".div_contenu").animate({
+            "translate": "-100%",
+            "opacity": 0
+        }, 500, function () {
+            addFs(id);
+            $(".div_contenu").css({"translate": "0%"});
+            $(".div_fsvideo:first-child").remove();
+        });
+
+    }
+
+    btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
+    btnExit.classList.add('exitfs');
+    btnNext.classList.add('next')
+
+    btnExit.addEventListener("click", function () {
+        location.reload();
+    });
+
+    $(".next,.exitfs").bind("mouseenter", function () {
+        btnExit.style.opacity = 1;
+        btnNext.style.opacity = 1;
+    })
+    $(".next,.exitfs").bind("mouseleave", function () {
+        btnExit.style.opacity = 0;
+        btnNext.style.opacity = 0;
+    })
+
+    btnNext.addEventListener("click", nextVideo);
+    btnNext.addEventListener("mouseenter", function () {
+        btnExit.style.opacity = 1;
+        btnNext.style.opacity = 1;
+    });
+    btnNext.addEventListener('mouseleave', function () {
+        btnExit.style.opacity = 0;
+        btnNext.style.opacity = 0;
+    })
+
+
+
+
+}
 
 
 
@@ -181,30 +277,36 @@ async function loadInit() {
 function ajouteGrilleDiv(id) {
 
     let wrapper = document.createElement("div");
-    let video = document.createElement("video-js");
+    let video = document.createElement("video");
     let source = document.createElement('source');
 
     source.src = "https://" +
         CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
     source.type = "application/x-mpegURL"
     video.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
+    video.playsinline = true;
     video.id = "vid-" + (id + 1);
-    // wrapper.name = "name-" + (id + 1);
-    // wrapper.id = "wrap-" + (id + 1);
+    video.setAttribute('webkit-playsinline', 'webkit-playsinline');
+    video.setAttribute('playsinline', 'playsinline');
     wrapper.classList.add("div_video");
-
+    wrapper.id = "w"+(id+1);
     contenu.appendChild(wrapper);
     wrapper.appendChild(video);
     video.appendChild(source);
 
-    let player = videojs(document.getElementById(video.id));
-    player.muted(true);
-    
+    let player = videojs(document.getElementById(video.id), {
+        autoplay: 'muted',
+        controls: false
+    });
+    let temp = "#w"+(id+1);
+   
     //détection iOS
-    if(isIOS){
+    // force l'affichage des previews
+    if (isIOS) {
         player.play();
         player.pause();
-    } 
+    }
+
     player.on('loadeddata', () => {
         player.play();
         player.pause();
@@ -218,135 +320,11 @@ function ajouteGrilleDiv(id) {
         player.pause()
     });
 
-
-
-
-
-
-// MODIFIER ICI -> extraire FS player
-    wrapper.addEventListener("click", function addFs() {
-        //animation okay
-        $("header").fadeOut(1000);
-        $(".div_contenu").css("z-index",1);
-        $(".div_contenu").animate({"opacity":1});
-
-
-        // rendre ce contenu dynamique et const
-        let fs_contenu = document.querySelector('.div_contenu');
-        let fullScreenDiv = document.createElement("div");
-        let fsvideo = document.createElement("video-js");
-        let btnExit = document.createElement("button");
-        let btnNext = document.createElement("button");
-        
-        // changement de source ici
-        source.src = "https://" +
-            CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
-        source.type = "application/x-mpegURL";
-
-        fsvideo.id = "vid-" + (id + 1);
-        fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
-
-        // fullScreenDiv.name = (id + 1);
-        // fullScreenDiv.id = "fsdiv-" + (id + 1);
-        fullScreenDiv.classList.add("div_fsvideo");
-
-        fullScreenDiv.appendChild(fsvideo);
-        fullScreenDiv.appendChild(btnExit);
-        fullScreenDiv.appendChild(btnNext);
-        fs_contenu.appendChild(fullScreenDiv);
-
-        //parametre ici (source)
-        fsvideo.appendChild(source);
-
-
-        // player ici
-        let fs_player = videojs(document.getElementById(fsvideo.id));
-        fs_player.on('loadeddata', () => {
-            console.log('Video has finished loading');
-            fs_player.play();
-        });
-        fs_player.on('ended', function () {
-            nextVideo();
-        });
-        btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
-        
-        // classe a integrer
-        // btnExit.style.zIndex = 1;
-        // btnExit.style.opacity = 0;
-        btnExit.classList.add('exitfs');
-
-
-        btnExit.addEventListener("click", function () {
-            location.reload();
-        });
-
-        // classe a integrer
-        // btnNext.style.position = 'relative';
-        // btnNext.style.opacity = 0;
-        btnNext.classList.add('next')
-
-        $(".next,.exitfs").bind("mouseenter",function () {
-            btnExit.style.opacity = 1;
-            btnNext.style.opacity = 1;
-        })
-        $(".next,.exitfs").bind("mouseleave",function () {
-            btnExit.style.opacity = 0;
-            btnNext.style.opacity = 0;
-        })
-
-        btnNext.addEventListener("click", nextVideo);
-        btnNext.addEventListener("mouseenter", function () {
-            // btnExit.style.opacity = 1;
-            btnNext.style.opacity = 1;
-        });
-        btnNext.addEventListener('mouseleave', function () {
-            // btnExit.style.opacity = 0;
-            btnNext.style.opacity = 0;
-        })
- 
-
-        // sortir cette fonction
-        function nextVideo() {
-
-
-
-            // !!!!!!!!!!!!!!!!!!!!!!!!
-            //probleme ici
-            id++;
-
-            addFs();
-
-
-            //transition ici 
-            fs_player.muted(true);
-            fs_contenu.style.transition = '1s';
-            fs_contenu.style.translate = '-50%';
-            fs_contenu.addEventListener('transitionend', removePreviousVideo);
-        }
-
-
-
-
-
-        //sortir cette fonction
-        function removePreviousVideo() {
-            
-            fs_contenu.removeChild(fs_contenu.children[0]);
-            fs_contenu.style.transition = '0s';
-            fs_contenu.style.translate = '0%';
-            btnNext.style.opacity = 0;
-            fs_contenu.removeEventListener('transitionend', removePreviousVideo);
-        }
-
-
-
-
-
-
-    }); 
+    // MODIFIER ICI -> extraire FS player
+    //  wrapper.addEventListener("click", addFs(id));
     //FIN add event listener sur wrapper
+    $(temp).bind("click",function(){addFs(id)});
 
-    
 }
 
 
@@ -364,7 +342,7 @@ function ajouteGrilleDiv(id) {
 
 
 
-function a_propos(){
+function a_propos() {
     //construction
     let btnExit = document.createElement("button");
     let fs_contenu = document.querySelector('.div_contenu');
@@ -402,21 +380,26 @@ function a_propos(){
     btnExit.addEventListener("click", function () {
         $("header").fadeIn(1000);
         $(".div_contenu").stop();
-        $(".div_contenu").animate({"z-index":0,"opacity":0},{
+        $(".div_contenu").animate({
+            "z-index": 0,
+            "opacity": 0
+        }, {
             easing: 'swing',
             duration: 1000,
-            complete: function(){
+            complete: function () {
                 $(".div_contenu").empty();
-        }
+            }
         });
     });
 }
 // bouton a propos -> animation + fonction
-btn_Apropos.addEventListener('click', function(){
+btn_Apropos.addEventListener('click', function () {
     $("header").fadeOut(1000);
-    $(".div_contenu").css("z-index",1);
+    $(".div_contenu").css("z-index", 1);
     $(".div_contenu").stop();
-    $(".div_contenu").animate({"opacity":1},500);
+    $(".div_contenu").animate({
+        "opacity": 1
+    }, 500);
     a_propos();
 });
 
@@ -434,25 +417,25 @@ btn_langues.addEventListener('click', function () {
 
 document.querySelector('.fr').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    localStorage.setItem("lang","fr");
+    localStorage.setItem("lang", "fr");
     changeLanguage(localStorage.getItem("lang"));
 })
 
 document.querySelector('.en').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    localStorage.setItem("lang","en");
+    localStorage.setItem("lang", "en");
     changeLanguage(localStorage.getItem("lang"));
 })
 
 document.querySelector('.eu').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    localStorage.setItem("lang","eu");
+    localStorage.setItem("lang", "eu");
     changeLanguage(localStorage.getItem("lang"));
 })
 
 document.querySelector('.es').addEventListener('click', function () {
     list_langues.style.top = '-400%';
-    localStorage.setItem("lang","es");
+    localStorage.setItem("lang", "es");
     changeLanguage(localStorage.getItem("lang"));
 })
 
@@ -486,7 +469,9 @@ window.addEventListener('scroll', () => {
 });
 
 // détection : si aucune langue par defaut (premiere visite), choisir 'fr'
-if(localStorage.getItem("lang") === null){localStorage.setItem("lang",LANG_DEFAULT)}
+if (localStorage.getItem("lang") === null) {
+    localStorage.setItem("lang", LANG_DEFAULT)
+}
 
 //INIT
 loadInit();

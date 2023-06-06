@@ -3,6 +3,15 @@
 <html lang="fr">
 
 <head>
+  <!-- Google tag (gtag.js) -->
+ <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script> -->
+ <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LZGFJRCG6X');
+</script>
+
 <!--  <meta http-equiv="refresh" content="0;url=https://topo.art/4heures/splash.php">-->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +30,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video.min.js"></script>
   <!-- Google tag (gtag.js) --> 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script>
+
+
+
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script> -->
   <script src="https://kit.fontawesome.com/83483ef559.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -67,9 +79,9 @@
     
     </div>
   
-    <div>
+    <!-- <div>
        <i class="fa-regular fa-circle-xmark" style="font-size:100px;color:white;"></i>
-    </div>
+    </div> -->
     
   
     <div class="grille_video">

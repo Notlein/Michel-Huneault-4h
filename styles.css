@@ -201,7 +201,7 @@ section{
     width: 86%;
     position: relative;
     left: 0%;
-    top: -4%;
+    top: 0%;
     display: grid; 
     grid-auto-columns: 1fr; 
     grid-template-columns: 1fr 1fr 1fr 1fr; 
@@ -253,16 +253,16 @@ a:visited{
 
 .div_contenu{
     height: 100%;
-    width: 200%;
+    width: 100%;
     font-size: 60pt;
     position: fixed;
     z-index: 0;
     opacity:0;
-    display: grid;
+    /* display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
-    gap: 0px 0px;
-
+    gap: 0px 0px; */
+    
 }
 
 .video_target{
@@ -299,7 +299,7 @@ a:visited{
     width: 100%;
     /* background-color: cadetblue; */
     /* border: 1px white; */
-    transition: .5s;
+    /* transition: .5s; */
     /* overflow: hidden; */
 
 }
@@ -313,15 +313,15 @@ a:visited{
 
 .div_fsvideo{
     
-    position: relative;
+    /* position: fixed; */
     height: 100%;
     width: 100%;
     
     
     /* background-color: cadetblue; */
     /* border: 1px white; */
-    transition: .5s;
-    overflow: hidden;
+    /* transition: .5s; */
+    /* overflow: hidden; */
 
     display: grid; 
     grid-template-columns: 1fr 1fr; 
@@ -362,7 +362,7 @@ video{
     z-index: 4;
     position: absolute;
     top: 4%;
-    right: 51%;
+    right: 1%;
     height: 6%;
     width: 6%;
     position: absolute;
