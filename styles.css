@@ -231,24 +231,25 @@ section{
     margin-block-start: 0.5em;
     margin-block-end: 0.15em;
 }
+
 a {
     color: white;
 }
-a:visited {
+/* a:visited {
     color: white;
-}
+} */
 
 .contenu_ap_wrapper p{
     font-size: calc(.67vw + .3rem);
     /*margin: 8pt 20pt 8pt 0;*/
 }
-
+/* 
 a{
     color: aliceblue;
-}
+} */
 
 a:visited{
-    color: rgb(108, 112, 115);
+    color: rgb(190, 190, 190);
 }
 
 .div_contenu{
