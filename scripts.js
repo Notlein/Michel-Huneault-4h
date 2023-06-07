@@ -92,6 +92,7 @@ function closeFullscreen() {
 //Change language francais-english-euskara-espanol
 function changeLanguage(lg) {
     titre4h.innerHTML = textes[lg]['titre'];
+    titre4hHEAD.innerHTML = textes[lg]['titre'];
     btnFr.innerHTML = textes[lg]['btn_fr'];
     btnEn.innerHTML = textes[lg]['btn_en'];
     btnEu.innerHTML = textes[lg]['btn_eu'];
@@ -224,14 +225,17 @@ function addFs(idx) {
     function nextVideo() {
         id++;
         fs_player.muted(true);
+        $(".exitfs").css("opacity", 0);
         $(".div_contenu").animate({
             "translate": "-100%",
             "opacity": 0
         }, 500, function () {
             addFs(id);
+            $(".exitfs").css("opacity", 1);
             $(".div_contenu").css({"translate": "0%"});
             $(".div_fsvideo:first-child").remove();
         });
+        
 
     }
 

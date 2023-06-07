@@ -11,8 +11,8 @@
   gtag('js', new Date());
   gtag('config', 'G-LZGFJRCG6X');
 </script>
-
-<!--  <meta http-equiv="refresh" content="0;url=https://topo.art/4heures/splash.php">-->
+<!-- <style>body{display:none}</style>
+<meta http-equiv="refresh" content="0;url=https://www.agencetopo.qc.ca/wp/events/event/4-heures/"> -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

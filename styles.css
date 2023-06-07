@@ -361,8 +361,8 @@ video{
 .exit{
     z-index: 4;
     position: absolute;
-    top: 4%;
-    right: 1%;
+    top: 1.5em;
+    right: 1.5em;
     height: 6%;
     width: 6%;
     position: absolute;
