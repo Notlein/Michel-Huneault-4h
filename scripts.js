@@ -22,6 +22,7 @@ var videos = [];
 var textes = {};
 var loaded = false;
 var fullScr = false;
+var playingFullScreen = false;
 var is_iOS = false;
 var menuOpen = false;
 
@@ -252,6 +253,17 @@ function addFs(idx) {
     })
 
     btnNext.addEventListener("click", nextVideo);
+    if(!playingFullScreen){
+        playingFullScreen = true;
+        document.addEventListener("keydown", (e) => {
+            e = e || window.event;
+            if (e.key === "ArrowRight") {
+                nextVideo();
+            }
+          });
+    }
+    
+
     btnNext.addEventListener("mouseenter", function () {
         btnExit.style.opacity = 1;
         btnNext.style.opacity = 1;
@@ -299,7 +311,8 @@ function ajouteGrilleDiv(id) {
         controls: false
     });
     let temp = "#w"+(id+1);
-   
+    $(temp).bind("click",function(){addFs(id)});
+
     //détection iOS
     // force l'affichage des previews
     if (isIOS) {
@@ -319,28 +332,7 @@ function ajouteGrilleDiv(id) {
     wrapper.addEventListener('mouseleave', function () {
         player.pause()
     });
-
-    // MODIFIER ICI -> extraire FS player
-    //  wrapper.addEventListener("click", addFs(id));
-    //FIN add event listener sur wrapper
-    $(temp).bind("click",function(){addFs(id)});
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function a_propos() {
     //construction
@@ -392,6 +384,7 @@ function a_propos() {
         });
     });
 }
+
 // bouton a propos -> animation + fonction
 btn_Apropos.addEventListener('click', function () {
     $("header").fadeOut(1000);
