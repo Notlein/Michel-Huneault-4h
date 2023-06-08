@@ -43,6 +43,8 @@ body{
     margin: 0;
     height: 100vh;
     /*font-family: 'Raleway', sans-serif;*/
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 
 }
 
@@ -219,6 +221,10 @@ section{
     scrollbar-width: none;  /* Firefox */
 }
 .contenu_ap_wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  body::-webkit-scrollbar {
     display: none;
   }
 

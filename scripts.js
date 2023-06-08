@@ -184,7 +184,7 @@ function addFs(idx) {
     let id = idx;
     //animation okay
     $("header").fadeOut(1000);
-    $(".grille_video").fadeOut(1000);
+    $(".grille_video").fadeOut(1000, function(){$(".grille_video").remove()});
     $(".div_contenu").css("z-index", 1);
     $(".div_contenu").animate({
         "opacity": 1
@@ -221,6 +221,11 @@ function addFs(idx) {
     // player ici
     let fs_player = videojs(document.getElementById(fsvideo.id));
 
+    
+    
+    
+
+
     fs_player.on('loadeddata', () => {
         console.log('Video has finished loading');
         fs_player.play();
@@ -232,6 +237,9 @@ function addFs(idx) {
     // sortir cette fonction
     function nextVideo() {
         id++;
+        if(id > videos.length -1){
+            id = 0;
+        }
         fs_player.muted(true);
         $(".exitfs").css("opacity", 0);
         $(".div_contenu").animate({
@@ -287,7 +295,7 @@ function addFs(idx) {
         btnNext.style.opacity = 0;
     })
 
-
+    fs_player.autoplay('any');
 
 
 }
@@ -334,25 +342,12 @@ function ajouteGrilleDiv(id) {
         $(temp).bind("mouseenter", function () {
             addFs(id)
         });
+        // init for mobiles
+        player.play();
+        player.pause();
     }
 
-
-    player.on('loadeddata', () => {
-        player.play();
-        player.pause();
-    });
-    // iOS detection
-    // détection iOS
-    // force l'affichage des previews
-
-
-    if (isIOS) {
-        player.play();
-        player.pause();
-        // bind one finger touch to addFS(idx) on mobile
-
-    } else {
-
+    if (!isIOS) {
         // mouse enter / leave
         wrapper.addEventListener('mouseenter', function () {
             player.play()
@@ -361,6 +356,15 @@ function ajouteGrilleDiv(id) {
             player.pause()
         });
     }
+
+    player.on('loadeddata', () => {
+        player.play();
+        player.pause();
+    });
+
+    player.muted(true);
+
+    
 }
 
 
