@@ -28,7 +28,12 @@ Text Domain: michelhoneault4h
 
 }
 
-
+.vjs-loading-spinner{
+    opacity:0.25!important;
+}
+.vjs-control-text{
+    display:none!important;
+}
 
 
 body{

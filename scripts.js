@@ -44,6 +44,12 @@ var isIOS = (function () {
     return isIOS || (isAppleDevice && (isTouchScreen || iosQuirkPresent()));
 })();
 
+var is_touch = (function is_touch_enabled() {
+    return ('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        (navigator.msMaxTouchPoints > 0);
+})();
+
 // FONCTIONS
 
 /**
@@ -180,7 +186,9 @@ function addFs(idx) {
     $("header").fadeOut(1000);
     $(".grille_video").fadeOut(1000);
     $(".div_contenu").css("z-index", 1);
-    $(".div_contenu").animate({"opacity": 1});
+    $(".div_contenu").animate({
+        "opacity": 1
+    });
 
 
     // rendre ce contenu dynamique et const
@@ -232,10 +240,12 @@ function addFs(idx) {
         }, 500, function () {
             addFs(id);
             $(".exitfs").css("opacity", 1);
-            $(".div_contenu").css({"translate": "0%"});
+            $(".div_contenu").css({
+                "translate": "0%"
+            });
             $(".div_fsvideo:first-child").remove();
         });
-        
+
 
     }
 
@@ -257,16 +267,16 @@ function addFs(idx) {
     })
 
     btnNext.addEventListener("click", nextVideo);
-    if(!playingFullScreen){
+    if (!playingFullScreen) {
         playingFullScreen = true;
         document.addEventListener("keydown", (e) => {
             e = e || window.event;
             if (e.key === "ArrowRight") {
                 nextVideo();
             }
-          });
+        });
     }
-    
+
 
     btnNext.addEventListener("mouseenter", function () {
         btnExit.style.opacity = 1;
@@ -305,7 +315,7 @@ function ajouteGrilleDiv(id) {
     video.setAttribute('webkit-playsinline', 'webkit-playsinline');
     video.setAttribute('playsinline', 'playsinline');
     wrapper.classList.add("div_video");
-    wrapper.id = "w"+(id+1);
+    wrapper.id = "w" + (id + 1);
     contenu.appendChild(wrapper);
     wrapper.appendChild(video);
     video.appendChild(source);
@@ -314,29 +324,45 @@ function ajouteGrilleDiv(id) {
         autoplay: 'muted',
         controls: false
     });
-    let temp = "#w"+(id+1);
-    $(temp).bind("click",function(){addFs(id)});
+    let temp = "#w" + (id + 1);
 
-    //détection iOS
-    // force l'affichage des previews
-    if (isIOS) {
-        player.play();
-        player.pause();
+    if (!is_touch) {
+        $(temp).bind("click", function () {
+            addFs(id)
+        });
+    } else {
+        $(temp).bind("mouseenter", function () {
+            addFs(id)
+        });
     }
+
 
     player.on('loadeddata', () => {
         player.play();
         player.pause();
     });
+    // iOS detection
+    // détection iOS
+    // force l'affichage des previews
 
-    // mouse enter / leave
-    wrapper.addEventListener('mouseenter', function () {
-        player.play()
-    });
-    wrapper.addEventListener('mouseleave', function () {
-        player.pause()
-    });
+
+    if (isIOS) {
+        player.play();
+        player.pause();
+        // bind one finger touch to addFS(idx) on mobile
+
+    } else {
+
+        // mouse enter / leave
+        wrapper.addEventListener('mouseenter', function () {
+            player.play()
+        });
+        wrapper.addEventListener('mouseleave', function () {
+            player.pause()
+        });
+    }
 }
+
 
 function a_propos() {
     //construction
