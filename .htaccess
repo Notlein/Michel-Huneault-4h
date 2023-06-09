@@ -6,8 +6,15 @@ RewriteOptions inherit
 # The directives (lines) between `BEGIN WordPress` and `END WordPress` are
 # dynamically generated, and should only be modified via WordPress filters.
 # Any changes to the directives between these markers will be overwritten.
-
+Redirect 301 /index.php https://www.agencetopo.qc.ca/
 
 
 # END WordPress
 
+<FilesMatch ".m3u8$">
+    ForceType application/vnd.apple.mpegurl
+    Header set Accept-Ranges bytes
+</FilesMatch>
+<FilesMatch ".ts$">
+    Header set Accept-Ranges bytes
+</FilesMatch>

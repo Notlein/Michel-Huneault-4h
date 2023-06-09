@@ -203,7 +203,7 @@ function addFs(idx) {
     source.src = "https://" +
         CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
     source.type = "application/x-mpegURL";
-
+    if(isIOS){source.src = "https://customer-k63l0cdanueosauc.cloudflarestream.com/6f97cabece6ff2c919f53a3b5c20e162/iframe?autoplay=true&poster=https%3A%2F%2Fcustomer-k63l0cdanueosauc.cloudflarestream.com%2F6f97cabece6ff2c919f53a3b5c20e162%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false"}
     fsvideo.id = "fsvid-" + (id + 1);
     fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
 
@@ -215,16 +215,15 @@ function addFs(idx) {
 
     fs_contenu.appendChild(fullScreenDiv);
 
-    //parametre ici (source)
+
     fsvideo.appendChild(source);
 
-    // player ici
+
+
     let fs_player = videojs(document.getElementById(fsvideo.id));
 
     
     
-    
-
 
     fs_player.on('loadeddata', () => {
         console.log('Video has finished loading');
@@ -265,11 +264,11 @@ function addFs(idx) {
         location.reload();
     });
 
-    $(".next,.exitfs").bind("mouseenter", function () {
+    $(".next,.exitfs").on("mouseenter", function () {
         btnExit.style.opacity = 1;
         btnNext.style.opacity = 1;
     })
-    $(".next,.exitfs").bind("mouseleave", function () {
+    $(".next,.exitfs").on("mouseleave", function () {
         btnExit.style.opacity = 0;
         btnNext.style.opacity = 0;
     })
@@ -335,11 +334,11 @@ function ajouteGrilleDiv(id) {
     let temp = "#w" + (id + 1);
 
     if (!is_touch) {
-        $(temp).bind("click", function () {
+        $(temp).on("click", function () {
             addFs(id)
         });
     } else {
-        $(temp).bind("mouseenter", function () {
+        $(temp).on("touchstart", function () {
             addFs(id)
         });
         // init for mobiles
@@ -347,7 +346,7 @@ function ajouteGrilleDiv(id) {
         player.pause();
     }
 
-    if (!isIOS) {
+    
         // mouse enter / leave
         wrapper.addEventListener('mouseenter', function () {
             player.play()
@@ -355,7 +354,7 @@ function ajouteGrilleDiv(id) {
         wrapper.addEventListener('mouseleave', function () {
             player.pause()
         });
-    }
+    
 
     player.on('loadeddata', () => {
         player.play();
@@ -469,7 +468,7 @@ document.querySelector('.es').addEventListener('click', function () {
 // Bouton fullscreen
 $("#fs-btn").attr("src", "./fullscreen.png");
 $("#fs-btn").addClass("fs");
-$("#fs-btn").bind("click", function () {
+$("#fs-btn").on("click", function () {
     if (fullScr) {
         $("#fs-btn").attr("src", "./fullscreen.png");
         closeFullscreen();
