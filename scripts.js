@@ -203,12 +203,10 @@ function addFs(idx) {
     source.src = "https://" +
         CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
     source.type = "application/x-mpegURL";
-    if(isIOS){source.src = "https://customer-k63l0cdanueosauc.cloudflarestream.com/6f97cabece6ff2c919f53a3b5c20e162/iframe?autoplay=true&poster=https%3A%2F%2Fcustomer-k63l0cdanueosauc.cloudflarestream.com%2F6f97cabece6ff2c919f53a3b5c20e162%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false"}
     fsvideo.id = "fsvid-" + (id + 1);
     fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
 
     fullScreenDiv.classList.add("div_fsvideo");
-
     fullScreenDiv.appendChild(fsvideo);
     fullScreenDiv.appendChild(btnExit);
     fullScreenDiv.appendChild(btnNext);
@@ -217,14 +215,10 @@ function addFs(idx) {
 
 
     fsvideo.appendChild(source);
-
+    
 
 
     let fs_player = videojs(document.getElementById(fsvideo.id));
-
-    
-    
-
     fs_player.on('loadeddata', () => {
         console.log('Video has finished loading');
         fs_player.play();
@@ -233,13 +227,26 @@ function addFs(idx) {
         nextVideo();
     });
 
+    fs_player.autoplay('any');
+
+    //special patched player for iOS
+    if(isIOS){
+        let temp = "#"+fsvideo.parentNode.id;
+        $(temp).remove();
+        let appleSource = '<iframe src="https://'+CLIENT_ID+'.cloudflarestream.com/'+videos[id]+'/iframe?preload=true&autoplay=true&poster=https%3A%2F%2F'+CLIENT_ID+'.cloudflarestream.com%2F'+videos[id]+'%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>';
+        let div = document.createElement("div");
+        div.innerHTML = appleSource;
+        fullScreenDiv.appendChild(div);
+        div.style.zIndex = -1;
+    }
+
     // sortir cette fonction
     function nextVideo() {
         id++;
         if(id > videos.length -1){
             id = 0;
         }
-        fs_player.muted(true);
+        //fs_player.muted(true);
         $(".exitfs").css("opacity", 0);
         $(".div_contenu").animate({
             "translate": "-100%",
@@ -294,9 +301,9 @@ function addFs(idx) {
         btnNext.style.opacity = 0;
     })
 
-    fs_player.autoplay('any');
+    
 
-
+    
 }
 
 
