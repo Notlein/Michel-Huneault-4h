@@ -316,6 +316,9 @@ a:visited{
 
 }
 
+.vjs-control-text{
+    display:none;
+}
 
 .div_video:hover{
     scale: 1.05;

@@ -4,7 +4,7 @@
 
 <head>
   <!-- Google tag (gtag.js) -->
- <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script> -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script>
  <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -31,9 +31,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video.min.js"></script>
   <!-- Google tag (gtag.js) --> 
 
-
-
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZGFJRCG6X"></script> -->
   <script src="https://kit.fontawesome.com/83483ef559.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -42,7 +39,7 @@
     <nav class="nav_menu">
       <ul>
       <li class="apropos">
-          <p></p>
+          <p>À propos</p>
         </li>
         <li class="btn_langues">
           <div><i class="fa-light fa-globe"></i></div>
