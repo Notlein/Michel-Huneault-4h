@@ -11,7 +11,7 @@ Text Domain: michelhoneault4h
 /* @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); */
 
 #globe{
-    height:80%;
+    height:75%;
     width:auto
 }
 
@@ -61,7 +61,7 @@ header {
     grid-template-areas: ". .";
     justify-items: left;
     align-items: center;
-    padding-top:0.75vh;
+    /* padding-top:0.75vh; */
 }
 header h1 {
     color: rgb(255, 255, 255);
@@ -105,16 +105,20 @@ header h1 {
     align-items: center;
     transition: .5s;
     width: 9vw;
-    height: 6vh;
+    height: 7vh;
     justify-content: center;
 }
-
+@media (hover: hover) {
 .nav_menu ul li:hover {
     cursor: pointer;
     background-color: rgb(67, 67, 67);
 
 }
-
+}
+@media (hover: none) {
+    .nav_menu ul li:hover { 
+        cursor: pointer; }
+}
 .list_langues{
     position: absolute;
     top: -400%;

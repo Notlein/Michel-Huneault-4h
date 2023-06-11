@@ -54,7 +54,7 @@ var is_touch = (function is_touch_enabled() {
 function isIOSChrome() {
     var userAgent = navigator.userAgent;
     return userAgent.includes('CriOS');
-  }
+}
 
 // FONCTIONS
 
@@ -194,7 +194,7 @@ function addFs(idx) {
     //on first fs -> add listener for right arrow and back button
     if (!playingFullScreen) {
         playingFullScreen = true;
-        history.pushState(1,"");
+        history.pushState(1, "");
         document.addEventListener("keydown", (e) => {
             e = e || window.event;
             if (e.key === "ArrowRight") {
@@ -227,11 +227,11 @@ function addFs(idx) {
     fullScreenDiv.appendChild(btnNext);
     fs_contenu.appendChild(fullScreenDiv);
     fsvideo.appendChild(source);
-    if (isIOS && isIOSChrome()) { 
+    if (isIOS && isIOSChrome()) {
         console.warn("Is Chrome on iOS : Switching to stable player (non-hls)");
-        let appleSource = '<iframe src="https://' + CLIENT_ID + '.cloudflarestream.com/' + videos[id] + '/iframe?preload=true&autoplay=true&'
-        +'poster=https%3A%2F%2F' + CLIENT_ID + '.cloudflarestream.com%2F' + videos[id] + '%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600'
-        +'&controls=false" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>';
+        let appleSource = '<iframe src="https://' + CLIENT_ID + '.cloudflarestream.com/' + videos[id] + '/iframe?preload=true&autoplay=true&' +
+            'poster=https%3A%2F%2F' + CLIENT_ID + '.cloudflarestream.com%2F' + videos[id] + '%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600' +
+            '&controls=true" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>';
         let div = document.createElement("div");
         div.innerHTML = appleSource;
         fullScreenDiv.appendChild(div);
@@ -257,7 +257,7 @@ function addFs(idx) {
 
     btnNext.classList.add('next')
     btnNext.addEventListener("click", nextVideo);
-    
+
     $(".next,.exitfs").on("mouseenter", function () {
         btnExit.style.opacity = 1;
         btnNext.style.opacity = 1;
@@ -302,18 +302,53 @@ function ajouteGrilleDiv(id) {
         wrapper.addEventListener('mouseleave', function () {
             player.pause()
         });
-        // monitor here
-        // player.on('loadeddata', () => {
-        //     player.play();
-        //     player.pause();
-        // });
-    // touch devices
+        player.on('loadeddata', () => {
+            player.play();
+            player.pause();
+        });
+        // touch devices
     } else {
 
-        $(temp).on("touchstart", function () {
-            //openFullscreen()
-            addFs(id)
+        let touchStartTime, touchStartX, touchStartY;
+        const dragThreshold = 15; // Minimum drag distance in pixels
+        const touchDurationThreshold = 300; // Minimum touch duration in milliseconds
+
+        $(temp).on("touchstart", function (event) {
+            touchStartTime = Date.now();
+            touchStartX = event.touches[0].clientX;
+            touchStartY = event.touches[0].clientY;
         });
+
+        $(temp).on("touchmove", function (event) {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+            const deltaX = Math.abs(touchX - touchStartX);
+            const deltaY = Math.abs(touchY - touchStartY);
+
+            if (deltaX > dragThreshold || deltaY > dragThreshold) {
+                // Drag distance exceeds the threshold, do not trigger the action
+                removeTouchListeners();
+            }
+        });
+
+        $(temp).on("touchend", function () {
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+
+            if (touchDuration > touchDurationThreshold) {
+                // Touch duration exceeds the threshold, do not trigger the action
+                removeTouchListeners();
+            } else {
+                // Trigger the action
+                //openFullscreen()
+                addFs(id);
+            }
+        });
+
+        function removeTouchListeners() {
+            $(temp).off("touchstart touchmove touchend");
+        }
+
         // player.on('loadeddata', () => {
         //     player.play();
         //     player.pause();
@@ -447,14 +482,14 @@ if (localStorage.getItem("lang") === null) {
 
 // manipulation d'historique single page pour rafraichir la page sur back et desactiver le forward
 var currentStateIndex = history.state ? history.state.index : 0;
-window.addEventListener('popstate', function(event) {
-  var previousStateIndex = currentStateIndex;
-  currentStateIndex = history.state ? history.state.index : 0;
-  if (currentStateIndex <= previousStateIndex) {
-    history.go(0);
-  } else {
-    history.go(-1);
-  }
+window.addEventListener('popstate', function (event) {
+    var previousStateIndex = currentStateIndex;
+    currentStateIndex = history.state ? history.state.index : 0;
+    if (currentStateIndex <= previousStateIndex) {
+        history.go(0);
+    } else {
+        history.go(-1);
+    }
 });
 
 //INIT
