@@ -22,9 +22,13 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:description" content="4 heures est un film d'observation non-linéaire à la frontière basque. Michel Huneault et Johann Mazé offrent une réflexion nuancée sur les réalités transfrontalières menée par le fil conducteur d'un fleuve bucolique mais inquiétant.">
   <link rel="stylesheet" href="styles.css?v=3.0">
-  <link	href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video-js.min.css"	rel="stylesheet"/>
+  <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.10.2/video.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.15.2/video.min.js"></script> -->
+
+  
+<script src="https://cdn.jsdelivr.net/npm/videojs-http-streaming@1.0.0/videojs-http-streaming.js"></script>
+<script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
   <script src="https://kit.fontawesome.com/83483ef559.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -63,6 +67,8 @@
     <div class="grille_video">
     </div>
   </section>
+  
+  <script src="https://embed.cloudflarestream.com/embed/sdk.latest.js"></script>
   <script src="scripts.js"></script>
 </body>
 </html> 

@@ -23,7 +23,7 @@ var textes = {};
 var loaded = false;
 var fullScr = false;
 var playingFullScreen = false;
-
+var globalID = 0;
 var menuOpen = false;
 
 var it = LIMITE; // iterateur initialisé avec LIMITE
@@ -118,6 +118,48 @@ function iterateurGrille() {
 }
 
 
+
+function createPlayButton() {
+
+    // Create the play button element
+    var playButton = document.createElement('div');
+    playButton.className = 'play-button';
+    playButton.id = "play-button"
+    // Apply styles to the play button
+    playButton.style.position = 'fixed';
+    playButton.style.top = '50%';
+    playButton.style.left = '50%';
+    playButton.style.transform = 'translate(-50%, -50%)';
+    playButton.style.width = '100px';
+    playButton.style.height = '100px';
+    playButton.style.borderRadius = '50%';
+    playButton.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'; // Adjust the transparency by modifying the last value (0.5)
+    playButton.style.zIndex = '9999';
+
+    // Create the play icon using CSS styles
+    var playIcon = document.createElement('div');
+    playIcon.style.width = '0';
+    playIcon.style.height = '0';
+    playIcon.style.opacity = 0.7;
+    playIcon.style.borderTop = '30px solid transparent';
+    playIcon.style.borderBottom = '30px solid transparent';
+    playIcon.style.borderLeft = '45px solid black';
+    playIcon.style.margin = '20px 0 20px 35px';
+
+    // Append the play icon to the play button
+    playButton.appendChild(playIcon);
+
+    // Append the play button to the document body
+    document.body.appendChild(playButton);
+}
+
+// Call the function to create the play button
+
+
+
+
+
+
 async function loadInit() {
     let _token;
     let _email;
@@ -168,9 +210,60 @@ async function loadInit() {
     iterateurGrille();
 }
 
+function nextVideoCustom(id,mode) {
+    
+    switch (mode){
+        case("x"):
+        
+        if (id > videos.length - 1) {
+            id = 0;
+        }
+        $(".exitfs").css("opacity", 0);
+        $(".div_contenu").animate({
+            "left": "-100%",
+            "opacity": 0
+        }, 500, function () {
+            $(".div_fsvideo").remove();
+            addFs(id);
+            $(".exitfs").css("opacity", 1);
+            $(".div_contenu").css({
+                "left" : "0%"
+            });
+        
+        });
+                    break;
+
+
+        case("y"):
+        if (id > videos.length - 1) {
+            id = 0;
+        }
+        $(".exitfs").css("opacity", 0);
+        $(".div_contenu").animate({
+            "top": "-100%",
+            "opacity": 0
+        }, 500, function () {
+            $(".div_fsvideo").remove();
+            addFs(id);
+            $(".exitfs").css("opacity", 1);
+            $(".div_contenu").css({
+                "top" : "0%"
+            });
+        
+        });
+                    break;
+            }
+    
+           
+
+    
+    
+}
+
 
 function addFs(idx) {
     let id = idx;
+    globalID=idx;
     //fonction interne
     function nextVideo() {
         id++;
@@ -179,21 +272,25 @@ function addFs(idx) {
             id = 0;
         }
         $(".exitfs").css("opacity", 0);
+
         $(".div_contenu").animate({
             "translate": "-100%",
             "opacity": 0
         }, 500, function () {
+            $(".div_fsvideo").remove();
             addFs(id);
             $(".exitfs").css("opacity", 1);
             $(".div_contenu").css({
                 "translate": "0%"
             });
-            $(".div_fsvideo:first-child").remove();
+
         });
     }
+
     //on first fs -> add listener for right arrow and back button
     if (!playingFullScreen) {
         playingFullScreen = true;
+        detectTouch();
         history.pushState(1, "");
         document.addEventListener("keydown", (e) => {
             e = e || window.event;
@@ -227,36 +324,32 @@ function addFs(idx) {
     fullScreenDiv.appendChild(btnNext);
     fs_contenu.appendChild(fullScreenDiv);
     fsvideo.appendChild(source);
-    if (isIOS && isIOSChrome()) {
-        console.warn("Is Chrome on iOS : Switching to stable player (non-hls)");
-        let appleSource = '<iframe src="https://' + CLIENT_ID + '.cloudflarestream.com/' + videos[id] + '/iframe?preload=true&autoplay=true&' +
-            'poster=https%3A%2F%2F' + CLIENT_ID + '.cloudflarestream.com%2F' + videos[id] + '%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600' +
-            '&controls=true" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>';
-        let div = document.createElement("div");
-        div.innerHTML = appleSource;
-        fullScreenDiv.appendChild(div);
-        btnExit.style.zIndex = 1;
-        btnNext.style.zIndex = 1;
-    } else {
-        let fs_player = videojs(document.getElementById(fsvideo.id));
-        //console.log(fs_player);
-        fs_player.on('loadeddata', () => {
-            // console.log('Video has finished loading');
-            fs_player.play();
-        });
-        fs_player.on('ended', function () {
-            nextVideo();
-        });
-    }
+
+    let fs_player = videojs(document.getElementById(fsvideo.id),{
+        autoplay: 'any'
+    });
+    fs_player.on('loadeddata', () => {
+        // console.log('Video has finished loading');
+        fs_player.play();
+    });
+    fs_player.on('ended', function () {
+        nextVideo();
+    });
+    fs_player.on('canplay', function () {
+        fs_player.play();
+    });
+
     btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
     btnExit.classList.add('exitfs');
     btnExit.addEventListener("click", function () {
-        history.go(-1);
-        location.reload();
+        history.go(0);
+        // location.reload();
     });
 
     btnNext.classList.add('next')
+
     btnNext.addEventListener("click", nextVideo);
+
 
     $(".next,.exitfs").on("mouseenter", function () {
         btnExit.style.opacity = 1;
@@ -266,6 +359,8 @@ function addFs(idx) {
         btnExit.style.opacity = 0;
         btnNext.style.opacity = 0;
     })
+
+    globalID++;
 }
 
 function ajouteGrilleDiv(id) {
@@ -284,11 +379,11 @@ function ajouteGrilleDiv(id) {
     contenu.appendChild(wrapper);
     wrapper.appendChild(video);
     video.appendChild(source);
-    let player = videojs(document.getElementById(video.id), {
+    let player_thumb = videojs(document.getElementById(video.id), {
         controls: false,
         poster: 'https://' + CLIENT_ID + '.cloudflarestream.com/' + videos[id] + '/thumbnails/thumbnail.jpg'
     });
-    player.muted(true);
+    player_thumb.muted(true);
     // temporary variable for the wrapper selector
     let temp = "#w" + (id + 1);
     //non-touch devices
@@ -297,34 +392,30 @@ function ajouteGrilleDiv(id) {
             addFs(id)
         });
         wrapper.addEventListener('mouseenter', function () {
-            player.play()
+            player_thumb.play()
         });
         wrapper.addEventListener('mouseleave', function () {
-            player.pause()
+            player_thumb.pause()
         });
-        player.on('loadeddata', () => {
-            player.play();
-            player.pause();
+        player_thumb.on('loadeddata', () => {
+            player_thumb.play();
+            player_thumb.pause();
         });
         // touch devices
     } else {
-
         let touchStartTime, touchStartX, touchStartY;
-        const dragThreshold = 15; // Minimum drag distance in pixels
-        const touchDurationThreshold = 300; // Minimum touch duration in milliseconds
-
+        const dragThreshold = 20; // Minimum drag distance in pixels
+        const touchDurationThreshold = 100; // Minimum touch duration in milliseconds
         $(temp).on("touchstart", function (event) {
             touchStartTime = Date.now();
             touchStartX = event.touches[0].clientX;
             touchStartY = event.touches[0].clientY;
         });
-
         $(temp).on("touchmove", function (event) {
             const touchX = event.touches[0].clientX;
             const touchY = event.touches[0].clientY;
             const deltaX = Math.abs(touchX - touchStartX);
             const deltaY = Math.abs(touchY - touchStartY);
-
             if (deltaX > dragThreshold || deltaY > dragThreshold) {
                 // Drag distance exceeds the threshold, do not trigger the action
                 removeTouchListeners();
@@ -334,12 +425,9 @@ function ajouteGrilleDiv(id) {
         $(temp).on("touchend", function () {
             const touchEndTime = Date.now();
             const touchDuration = touchEndTime - touchStartTime;
-
             if (touchDuration > touchDurationThreshold) {
-                // Touch duration exceeds the threshold, do not trigger the action
                 removeTouchListeners();
             } else {
-                // Trigger the action
                 //openFullscreen()
                 addFs(id);
             }
@@ -349,13 +437,6 @@ function ajouteGrilleDiv(id) {
             $(temp).off("touchstart touchmove touchend");
         }
 
-        // player.on('loadeddata', () => {
-        //     player.play();
-        //     player.pause();
-        // });
-        // init for mobiles
-        // player.play();
-        // player.pause();
     }
 }
 
@@ -418,8 +499,11 @@ btn_Apropos.addEventListener('click', function () {
 //boutons langues
 btn_langues.addEventListener('click', function () {
     if (!menuOpen) {
+
         list_langues.style.top = '100%';
+        list_langues.style.opacity = 1;
     } else {
+        list_langues.style.opacity = 0;
         list_langues.style.top = '-400%';
     }
     menuOpen = !menuOpen;
@@ -460,11 +544,11 @@ $("#fs-btn").on("click", function () {
 })
 
 // ajoute des cases vidéos lorsque le bas - 10 pixels est atteint + page loaded
-//if iOS -> load only 24 videos
+//if touch screen -> load only 24 videos
 window.addEventListener('scroll', () => {
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    if (!isIOS) {
+    if (!is_touch) {
         if (loaded && (Math.ceil(scrolled) >= (scrollMax - 10))) {
             mu++;
             for (let i = it * (mu - 1); i < it * mu; i++) {
@@ -485,12 +569,51 @@ var currentStateIndex = history.state ? history.state.index : 0;
 window.addEventListener('popstate', function (event) {
     var previousStateIndex = currentStateIndex;
     currentStateIndex = history.state ? history.state.index : 0;
-    if (currentStateIndex <= previousStateIndex) {
+    if (currentStateIndex < previousStateIndex) {
         history.go(0);
     } else {
         history.go(-1);
     }
 });
+
+function detectTouch() {
+    if (is_touch) {
+        $(document).ready(function () {
+            var startY, startX;
+
+            $(document).on('touchstart', function (e) {
+                var touch = e.originalEvent.touches[0];
+                startY = touch.pageY;
+                startX = touch.pageX;
+            });
+
+            $(document).on('touchend', function (e) {
+                var touch = e.originalEvent.changedTouches[0];
+                var endY = touch.pageY;
+                var endX = touch.pageX;
+
+                var deltaY = startY - endY;
+                var deltaX = startX - endX;
+
+                if (deltaY > 0 && Math.abs(deltaY) > Math.abs(deltaX)) {
+                    console.log('Bottom to Top touch');
+                    nextVideoCustom(globalID,"y");
+                    
+                      
+                }
+
+                if (deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    console.log('Right to Left touch');
+                    nextVideoCustom(globalID,"x");
+                    
+                      
+                }
+            });
+        });
+
+    }
+}
+
 
 //INIT
 loadInit();
