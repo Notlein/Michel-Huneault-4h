@@ -118,48 +118,6 @@ function iterateurGrille() {
 }
 
 
-
-function createPlayButton() {
-
-    // Create the play button element
-    var playButton = document.createElement('div');
-    playButton.className = 'play-button';
-    playButton.id = "play-button"
-    // Apply styles to the play button
-    playButton.style.position = 'fixed';
-    playButton.style.top = '50%';
-    playButton.style.left = '50%';
-    playButton.style.transform = 'translate(-50%, -50%)';
-    playButton.style.width = '100px';
-    playButton.style.height = '100px';
-    playButton.style.borderRadius = '50%';
-    playButton.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'; // Adjust the transparency by modifying the last value (0.5)
-    playButton.style.zIndex = '9999';
-
-    // Create the play icon using CSS styles
-    var playIcon = document.createElement('div');
-    playIcon.style.width = '0';
-    playIcon.style.height = '0';
-    playIcon.style.opacity = 0.7;
-    playIcon.style.borderTop = '30px solid transparent';
-    playIcon.style.borderBottom = '30px solid transparent';
-    playIcon.style.borderLeft = '45px solid black';
-    playIcon.style.margin = '20px 0 20px 35px';
-
-    // Append the play icon to the play button
-    playButton.appendChild(playIcon);
-
-    // Append the play button to the document body
-    document.body.appendChild(playButton);
-}
-
-// Call the function to create the play button
-
-
-
-
-
-
 async function loadInit() {
     let _token;
     let _email;
@@ -209,61 +167,47 @@ async function loadInit() {
     loaded = true;
     iterateurGrille();
 }
-
-function nextVideoCustom(id,mode) {
-    
-    switch (mode){
-        case("x"):
-        
-        if (id > videos.length - 1) {
-            id = 0;
-        }
-        $(".exitfs").css("opacity", 0);
-        $(".div_contenu").animate({
-            "left": "-100%",
-            "opacity": 0
-        }, 500, function () {
-            $(".div_fsvideo").remove();
-            addFs(id);
-            $(".exitfs").css("opacity", 1);
-            $(".div_contenu").css({
-                "left" : "0%"
-            });
-        
-        });
-                    break;
-
-
-        case("y"):
-        if (id > videos.length - 1) {
-            id = 0;
-        }
-        $(".exitfs").css("opacity", 0);
-        $(".div_contenu").animate({
-            "top": "-100%",
-            "opacity": 0
-        }, 500, function () {
-            $(".div_fsvideo").remove();
-            addFs(id);
-            $(".exitfs").css("opacity", 1);
-            $(".div_contenu").css({
-                "top" : "0%"
-            });
-        
-        });
-                    break;
+function nextVideoCustom(id, mode) {
+    switch (mode) {
+        case ("x"):
+            if (id > videos.length - 1) {
+                id = 0;
             }
-    
-           
-
-    
-    
+            $(".exitfs").css("opacity", 0);
+            $(".div_contenu").animate({
+                "left": "-100%",
+                "opacity": 0
+            }, 500, function () {
+                $(".div_fsvideo").remove();
+                addFs(id);
+                $(".exitfs").css("opacity", 1);
+                $(".div_contenu").css({
+                    "left": "0%"
+                });
+            });
+            break;
+        case ("y"):
+            if (id > videos.length - 1) {
+                id = 0;
+            }
+            $(".exitfs").css("opacity", 0);
+            $(".div_contenu").animate({
+                "top": "-100%",
+                "opacity": 0
+            }, 500, function () {
+                $(".div_fsvideo").remove();
+                addFs(id);
+                $(".exitfs").css("opacity", 1);
+                $(".div_contenu").css({
+                    "top": "0%"
+                });
+            });
+            break;
+    }
 }
-
-
 function addFs(idx) {
     let id = idx;
-    globalID=idx;
+    globalID = idx;
     //fonction interne
     function nextVideo() {
         id++;
@@ -325,7 +269,7 @@ function addFs(idx) {
     fs_contenu.appendChild(fullScreenDiv);
     fsvideo.appendChild(source);
 
-    let fs_player = videojs(document.getElementById(fsvideo.id),{
+    let fs_player = videojs(document.getElementById(fsvideo.id), {
         autoplay: 'any'
     });
     fs_player.on('loadeddata', () => {
@@ -597,16 +541,16 @@ function detectTouch() {
 
                 if (deltaY > 0 && Math.abs(deltaY) > Math.abs(deltaX)) {
                     console.log('Bottom to Top touch');
-                    nextVideoCustom(globalID,"y");
-                    
-                      
+                    nextVideoCustom(globalID, "y");
+
+
                 }
 
                 if (deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY)) {
                     console.log('Right to Left touch');
-                    nextVideoCustom(globalID,"x");
-                    
-                      
+                    nextVideoCustom(globalID, "x");
+
+
                 }
             });
         });
