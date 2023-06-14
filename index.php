@@ -11,7 +11,7 @@
 </script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>4 heures</title> 
 <!-- METADATA + OG -->
 <meta property="og:site_name" content="4 heures">
@@ -27,7 +27,7 @@
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.15.2/video.min.js"></script> -->
 
   
-<script src="https://cdn.jsdelivr.net/npm/videojs-http-streaming@1.0.0/videojs-http-streaming.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/videojs-http-streaming@1.0.0/videojs-http-streaming.js"></script> -->
 <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
   <script src="https://kit.fontawesome.com/83483ef559.js" crossorigin="anonymous"></script>
 </head>

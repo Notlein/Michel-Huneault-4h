@@ -206,8 +206,10 @@ function nextVideoCustom(id, mode) {
     }
 }
 function addFs(idx) {
+
     let id = idx;
     globalID = idx;
+
     //fonction interne
     function nextVideo() {
         id++;
@@ -254,18 +256,23 @@ function addFs(idx) {
     const fs_contenu = document.querySelector('.div_contenu');
     let fullScreenDiv = document.createElement("div");
     let fsvideo = document.createElement("video");
-    let btnExit = document.createElement("button");
+    fsvideo.disablePictureInPicture = false;
+
+
+    let btnExit = document.createElement("div");
     let btnNext = document.createElement("button");
     let source = document.createElement('source');
     source.src = "https://" +
         CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
     source.type = "application/x-mpegURL";
     fsvideo.id = "fsvid-" + (id + 1);
+    fsvideo.disablePictureInPicture = true;
     fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
     fullScreenDiv.classList.add("div_fsvideo");
     fullScreenDiv.appendChild(fsvideo);
     fullScreenDiv.appendChild(btnExit);
     fullScreenDiv.appendChild(btnNext);
+    
     fs_contenu.appendChild(fullScreenDiv);
     fsvideo.appendChild(source);
 
@@ -273,8 +280,16 @@ function addFs(idx) {
         autoplay: 'any',
         html5: {
             playsinline: true
-          }
+          },
+        controlBar:{
+            pictureInPictureToggle: true,
+            
+        },
+        disablePictureInPicture: true,
+        enableDocumentPictureInPicture : false
     });
+    // fs_player.requestFullscreen()
+
     // fs_player.controls = false;
     fs_player.on('loadeddata', () => {
         // console.log('Video has finished loading');
@@ -287,17 +302,25 @@ function addFs(idx) {
         fs_player.play();
     });
 
-    btnExit.innerHTML = "<svg class='xlogo' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'/></svg>";
+    btnExit.innerHTML = '<svg height="3em" width="3em" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 185.343 185.343" xml:space="preserve"><g><g><path d="M51.707,185.343c-2.741,0-5.493-1.044-7.593-3.149c-4.194-4.194-4.194-10.981,0-15.175 l74.352-74.347L44.114,18.32c-4.194-4.194-4.194-10.987,0-15.175c4.194-4.194,10.987-4.194,15.18,0l81.934,81.934 c4.194,4.194,4.194,10.987,0,15.175l-81.934,81.939C57.201,184.293,54.454,185.343,51.707,185.343z"/></g></g></svg>';
     btnExit.classList.add('exitfs');
     btnExit.addEventListener("click", function () {
-        history.go(0);
+        history.go();
         // location.reload();
     });
 
     btnNext.classList.add('next')
 
-    btnNext.addEventListener("click", nextVideo);
+    
+    if(is_touch){
+        btnExit.style.opacity = "1";
+        btnNext.style.opacity = "0"
+        console.log(btnExit.style.opacity)
+        btnNext.addEventListener("click", nextVideo);
 
+    } else {
+        btnNext.addEventListener("click", nextVideo);
+    
 
     $(".next,.exitfs").on("mouseenter", function () {
         btnExit.style.opacity = 1;
@@ -307,8 +330,10 @@ function addFs(idx) {
         btnExit.style.opacity = 0;
         btnNext.style.opacity = 0;
     })
+    }
 
     globalID++;
+    
 }
 
 function ajouteGrilleDiv(id) {
@@ -377,7 +402,9 @@ function ajouteGrilleDiv(id) {
                 removeTouchListeners();
             } else {
                 //openFullscreen()
+                $(temp).animate({"scale":1.1},250)
                 addFs(id);
+
             }
         });
 
@@ -565,3 +592,8 @@ function detectTouch() {
 
 //INIT
 loadInit();
+
+// document.addEventListener('touchmove', function (event) {
+//     if (event.scale !== 1) { event.preventDefault(); }
+//   }, { passive: false });
+
