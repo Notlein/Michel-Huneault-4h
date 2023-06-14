@@ -270,8 +270,12 @@ function addFs(idx) {
     fsvideo.appendChild(source);
 
     let fs_player = videojs(document.getElementById(fsvideo.id), {
-        autoplay: 'any'
+        autoplay: 'any',
+        html5: {
+            playsinline: true
+          }
     });
+    // fs_player.controls = false;
     fs_player.on('loadeddata', () => {
         // console.log('Video has finished loading');
         fs_player.play();
