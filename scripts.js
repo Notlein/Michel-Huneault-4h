@@ -25,7 +25,8 @@ var fullScr = false;
 var playingFullScreen = false;
 var globalID = 0;
 var menuOpen = false;
-
+var timer;
+var player;
 var it = LIMITE; // iterateur initialisé avec LIMITE
 var mu = 1; // multiplicateur (default : 1)
 
@@ -57,7 +58,50 @@ function isIOSChrome() {
 }
 
 // FONCTIONS
+function detectTouch() {
+    if (is_touch) {
+        $(document).ready(function () {
+            var startY, startX;
+            $(document).on('touchstart', function (e) {
+                var touch = e.originalEvent.touches[0];
+                startY = touch.pageY;
+                startX = touch.pageX;
+            });
+            $(document).on('touchend', function (e) {
+                var touch = e.originalEvent.changedTouches[0];
+                var endY = touch.pageY;
+                var endX = touch.pageX;
 
+                var deltaY = startY - endY;
+                var deltaX = startX - endX;
+
+                var distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+
+                if (distance > 15) {
+                    if (deltaY > 0 && Math.abs(deltaY) > Math.abs(deltaX)) {
+                        console.log('Bottom to Top touch');
+                        nextVideoCustom("y");
+                    }
+
+                    if (deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                        console.log('Right to Left touch');
+                        nextVideoCustom("x");
+                    }
+                } else {
+                    triggerControls(document.getElementsByClassName("next")[0]);
+                    triggerControls(document.getElementsByClassName("exitfs")[0]);
+                }
+            });
+        });
+    }
+}
+
+function triggerControls(el) {
+    if (el.style.opacity > 0)
+        el.style.opacity = 0;
+    else
+        el.style.opacity = 1;
+}
 
 function brasseListe(vids) {
     newVids = vids;
@@ -71,7 +115,6 @@ function brasseListe(vids) {
     return newVids;
 }
 
-
 function openFullscreen() {
     if (document_element.requestFullscreen) {
         document_element.requestFullscreen();
@@ -83,7 +126,6 @@ function openFullscreen() {
         document_element.msRequestFullscreen();
     }
 }
-
 
 function closeFullscreen() {
     if (document.exitFullscreen) {
@@ -97,7 +139,6 @@ function closeFullscreen() {
     }
 }
 
-
 function changeLanguage(lg) {
     titre4h.innerHTML = textes[lg]['titre'];
     titre4hHEAD.innerHTML = textes[lg]['titre'];
@@ -110,13 +151,11 @@ function changeLanguage(lg) {
     document.querySelectorAll('.contenu_ap h1').innerHTML = textes[lg]['titre'];
 }
 
-
 function iterateurGrille() {
     for (let index = 0; index < LIMITE; index++) {
         ajouteGrilleDiv(index)
     }
 }
-
 
 async function loadInit() {
     let _token;
@@ -167,132 +206,163 @@ async function loadInit() {
     loaded = true;
     iterateurGrille();
 }
-function nextVideoCustom(id, mode) {
+
+function nextVideoCustom(mode) {
+
+
+
     switch (mode) {
         case ("x"):
-            if (id > videos.length - 1) {
-                id = 0;
-            }
-            $(".exitfs").css("opacity", 0);
-            $(".div_contenu").animate({
-                "left": "-100%",
-                "opacity": 0
-            }, 500, function () {
-                $(".div_fsvideo").remove();
-                addFs(id);
-                $(".exitfs").css("opacity", 1);
-                $(".div_contenu").css({
-                    "left": "0%"
-                });
-            });
+            nextVideo();
             break;
         case ("y"):
-            if (id > videos.length - 1) {
-                id = 0;
+            globalID++;
+            //loop backk to 0 if last video
+            if (globalID > videos.length - 1) {
+                globalID = 0;
             }
-            $(".exitfs").css("opacity", 0);
+            player.pause()
+            $(".exitfs, .next").css("opacity", 0);
             $(".div_contenu").animate({
+                "opacity": 1,
                 "top": "-100%",
-                "opacity": 0
             }, 500, function () {
-                $(".div_fsvideo").remove();
-                addFs(id);
-                $(".exitfs").css("opacity", 1);
+                player.src("https://" +
+                    CLIENT_ID + ".cloudflarestream.com/" + videos[globalID] + "/manifest/video.m3u8");
+                player.load()
+                player.play();
                 $(".div_contenu").css({
                     "top": "0%"
                 });
+
             });
             break;
     }
 }
-function addFs(idx) {
 
-    let id = idx;
-    globalID = idx;
+function autohide(btnExit, btnNext) {
+    btnExit.style.opacity = 1;
+    btnNext.style.opacity = 1;
+    $('body').css("cursor", "auto")
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+        btnExit.style.opacity = 0;
+        btnNext.style.opacity = 0;
+        $('body').css("cursor", "none")
+    }, 1500);
+}
 
-    //fonction interne
-    function nextVideo() {
-        id++;
-        //loop backk to 0 if last video
-        if (id > videos.length - 1) {
-            id = 0;
-        }
-        $(".exitfs").css("opacity", 0);
-
-        $(".div_contenu").animate({
-            "translate": "-100%",
-            "opacity": 0
-        }, 500, function () {
-            $(".div_fsvideo").remove();
-            addFs(id);
-            $(".exitfs").css("opacity", 1);
-            $(".div_contenu").css({
-                "translate": "0%"
-            });
-
-        });
+function nextVideo() {
+    globalID++;
+    //loop backk to 0 if last video
+    if (globalID > videos.length - 1) {
+        globalID = 0;
     }
+    player.pause()
+    $(".exitfs, .next").css("opacity", 0);
+    $(".div_contenu").animate({
+        "opacity": 1,
+        "left": "-100%",
+    }, 500, function () {
+        player.src("https://" +
+            CLIENT_ID + ".cloudflarestream.com/" + videos[globalID] + "/manifest/video.m3u8");
+        player.load()
+        player.play();
+        $(".div_contenu").css({
+            "left": "0%"
+        });
 
-    //on first fs -> add listener for right arrow and back button
+    });
+}
+
+function firstVid() {
     if (!playingFullScreen) {
-        playingFullScreen = true;
         detectTouch();
+        //$(".exitfs, .next").css("opacity", 1);
         history.pushState(1, "");
         document.addEventListener("keydown", (e) => {
             e = e || window.event;
             if (e.key === "ArrowRight") {
                 nextVideo();
             }
-        });
+        })
     }
+}
+
+function animateFS() {
     $("header").fadeOut(1000);
     $(".grille_video").fadeOut(1000, function () {
-        $(".grille_video").remove()
+        $(".grille_video").remove();
     });
     $(".div_contenu").css("z-index", 1);
     $(".div_contenu").animate({
         "opacity": 1
     });
+}
+
+function setPlayer() {
     const fs_contenu = document.querySelector('.div_contenu');
     let fullScreenDiv = document.createElement("div");
     let fsvideo = document.createElement("video");
     fsvideo.disablePictureInPicture = false;
-
-
     let btnExit = document.createElement("div");
-    let btnNext = document.createElement("button");
+    let btnNext = document.createElement("div");
     let source = document.createElement('source');
-    source.src = "https://" +
-        CLIENT_ID + ".cloudflarestream.com/" + videos[id] + "/manifest/video.m3u8";
-    source.type = "application/x-mpegURL";
-    fsvideo.id = "fsvid-" + (id + 1);
-    fsvideo.disablePictureInPicture = true;
-    fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
     fullScreenDiv.classList.add("div_fsvideo");
     fullScreenDiv.appendChild(fsvideo);
     fullScreenDiv.appendChild(btnExit);
     fullScreenDiv.appendChild(btnNext);
-    
     fs_contenu.appendChild(fullScreenDiv);
     fsvideo.appendChild(source);
+    fsvideo.disablePictureInPicture = true;
+    fsvideo.style = "border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;";
+    btnExit.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z"/></svg>';
+    btnExit.classList.add('exitfs');
+    btnNext.classList.add('next');
+    btnNext.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>';
 
+    return {
+        source,
+        fsvideo,
+        btnExit,
+        btnNext
+    };
+}
+
+function addFs() {
+
+    firstVid();
+    animateFS();
+    let {
+        source,
+        fsvideo,
+        btnExit,
+        btnNext
+    } = setPlayer();
+    fsvideo.id = "fsvid";
+    source.src = "https://" +
+        CLIENT_ID + ".cloudflarestream.com/" + videos[globalID] + "/manifest/video.m3u8";
+    source.type = "application/x-mpegURL";
+    playerStarts(fsvideo, btnExit, btnNext);
+    playingFullScreen = true;
+    autohide(btnExit, btnNext);
+}
+
+function playerStarts(fsvideo, btnExit, btnNext) {
     let fs_player = videojs(document.getElementById(fsvideo.id), {
-        autoplay: 'any',
+        muted: false,
+        autoplay: true,
         html5: {
             playsinline: true
-          },
-        controlBar:{
+        },
+        controlBar: {
             pictureInPictureToggle: true,
-            
         },
         disablePictureInPicture: true,
-        enableDocumentPictureInPicture : false
+        enableDocumentPictureInPicture: false
     });
-    // fs_player.requestFullscreen()
 
-    // fs_player.controls = false;
     fs_player.on('loadeddata', () => {
-        // console.log('Video has finished loading');
         fs_player.play();
     });
     fs_player.on('ended', function () {
@@ -302,39 +372,23 @@ function addFs(idx) {
         fs_player.play();
     });
 
-    btnExit.innerHTML = '<svg height="3em" width="3em" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 185.343 185.343" xml:space="preserve"><g><g><path d="M51.707,185.343c-2.741,0-5.493-1.044-7.593-3.149c-4.194-4.194-4.194-10.981,0-15.175 l74.352-74.347L44.114,18.32c-4.194-4.194-4.194-10.987,0-15.175c4.194-4.194,10.987-4.194,15.18,0l81.934,81.934 c4.194,4.194,4.194,10.987,0,15.175l-81.934,81.939C57.201,184.293,54.454,185.343,51.707,185.343z"/></g></g></svg>';
-    btnExit.classList.add('exitfs');
+    
     btnExit.addEventListener("click", function () {
         history.go();
-        // location.reload();
     });
-
-    btnNext.classList.add('next')
-
     
-    if(is_touch){
-        btnExit.style.opacity = "1";
-        btnNext.style.opacity = "0"
-        console.log(btnExit.style.opacity)
+    if (is_touch) {
         btnNext.addEventListener("click", nextVideo);
-
     } else {
         btnNext.addEventListener("click", nextVideo);
-    
-
-    $(".next,.exitfs").on("mouseenter", function () {
-        btnExit.style.opacity = 1;
-        btnNext.style.opacity = 1;
-    })
-    $(".next,.exitfs").on("mouseleave", function () {
-        btnExit.style.opacity = 0;
-        btnNext.style.opacity = 0;
-    })
+        //auto hide
+        $(document).mousemove(function () {
+            autohide(btnExit, btnNext);
+        });
     }
-
-    globalID++;
-    
+    player = fs_player;
 }
+
 
 function ajouteGrilleDiv(id) {
     let wrapper = document.createElement("div");
@@ -362,7 +416,8 @@ function ajouteGrilleDiv(id) {
     //non-touch devices
     if (!is_touch) {
         $(temp).on("click", function () {
-            addFs(id)
+            globalID = id;
+            addFs()
         });
         wrapper.addEventListener('mouseenter', function () {
             player_thumb.play()
@@ -402,9 +457,11 @@ function ajouteGrilleDiv(id) {
                 removeTouchListeners();
             } else {
                 //openFullscreen()
-                $(temp).animate({"scale":1.1},250)
-                addFs(id);
-
+                $(temp).animate({
+                    "scale": 2
+                }, 300)
+                globalID = id;
+                addFs();
             }
         });
 
@@ -413,6 +470,7 @@ function ajouteGrilleDiv(id) {
         }
 
     }
+
 }
 
 //a propos
@@ -518,8 +576,6 @@ $("#fs-btn").on("click", function () {
     fullScr = !fullScr;
 })
 
-// ajoute des cases vidéos lorsque le bas - 10 pixels est atteint + page loaded
-//if touch screen -> load only 24 videos
 window.addEventListener('scroll', () => {
     const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
@@ -551,49 +607,10 @@ window.addEventListener('popstate', function (event) {
     }
 });
 
-function detectTouch() {
-    if (is_touch) {
-        $(document).ready(function () {
-            var startY, startX;
-
-            $(document).on('touchstart', function (e) {
-                var touch = e.originalEvent.touches[0];
-                startY = touch.pageY;
-                startX = touch.pageX;
-            });
-
-            $(document).on('touchend', function (e) {
-                var touch = e.originalEvent.changedTouches[0];
-                var endY = touch.pageY;
-                var endX = touch.pageX;
-
-                var deltaY = startY - endY;
-                var deltaX = startX - endX;
-
-                if (deltaY > 0 && Math.abs(deltaY) > Math.abs(deltaX)) {
-                    console.log('Bottom to Top touch');
-                    nextVideoCustom(globalID, "y");
-
-
-                }
-
-                if (deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY)) {
-                    console.log('Right to Left touch');
-                    nextVideoCustom(globalID, "x");
-
-
-                }
-            });
-        });
-
-    }
-}
-
-
-//INIT
-loadInit();
-
 // document.addEventListener('touchmove', function (event) {
 //     if (event.scale !== 1) { event.preventDefault(); }
 //   }, { passive: false });
 
+
+//INIT
+loadInit();

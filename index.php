@@ -33,7 +33,7 @@
 </head>
 <body>
   <header>
-    <h1 class="titre_4h"></h1>
+    <h1 class="titre_4h">4 heures</h1>
     <nav class="nav_menu">
       <ul>
       <li class="apropos">
